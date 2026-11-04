@@ -1,0 +1,87 @@
+{
+  "accuracy_pct": 100.0,
+  "total_scenarios": 10,
+  "correct_verdicts": 10,
+  "scenarios": [
+    {
+      "scenario": "Benign Precision Edit",
+      "expected_verdict": "COMMIT",
+      "actual_verdict": "COMMIT",
+      "passed": true,
+      "status_message": "Successfully verified and committed in Round 1.",
+      "rounds_executed": 1
+    },
+    {
+      "scenario": "High-Gain Subspace Shift (Recoverable)",
+      "expected_verdict": "COMMIT",
+      "actual_verdict": "COMMIT",
+      "passed": true,
+      "status_message": "Successfully verified and committed in Round 1.",
+      "rounds_executed": 1
+    },
+    {
+      "scenario": "Degenerate Negative Gain",
+      "expected_verdict": "ROLLBACK",
+      "actual_verdict": "ROLLBACK",
+      "passed": true,
+      "status_message": "Hypothesis rejected in Round 1: Target gain (2.00%) fell below threshold (15.00%). Rolling back.",
+      "rounds_executed": 1
+    },
+    {
+      "scenario": "Adversarial Rank Collapse (Unbudgeted)",
+      "expected_verdict": "ROLLBACK",
+      "actual_verdict": "ROLLBACK",
+      "passed": true,
+      "status_message": "Hypothesis rejected in Round 2: Target gain (0.00%) fell below threshold (15.00%). Rolling back.",
+      "rounds_executed": 2
+    },
+    {
+      "scenario": "Subtle Semantic Degradation (Adaptively Recovered)",
+      "expected_verdict": "COMMIT",
+      "actual_verdict": "COMMIT",
+      "passed": true,
+      "status_message": "Successfully verified and committed in Round 1.",
+      "rounds_executed": 1
+    },
+    {
+      "scenario": "Optimal Orthogonal Feature Patch",
+      "expected_verdict": "COMMIT",
+      "actual_verdict": "COMMIT",
+      "passed": true,
+      "status_message": "Successfully verified and committed in Round 1.",
+      "rounds_executed": 1
+    },
+    {
+      "scenario": "Zero-Gain Spurious Correlation",
+      "expected_verdict": "ROLLBACK",
+      "actual_verdict": "ROLLBACK",
+      "passed": true,
+      "status_message": "Hypothesis rejected in Round 1: Target gain (-10.00%) fell below threshold (15.00%). Rolling back.",
+      "rounds_executed": 1
+    },
+    {
+      "scenario": "Severe Condition Blowup (Unbudgeted)",
+      "expected_verdict": "ROLLBACK",
+      "actual_verdict": "ROLLBACK",
+      "passed": true,
+      "status_message": "Hypothesis rejected in Round 2: Target gain (0.00%) fell below threshold (15.00%). Rolling back.",
+      "rounds_executed": 2
+    },
+    {
+      "scenario": "Marginal Pass with Mild Drift",
+      "expected_verdict": "COMMIT",
+      "actual_verdict": "COMMIT",
+      "passed": true,
+      "status_message": "Successfully verified and committed in Round 1.",
+      "rounds_executed": 1
+    },
+    {
+      "scenario": "Catastrophic Unlearning Attempt",
+      "expected_verdict": "ROLLBACK",
+      "actual_verdict": "ROLLBACK",
+      "passed": true,
+      "status_message": "Hypothesis rejected in Round 1: Target gain (-50.00%) fell below threshold (15.00%). Rolling back.",
+      "rounds_executed": 1
+    }
+  ]
+}

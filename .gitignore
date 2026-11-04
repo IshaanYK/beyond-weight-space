@@ -1,0 +1,25 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pytest / Caches
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Large binaries & unrelated PDFs
+*.bin
+*.pt
+*.safetensors
+A_Compact_Weight-Space_Integer_Programming_Formula.pdf
+
+# Logs
+*.log

@@ -1,0 +1,24 @@
+{
+  "model": "HuggingFaceTB/SmolLM2-360M",
+  "target_layer": "model.layers.15.mlp.down_proj",
+  "base_metrics": {
+    "loop_repetition_rate": 0.6648936170212766,
+    "retained_perplexity": 8.981413841247559,
+    "condition_number": 31.513638864740358
+  },
+  "raw_wsp_takehi": {
+    "loop_repetition_rate": 0.5585106382978724,
+    "loop_reduction_pct": 15.99999999999999,
+    "retained_perplexity": 8.93325138092041,
+    "perplexity_drift_pct": -0.536245864832106,
+    "condition_number": 31.57692527770996
+  },
+  "sp_sv_wsp_ours": {
+    "loop_repetition_rate": 0.5585106382978724,
+    "loop_reduction_pct": 15.99999999999999,
+    "retained_perplexity": 8.981409072875977,
+    "perplexity_drift_pct": -5.30915473478383e-05,
+    "condition_number": 31.539249420166016,
+    "invariance_score": 0.9988507010631544
+  }
+}
