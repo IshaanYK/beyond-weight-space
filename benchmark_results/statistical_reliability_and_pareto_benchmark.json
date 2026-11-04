@@ -1,0 +1,185 @@
+{
+  "model": "HuggingFaceTB/SmolLM2-360M",
+  "layer": "model.layers.15.mlp.down_proj",
+  "passage_independence_verified": true,
+  "train_passages_count": 32,
+  "heldout_passages_count": 8,
+  "mechanistic_damping": {
+    "u_in_norm": 1.0,
+    "u_proj_norm": 0.7815999984741211,
+    "damping_pct": 21.84000015258789,
+    "cosine_alignment": 0.7904089689254761
+  },
+  "configurations": [
+    {
+      "configuration": "1. Unedited Baseline",
+      "description": "Zero modification",
+      "loop_repetition_mean": 0.6944444444444444,
+      "loop_reduction_pct": 0.0,
+      "heldout_ppl": 59.318546295166016,
+      "ppl_drift_pct": 0.0,
+      "condition_number": 31.513639450073242,
+      "out_of_sample_invariance": 1.0,
+      "residual_error": 0.0,
+      "repetition_per_prompt": [
+        0.8888888888888888,
+        0.6666666666666666,
+        0.6296296296296297,
+        0.07407407407407407,
+        0.7037037037037037,
+        0.7037037037037037,
+        0.9629629629629629,
+        0.9259259259259259
+      ]
+    },
+    {
+      "configuration": "2. Raw WSP (Takehi et al.)",
+      "description": "Unconstrained rank-1 surgery",
+      "loop_repetition_mean": 0.6157407407407407,
+      "loop_reduction_pct": 11.333333333333336,
+      "heldout_ppl": 58.93465805053711,
+      "ppl_drift_pct": -0.6471639455200036,
+      "condition_number": 31.57692527770996,
+      "out_of_sample_invariance": 2.531308496145357e-14,
+      "residual_error": 0.9999999999999747,
+      "repetition_per_prompt": [
+        0.8888888888888888,
+        0.6666666666666666,
+        0.0,
+        0.07407407407407407,
+        0.7037037037037037,
+        0.7037037037037037,
+        0.9629629629629629,
+        0.9259259259259259
+      ]
+    },
+    {
+      "configuration": "3. Random Subspace Control",
+      "description": "Projected onto random subspace of matching rank",
+      "loop_repetition_mean": 0.6157407407407407,
+      "loop_reduction_pct": 11.333333333333336,
+      "heldout_ppl": 58.9480094909668,
+      "ppl_drift_pct": -0.6246559083822567,
+      "condition_number": 31.57693099975586,
+      "out_of_sample_invariance": 0.021858490887122217,
+      "residual_error": 0.9781415091128778,
+      "repetition_per_prompt": [
+        0.8888888888888888,
+        0.6666666666666666,
+        0.0,
+        0.07407407407407407,
+        0.7037037037037037,
+        0.7037037037037037,
+        0.9629629629629629,
+        0.9259259259259259
+      ]
+    },
+    {
+      "configuration": "4. SP-SV-WSP Standard (alpha=1e-3)",
+      "description": "Standard subspace projection (uncompensated)",
+      "loop_repetition_mean": 0.6944444444444444,
+      "loop_reduction_pct": 0.0,
+      "heldout_ppl": 59.30703353881836,
+      "ppl_drift_pct": -0.01940835888049139,
+      "condition_number": 31.523725509643555,
+      "out_of_sample_invariance": 0.8373768051473887,
+      "residual_error": 0.1626231948526113,
+      "repetition_per_prompt": [
+        0.8888888888888888,
+        0.6666666666666666,
+        0.6296296296296297,
+        0.07407407407407407,
+        0.7037037037037037,
+        0.7037037037037037,
+        0.9629629629629629,
+        0.9259259259259259
+      ]
+    },
+    {
+      "configuration": "5. SP-SV-WSP Compensated (alpha=1e-3)",
+      "description": "Subspace projection with norm restoration",
+      "loop_repetition_mean": 0.6944444444444444,
+      "loop_reduction_pct": 0.0,
+      "heldout_ppl": 59.30403518676758,
+      "ppl_drift_pct": -0.02446302093485396,
+      "condition_number": 31.528759002685547,
+      "out_of_sample_invariance": 0.7919355630195345,
+      "residual_error": 0.20806443698046548,
+      "repetition_per_prompt": [
+        0.8888888888888888,
+        0.6666666666666666,
+        0.6296296296296297,
+        0.07407407407407407,
+        0.7037037037037037,
+        0.7037037037037037,
+        0.9629629629629629,
+        0.9259259259259259
+      ]
+    },
+    {
+      "configuration": "6. SP-SV-WSP (alpha=1e-2)",
+      "description": "Looser null-space (alpha=1e-2)",
+      "loop_repetition_mean": 0.6944444444444444,
+      "loop_reduction_pct": 0.0,
+      "heldout_ppl": 59.30691909790039,
+      "ppl_drift_pct": -0.01960128491310065,
+      "condition_number": 31.52510643005371,
+      "out_of_sample_invariance": 0.8332411905684028,
+      "residual_error": 0.16675880943159713,
+      "repetition_per_prompt": [
+        0.8888888888888888,
+        0.6666666666666666,
+        0.6296296296296297,
+        0.07407407407407407,
+        0.7037037037037037,
+        0.7037037037037037,
+        0.9629629629629629,
+        0.9259259259259259
+      ]
+    },
+    {
+      "configuration": "7. SP-SV-WSP (alpha=1e-1)",
+      "description": "Loose null-space (alpha=1e-1)",
+      "loop_repetition_mean": 0.6157407407407407,
+      "loop_reduction_pct": 11.333333333333336,
+      "heldout_ppl": 59.300106048583984,
+      "ppl_drift_pct": -0.031086814721105163,
+      "condition_number": 31.531307220458984,
+      "out_of_sample_invariance": 0.7891132419396706,
+      "residual_error": 0.21088675806032944,
+      "repetition_per_prompt": [
+        0.8888888888888888,
+        0.6666666666666666,
+        0.0,
+        0.07407407407407407,
+        0.7037037037037037,
+        0.7037037037037037,
+        0.9629629629629629,
+        0.9259259259259259
+      ]
+    }
+  ],
+  "multi_seed_analysis": {
+    "seed_42": {
+      "base_repetition": 0.691358024691358,
+      "raw_repetition": 0.5864197530864197,
+      "safe_comp_repetition": 0.691358024691358,
+      "raw_reduction": 15.178571428571432,
+      "safe_comp_reduction": 0.0
+    },
+    "seed_123": {
+      "base_repetition": 0.6604938271604938,
+      "raw_repetition": 0.5555555555555556,
+      "safe_comp_repetition": 0.6604938271604938,
+      "raw_reduction": 15.887850467289708,
+      "safe_comp_reduction": 0.0
+    },
+    "seed_999": {
+      "base_repetition": 0.6666666666666666,
+      "raw_repetition": 0.6666666666666666,
+      "safe_comp_repetition": 0.6666666666666666,
+      "raw_reduction": 0.0,
+      "safe_comp_reduction": 0.0
+    }
+  }
+}
