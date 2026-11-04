@@ -103,26 +103,43 @@ $$\|\Delta W_{\text{safe}}\|_F \le \gamma \|W^{(l)}\|_F$$
 If $\|\Delta W_{\text{safe}}\|_F > \gamma \|W^{(l)}\|_F$, we uniformly rescale:
 $$\Delta W_{\text{safe}} \leftarrow \Delta W_{\text{safe}} \cdot \left( \frac{\gamma \|W^{(l)}\|_F}{\|\Delta W_{\text{safe}}\|_F} \right)$$
 
-### 3.2 Rank-1 Singular Value Perturbation Bound (Thompson / Mirsky Bounds)
-Let the base weight matrix $W \in \mathbb{R}^{d_{\text{out}} \times d_{\text{in}}}$ have singular values $\sigma_1(W) \ge \sigma_2(W) \ge \dots \ge \sigma_r(W) > 0$. Under a rank-1 directional update $\Delta W = -\eta v u^T$ with unit-norm vectors $\|v\|_2 = \|u\|_2 = 1$ and spectral norm $\|\Delta W\|_2 = \eta$:
+### 3.2 Rank-1 Singular Value Perturbation Bounds (Mirsky & Thompson Interlacing)
 
-By Mirsky's singular value perturbation theorem:
-$$|\sigma_i(W + \Delta W) - \sigma_i(W)| \le \|\Delta W\|_2 \le \eta, \quad \forall i$$
+Let the base weight matrix $W \in \mathbb{R}^{d_{\text{out}} \times d_{\text{in}}}$ have singular values:
+$$\sigma_1(W) \ge \sigma_2(W) \ge \dots \ge \sigma_r(W) > 0, \quad \text{where } r = \min(d_{\text{out}}, d_{\text{in}})$$
 
-Furthermore, by Thompson's singular value interlacing theorem for rank-1 perturbations:
-$$\sigma_{i+1}(W) \le \sigma_i(W - \eta v u^T) \le \sigma_{i-1}(W)$$
+Under a rank-1 directional update $\Delta W = -\eta v u^T$ with unit-norm vectors $\|v\|_2 = \|u\|_2 = 1$ and spectral norm $\|\Delta W\|_2 = \eta$:
 
-The perturbed condition number $\kappa(W') = \sigma_{\max}(W') / \sigma_{\min}(W')$ satisfies:
+#### 1. Mirsky's Singular Value Perturbation Bound:
+By Mirsky's theorem (Mirsky, 1960), the singular values of $W$ and $W' = W + \Delta W$ satisfy the uniform perturbation inequality:
+$$|\sigma_i(W + \Delta W) - \sigma_i(W)| \le \|\Delta W\|_2 \le \|\Delta W\|_F \le \eta, \quad \forall i \in \{1, \dots, r\}$$
+
+#### 2. Thompson's Singular Value Interlacing Theorem:
+For rank-1 modifications $W' = W - \eta v u^T$, Thompson (1976) proved that the singular values of the perturbed matrix strictly interlace with those of the base matrix:
+$$\sigma_{i+1}(W) \le \sigma_i(W - \eta v u^T) \le \sigma_{i-1}(W), \quad \forall i$$
+with the standard boundary conventions $\sigma_{r+1}(W) = 0$ and $\sigma_0(W) = \infty$.
+
+#### 3. Condition Number Bounds and Mathematical Qualification:
+The spectral condition number is defined as $\kappa(W) = \frac{\sigma_1(W)}{\sigma_r(W)} = \frac{\sigma_{\max}(W)}{\sigma_{\min}(W)}$. Applying Mirsky's bound to the extreme singular values:
+$$\sigma_{\max}(W') \le \sigma_{\max}(W) + \eta$$
+$$\sigma_{\min}(W') \ge \max(0, \, \sigma_{\min}(W) - \eta)$$
+
+Consequently, if $\sigma_{\min}(W) > \eta$, the perturbed condition number satisfies the two-sided inequality:
 $$\frac{\sigma_{\max}(W) - \eta}{\sigma_{\min}(W) + \eta} \le \kappa(W') \le \frac{\sigma_{\max}(W) + \eta}{\sigma_{\min}(W) - \eta}, \quad \text{provided } \sigma_{\min}(W) > \eta$$
 
 > [!WARNING]
-> **Mathematical Invalidation of Naive Frobenius Bounds on Condition Numbers:**
-> An unconstrained Frobenius bound $\|\Delta W\|_F \le \gamma \|W\|_F$ cannot guarantee condition number stability when $\gamma \|W\|_F \ge \sigma_{\min}(W)$. In wide transformer matrices (e.g. $960 \times 2560$), $\|W\|_F \gg \sigma_{\min}(W)$, so worst-case theoretical perturbations could force the denominator $\sigma_{\min}(W) - \epsilon$ below zero. 
-> 
-> In SP-SV-WSP, condition number stability is achieved in practice because:
-> 1. The edit $\Delta W_{\text{safe}}$ is a low-rank directional update rather than a full-rank adversarial distortion.
-> 2. The projection $P_{\text{null}}$ damps components aligned with high-variance activations.
-> 3. The verification oracle explicitly measures $\Delta \kappa$ in memory and triggers `ADAPT` or `ROLLBACK` if the condition number shifts by more than $\tau_{\kappa} = 5\%$.
+> **Critical Theoretical Qualification: Singular Value Margins in Language Model Matrices**
+> In transformer feedforward layers, the smallest singular value $\sigma_{\min}(W)$ is frequently smaller than nominal surgical intervention scales $\eta$:
+> - For SmolLM2-360M `model.layers.15.mlp.down_proj` ($960 \times 2560$), empirical double-precision SVD measurement yields $\sigma_{\max} = 38.9912$, $\sigma_{\min} = 1.2373$, and $\kappa = 31.5136$.
+> - For Qwen2.5-0.5B `model.layers.12.mlp.down_proj` ($896 \times 4864$), empirical measurement yields $\sigma_{\max} = 4.9004$, $\sigma_{\min} = 0.3250$, and $\kappa = 15.0796$.
+>
+> In both cases, the nominal unscaled intervention magnitude $\eta = 6.0$ strictly exceeds $\sigma_{\min}(W)$ ($\eta = 6.0 > 1.2373$ and $\eta = 6.0 > 0.3250$). 
+>
+> Therefore, the worst-case lower bound $\sigma_{\min}(W) - \eta$ is strictly negative and vacuously bounded by zero ($\sigma_{\min} \ge 0$). **Unconstrained Frobenius bounds or worst-case spectral perturbation theorems cannot theoretically guarantee that $W'$ remains non-singular.** An adversarial rank-1 update aligned with the minimal right-singular vector $v_{\min}$ could force $\sigma_{\min}(W') \to 0$ and $\kappa(W') \to \infty$.
+>
+> In SP-SV-WSP, spectral conditioning and numerical stability are preserved through two complementary mechanisms:
+> 1. **Empirical Low-Rank Directionality:** Behavioral intervention vectors $u$ and $v$ are extracted from high-variance latent representations, which have virtually zero overlap with the minimal singular vectors $v_{\min}$ located in the numerical noise floor of $W$.
+> 2. **Algorithmic Verification Gating:** Because theoretical worst-case bounds cannot rule out singularity when $\sigma_{\min}(W) \le \eta$, the closed-loop **Verification Oracle** is mathematically required. The oracle measures $\kappa(W')$ directly via SVD in memory prior to checkpoint commitment, gating updates to $|\kappa(W') - \kappa(W)| / \kappa(W) \le \tau_{\kappa} = 5\%$ and executing bitwise-exact rollback if the condition number degrades.
 
 ---
 

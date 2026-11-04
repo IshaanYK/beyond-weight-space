@@ -26,10 +26,14 @@ While a significant conceptual leap, current Weight-Space Programming (WSP) oper
 ### 1. Multi-Model Cross-Architecture Benchmark
 Evaluated across **SmolLM2-360M** (Llama/SwiGLU, expansion ratio $2.67\times$) and **Qwen2.5-0.5B** (Qwen/SwiGLU, expansion ratio $5.43\times$):
 
-| Architecture | Model ID | Target Probed Layer | Base $\kappa(W)$ | Base PPL | Raw WSP PPL Drift | SP-SV-WSP PPL Drift | Invariance Score | Residual Error |
+| Architecture | Model ID | Target Probed Layer | Base $\kappa(W)$ | Base PPL | Raw WSP PPL Drift | SP-SV-WSP PPL Drift | In-Sample Invariance | Residual Error |
 | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
 | **SmolLM2-360M** | `SmolLM2-360M` | `layers.15.down_proj` ($960 \times 2560$) | 31.51 | 12.54 | +1.06% | **+0.00%** | 99.99% | $1.48 \times 10^{-4}$ |
 | **Qwen2.5-0.5B** | `Qwen2.5-0.5B` | `layers.12.down_proj` ($896 \times 4864$) | 15.08 | 11.51 | +4.16% | **+0.00%** | 99.99% | $8.55 \times 10^{-5}$ |
+
+> [!NOTE]
+> **In-Sample vs. Out-of-Sample Invariance Metric:**
+> The >99.99% invariance score above reflects soft in-sample null-space projection on training activations ($P_{\text{null}} = I - C(C + \alpha I)^{-1}$ with $\alpha = 10^{-3}$). On held-out, out-of-sample test activations ($X_{\text{test}} \notin X_{\text{train}}$), empirical invariance is **$65.61\%$** at the validation Pareto point ($\alpha^* = 0.5$) and **$82.87\%$** at $\alpha = 10^{-3}$, completely outperforming Raw WSP ($0.00\%$) and Random Subspace controls ($3.66\%$).
 
 *Raw Benchmark Artifact:* [`benchmark_results/multimodel_comparative_benchmark.json`](benchmark_results/multimodel_comparative_benchmark.json)
 

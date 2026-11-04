@@ -1,0 +1,547 @@
+{
+  "metadata": {
+    "model_id": "HuggingFaceTB/SmolLM2-360M",
+    "layer": "model.layers.15.mlp.down_proj",
+    "shape": [
+      960,
+      2560
+    ],
+    "train_passages": 30,
+    "val_passages": 10,
+    "test_passages": 10,
+    "dev_prompts": 4,
+    "val_prompts": 4,
+    "test_prompts": 6,
+    "independence_verified": true,
+    "oracle_bitwise_exact": true
+  },
+  "spectral_and_mathematical_audit": {
+    "base_weight_properties": {
+      "sigma_max": 38.99117044682047,
+      "sigma_min": 1.2372802107042582,
+      "condition_number": 31.513613577175658,
+      "frobenius_norm": 280.6173857464862
+    },
+    "delta_raw_frobenius": 5.999178409576416,
+    "delta_raw_spectral_norm": 5.999999798887982,
+    "eta": 6.0,
+    "weyl_bound_analysis": {
+      "weyl_sigma_max_bound": 44.99117044682047,
+      "weyl_sigma_min_bound_theoretical": -4.762719789295742,
+      "sigma_min_exceeds_eta": false,
+      "scientific_implication": "Because sigma_min (1.2373) is strictly LESS than nominal eta (6.0), the worst-case Weyl lower bound sigma_min - eta = -4.7627 is negative (vacuously bounded by 0). Unconstrained Frobenius or spectral perturbation bounds cannot theoretically rule out singularity. Empirical non-singularity is achieved because delta_safe is rank-1 directional and orthogonal to the minimal singular vector, while algorithmic non-singularity is strictly guaranteed by the runtime Verification Oracle gating delta_kappa <= 5%."
+    }
+  },
+  "mechanistic_subspace_analysis": {
+    "total_covariance_energy": 56.56538391113281,
+    "top_10_pc_energy_ratio": 0.2507452821892444,
+    "top_50_pc_energy_ratio": 0.5131846075700236,
+    "top_100_pc_energy_ratio": 0.6697663302193728,
+    "u_loop_top100_pc_energy": 0.21641259925261025,
+    "u_diff_top100_pc_energy": 0.12286461503153134
+  },
+  "validation_grid_search": {
+    "grid_results": [
+      {
+        "alpha": 0.001,
+        "gamma": 0.01,
+        "final_frob_norm": 2.8063180446624756,
+        "budget_ratio": 0.01000010327575606,
+        "budget_rescaled": true,
+        "val_loop_reduction_pct": 0.0,
+        "val_ppl_drift_pct": -0.006178549936648703,
+        "val_condition": 31.517804680494912,
+        "invariance_score": 0.8897640949463783,
+        "composite_score": -0.006178549936648703
+      },
+      {
+        "alpha": 0.001,
+        "gamma": 0.05,
+        "final_frob_norm": 4.744532585144043,
+        "budget_ratio": 0.01690678500851701,
+        "budget_rescaled": false,
+        "val_loop_reduction_pct": 0.0,
+        "val_ppl_drift_pct": -0.009733332091980835,
+        "val_condition": 31.522006516811267,
+        "invariance_score": 0.8136265292428664,
+        "composite_score": -0.009733332091980835
+      },
+      {
+        "alpha": 0.001,
+        "gamma": 0.1,
+        "final_frob_norm": 4.744532585144043,
+        "budget_ratio": 0.01690678500851701,
+        "budget_rescaled": false,
+        "val_loop_reduction_pct": 0.0,
+        "val_ppl_drift_pct": -0.009733332091980835,
+        "val_condition": 31.522006516811267,
+        "invariance_score": 0.8136265292428664,
+        "composite_score": -0.009733332091980835
+      },
+      {
+        "alpha": 0.001,
+        "gamma": null,
+        "final_frob_norm": 4.744532585144043,
+        "budget_ratio": 0.01690678500851701,
+        "budget_rescaled": false,
+        "val_loop_reduction_pct": 0.0,
+        "val_ppl_drift_pct": -0.009733332091980835,
+        "val_condition": 31.522006516811267,
+        "invariance_score": 0.8136265292428664,
+        "composite_score": -0.009733332091980835
+      },
+      {
+        "alpha": 0.01,
+        "gamma": 0.01,
+        "final_frob_norm": 2.806316614151001,
+        "budget_ratio": 0.010000098178236017,
+        "budget_rescaled": true,
+        "val_loop_reduction_pct": 0.0,
+        "val_ppl_drift_pct": -0.006701764626178108,
+        "val_condition": 31.519021602143294,
+        "invariance_score": 0.887360381296584,
+        "composite_score": -0.006701764626178108
+      },
+      {
+        "alpha": 0.01,
+        "gamma": 0.05,
+        "final_frob_norm": 4.788769245147705,
+        "budget_ratio": 0.017064419019192496,
+        "budget_rescaled": false,
+        "val_loop_reduction_pct": 0.0,
+        "val_ppl_drift_pct": -0.010656652132326843,
+        "val_condition": 31.52352968580551,
+        "invariance_score": 0.80778712619294,
+        "composite_score": -0.010656652132326843
+      },
+      {
+        "alpha": 0.01,
+        "gamma": 0.1,
+        "final_frob_norm": 4.788769245147705,
+        "budget_ratio": 0.017064419019192496,
+        "budget_rescaled": false,
+        "val_loop_reduction_pct": 0.0,
+        "val_ppl_drift_pct": -0.010656652132326843,
+        "val_condition": 31.52352968580551,
+        "invariance_score": 0.80778712619294,
+        "composite_score": -0.010656652132326843
+      },
+      {
+        "alpha": 0.01,
+        "gamma": null,
+        "final_frob_norm": 4.788769245147705,
+        "budget_ratio": 0.017064419019192496,
+        "budget_rescaled": false,
+        "val_loop_reduction_pct": 0.0,
+        "val_ppl_drift_pct": -0.010656652132326843,
+        "val_condition": 31.52352968580551,
+        "invariance_score": 0.80778712619294,
+        "composite_score": -0.010656652132326843
+      },
+      {
+        "alpha": 0.1,
+        "gamma": 0.01,
+        "final_frob_norm": 2.806304454803467,
+        "budget_ratio": 0.01000005484931564,
+        "budget_rescaled": true,
+        "val_loop_reduction_pct": 0.0,
+        "val_ppl_drift_pct": -0.012618707218062108,
+        "val_condition": 31.523136640381846,
+        "invariance_score": 0.8689687520660557,
+        "composite_score": -0.012618707218062108
+      },
+      {
+        "alpha": 0.1,
+        "gamma": 0.05,
+        "final_frob_norm": 5.067028045654297,
+        "budget_ratio": 0.018055973325642672,
+        "budget_rescaled": false,
+        "val_loop_reduction_pct": 0.0,
+        "val_ppl_drift_pct": -0.021220972260619086,
+        "val_condition": 31.530837534093568,
+        "invariance_score": 0.7634104110154192,
+        "composite_score": -0.021220972260619086
+      },
+      {
+        "alpha": 0.1,
+        "gamma": 0.1,
+        "final_frob_norm": 5.067028045654297,
+        "budget_ratio": 0.018055973325642672,
+        "budget_rescaled": false,
+        "val_loop_reduction_pct": 0.0,
+        "val_ppl_drift_pct": -0.021220972260619086,
+        "val_condition": 31.530837534093568,
+        "invariance_score": 0.7634104110154192,
+        "composite_score": -0.021220972260619086
+      },
+      {
+        "alpha": 0.1,
+        "gamma": null,
+        "final_frob_norm": 5.067028045654297,
+        "budget_ratio": 0.018055973325642672,
+        "budget_rescaled": false,
+        "val_loop_reduction_pct": 0.0,
+        "val_ppl_drift_pct": -0.021220972260619086,
+        "val_condition": 31.530837534093568,
+        "invariance_score": 0.7634104110154192,
+        "composite_score": -0.021220972260619086
+      },
+      {
+        "alpha": 0.5,
+        "gamma": 0.01,
+        "final_frob_norm": 2.806295871734619,
+        "budget_ratio": 0.010000024264195374,
+        "budget_rescaled": true,
+        "val_loop_reduction_pct": 0.0,
+        "val_ppl_drift_pct": -0.03640189259064137,
+        "val_condition": 31.52904984440258,
+        "invariance_score": 0.8263651952301836,
+        "composite_score": -0.03640189259064137
+      },
+      {
+        "alpha": 0.5,
+        "gamma": 0.05,
+        "final_frob_norm": 5.379093647003174,
+        "budget_ratio": 0.019167995624125602,
+        "budget_rescaled": false,
+        "val_loop_reduction_pct": 0.0,
+        "val_ppl_drift_pct": -0.06657137490894718,
+        "val_condition": 31.543355364459632,
+        "invariance_score": 0.6671767779936197,
+        "composite_score": -0.06657137490894718
+      },
+      {
+        "alpha": 0.5,
+        "gamma": 0.1,
+        "final_frob_norm": 5.379093647003174,
+        "budget_ratio": 0.019167995624125602,
+        "budget_rescaled": false,
+        "val_loop_reduction_pct": 0.0,
+        "val_ppl_drift_pct": -0.06657137490894718,
+        "val_condition": 31.543355364459632,
+        "invariance_score": 0.6671767779936197,
+        "composite_score": -0.06657137490894718
+      },
+      {
+        "alpha": 0.5,
+        "gamma": null,
+        "final_frob_norm": 5.379093647003174,
+        "budget_ratio": 0.019167995624125602,
+        "budget_rescaled": false,
+        "val_loop_reduction_pct": 0.0,
+        "val_ppl_drift_pct": -0.06657137490894718,
+        "val_condition": 31.543355364459632,
+        "invariance_score": 0.6671767779936197,
+        "composite_score": -0.06657137490894718
+      }
+    ],
+    "selected_best_configuration": {
+      "alpha": 0.001,
+      "gamma": 0.01,
+      "final_frob_norm": 2.8063180446624756,
+      "budget_ratio": 0.01000010327575606,
+      "budget_rescaled": true,
+      "val_loop_reduction_pct": 0.0,
+      "val_ppl_drift_pct": -0.006178549936648703,
+      "val_condition": 31.517804680494912,
+      "invariance_score": 0.8897640949463783,
+      "composite_score": -0.006178549936648703
+    }
+  },
+  "random_subspace_baseline_n5": {
+    "runs": [
+      {
+        "seed": 101,
+        "frob_norm": 5.903502941131592,
+        "test_loop_red_pct": 26.66666666666666,
+        "test_ppl": 22.266868591308594,
+        "test_ppl_drift_pct": -0.7214842778677129,
+        "test_invariance_pct": 2.798375428526556,
+        "condition_number": 31.57649270598807
+      },
+      {
+        "seed": 202,
+        "frob_norm": 5.880904674530029,
+        "test_loop_red_pct": 26.66666666666666,
+        "test_ppl": 22.267276763916016,
+        "test_ppl_drift_pct": -0.7196644094629074,
+        "test_invariance_pct": 2.919900795739905,
+        "condition_number": 31.57969471558301
+      },
+      {
+        "seed": 303,
+        "frob_norm": 5.897238254547119,
+        "test_loop_red_pct": 26.66666666666666,
+        "test_ppl": 22.2664794921875,
+        "test_ppl_drift_pct": -0.7232191056928545,
+        "test_invariance_pct": 2.3746533725210184,
+        "condition_number": 31.58326278218884
+      },
+      {
+        "seed": 404,
+        "frob_norm": 5.87126350402832,
+        "test_loop_red_pct": 26.66666666666666,
+        "test_ppl": 22.273813247680664,
+        "test_ppl_drift_pct": -0.6905210028121219,
+        "test_invariance_pct": 5.577094063064791,
+        "condition_number": 31.570612470623004
+      },
+      {
+        "seed": 505,
+        "frob_norm": 5.893950939178467,
+        "test_loop_red_pct": 26.66666666666666,
+        "test_ppl": 22.273101806640625,
+        "test_ppl_drift_pct": -0.6936930164335817,
+        "test_invariance_pct": 6.205058036192246,
+        "condition_number": 31.575997800867043
+      }
+    ],
+    "aggregate": {
+      "loop_reduction_mean": 26.666666666666664,
+      "loop_reduction_std": 3.972054645195637e-15,
+      "ppl_drift_mean": -0.7097163624538357,
+      "ppl_drift_std": 0.016163082912313328,
+      "invariance_mean": 3.9750163392089037,
+      "invariance_std": 1.774729082949488
+    }
+  },
+  "final_test_evaluation": [
+    {
+      "configuration": "1. Unedited Baseline",
+      "final_frobenius_norm": 0.0,
+      "budget_ratio": 0.0,
+      "budget_rescaled": false,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.428688049316406,
+      "test_ppl_sem": 0.2526907013094817,
+      "test_ppl_drift_pct": 0.0,
+      "test_invariance_pct": 100.0,
+      "condition_number": 31.513613577175658,
+      "sigma_max": 38.99117044682047,
+      "sigma_min": 1.2372802107042582,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "2. Raw WSP (Takehi et al.)",
+      "final_frobenius_norm": 5.999178409576416,
+      "budget_ratio": 0.021378498675759743,
+      "budget_rescaled": false,
+      "test_loop_reduction_pct": 26.66666666666666,
+      "test_rep_mean": 0.25,
+      "test_rep_sem": 0.1582227393951577,
+      "test_ppl": 22.26413345336914,
+      "test_ppl_sem": 0.2531840373197724,
+      "test_ppl_drift_pct": -0.7336790969915025,
+      "test_invariance_pct": 1.920685832601521e-12,
+      "condition_number": 31.581631817677735,
+      "sigma_max": 39.10628730563595,
+      "sigma_min": 1.2382605031747065,
+      "per_prompt_scores": [
+        0.0,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place and that we are all doomed.\\n\\nThe world is not a bad place. It is",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "3. Random Subspace (N=5 Agg)",
+      "final_frobenius_norm": 6.091790199279785,
+      "budget_ratio": 0.021708527371084543,
+      "budget_rescaled": false,
+      "test_loop_reduction_pct": 26.66666666666666,
+      "test_rep_mean": 0.25,
+      "test_rep_sem": 0.1582227393951577,
+      "test_ppl": 22.262514114379883,
+      "test_ppl_sem": 0.2531715164236058,
+      "test_ppl_drift_pct": -0.7408990422049594,
+      "test_invariance_pct": 0.3061324369015628,
+      "condition_number": 31.581190761514613,
+      "sigma_max": 39.10909305150974,
+      "sigma_min": 1.2383666387642596,
+      "per_prompt_scores": [
+        0.0,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place and that we are all doomed.\\n\\nThe world is not a bad place. It is",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "4. Selected SP-SV-WSP (alpha=0.001, gamma=0.01)",
+      "final_frobenius_norm": 2.8063180446624756,
+      "budget_ratio": 0.01000010327575606,
+      "budget_rescaled": true,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.418277740478516,
+      "test_ppl_sem": 0.2528317571108448,
+      "test_ppl_drift_pct": -0.04641514838050421,
+      "test_invariance_pct": 88.33027459378054,
+      "condition_number": 31.517804680494912,
+      "sigma_max": 39.00909107234021,
+      "sigma_min": 1.2376842698210309,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "5. SP-SV-WSP Strict (alpha=1e-3, gamma=0.01)",
+      "final_frobenius_norm": 2.8063180446624756,
+      "budget_ratio": 0.01000010327575606,
+      "budget_rescaled": true,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.418277740478516,
+      "test_ppl_sem": 0.2528317571108448,
+      "test_ppl_drift_pct": -0.04641514838050421,
+      "test_invariance_pct": 88.33027459378054,
+      "condition_number": 31.517804680494912,
+      "sigma_max": 39.00909107234021,
+      "sigma_min": 1.2376842698210309,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "6. Differential SP-SV-WSP (u_diff, alpha=1e-3)",
+      "final_frobenius_norm": 2.806302785873413,
+      "budget_ratio": 0.010000048902208921,
+      "budget_rescaled": true,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.419416427612305,
+      "test_ppl_sem": 0.2528468213528727,
+      "test_ppl_drift_pct": -0.04133822577457511,
+      "test_invariance_pct": 89.86855771803882,
+      "condition_number": 31.51566553024982,
+      "sigma_max": 38.98391651278098,
+      "sigma_min": 1.2369694834895006,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    }
+  ],
+  "statistical_reliability_stochastic": {
+    "seed_records": {
+      "seed_42": {
+        "baseline_rep": 0.29545454545454547,
+        "raw_rep": 0.30303030303030304,
+        "selected_sp_sv_rep": 0.29545454545454547,
+        "differential_sp_sv_rep": 0.29545454545454547,
+        "raw_reduction_pct": -2.5641025641025617,
+        "selected_sp_sv_reduction_pct": 0.0,
+        "differential_sp_sv_reduction_pct": 0.0
+      },
+      "seed_123": {
+        "baseline_rep": 0.1818181818181818,
+        "raw_rep": 0.1818181818181818,
+        "selected_sp_sv_rep": 0.1818181818181818,
+        "differential_sp_sv_rep": 0.1818181818181818,
+        "raw_reduction_pct": 0.0,
+        "selected_sp_sv_reduction_pct": 0.0,
+        "differential_sp_sv_reduction_pct": 0.0
+      },
+      "seed_999": {
+        "baseline_rep": 0.007575757575757576,
+        "raw_rep": 0.0,
+        "selected_sp_sv_rep": 0.007575757575757576,
+        "differential_sp_sv_rep": 0.007575757575757576,
+        "raw_reduction_pct": 100.0,
+        "selected_sp_sv_reduction_pct": 0.0,
+        "differential_sp_sv_reduction_pct": 0.0
+      }
+    },
+    "aggregates": {
+      "raw_wsp": {
+        "mean": 32.478632478632484,
+        "std": 58.4892721741047
+      },
+      "selected_sp_sv_wsp": {
+        "mean": 0.0,
+        "std": 0.0
+      },
+      "differential_sp_sv_wsp": {
+        "mean": 0.0,
+        "std": 0.0
+      }
+    }
+  }
+}

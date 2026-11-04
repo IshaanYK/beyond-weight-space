@@ -23,32 +23,32 @@ Experiments are designed to run within an 8GB VRAM envelope (NVIDIA RTX 4060 Lap
 
 ## 3. Benchmark Suites & Datasets
 
-### 3.1 Task 1: Reasoning Loop Suppression (Takehi Benchmark)
-- **Target Dataset:** MATH-500 subset (algebra & arithmetic problems known to induce repetitive thinking loops) + GSM8K.
-- **Evaluation Metric:** 
-  - Token Loop Rate ($\% \text{ of outputs hitting max token limit via repetition}$).
-  - Problem Accuracy ($\% \text{ correct numerical answers}$).
-  - Average Generation Length (tokens).
+### 3.1 Strict 3-Way Disjoint Partitioning Protocol
+To guarantee complete experimental independence and prevent leakage between intervention derivation, validation tuning, and final evaluation, all experiments enforce a pairwise disjoint 3-way split across **both** evaluation text passages and behavioral prompts:
 
-### 3.2 Task 2: Retained Knowledge & Perplexity Preservation
-- **Preserved Dataset:** Wikitext-2 (Test Split) + C4 validation subset.
-- **Evaluation Metric:**
-  - Token Cross-Entropy Perplexity ($\text{PPL} = \exp\left(-\frac{1}{T} \sum \log P(w_t | w_{<t})\right)$).
-  - Relative Perplexity Degradation: $\Delta \text{PPL}_{\text{rel}} = \frac{\text{PPL}_{\text{edited}} - \text{PPL}_{\text{base}}}{\text{PPL}_{\text{base}}} \times 100\%$.
+1. **Passage Partitioning:**
+   - **Train Set (Passages 00–29, 30 passages, 540 tokens):** Used strictly for empirical activation covariance $C_{\text{train}}$ and null-space projector $P_{\text{null}}$ construction.
+   - **Validation Set (Passages 30–39, 10 passages, 149 tokens):** Used strictly for hyperparameter grid tuning $(\alpha, \gamma)$ and Pareto frontier selection.
+   - **Final Test Set (Passages 40–49, 10 passages, 185 tokens):** Strictly held out; evaluated only on final frozen models.
+   - *Independence Verification:* $\text{IDs}(\text{Train}) \cap \text{IDs}(\text{Val}) = \emptyset$, $\text{IDs}(\text{Train}) \cap \text{IDs}(\text{Test}) = \emptyset$, $\text{IDs}(\text{Val}) \cap \text{IDs}(\text{Test}) = \emptyset$. Programmatic assertions verify zero lexical and ID overlap.
 
-### 3.3 Task 3: Linguistic Coherence & Downstream Invariants
-- **Preserved Capabilities:** Lambada (cloze completion accuracy) + PIQA (physical reasoning) + Safety Refusal Prompts.
-- **Evaluation Metric:** Retained accuracy ratio $\frac{\text{Acc}_{\text{edited}}}{\text{Acc}_{\text{base}}}$.
+2. **Behavioral Prompt Partitioning:**
+   - **Dev Prompts (4 prompts):** Used strictly to extract target failure activations $X_{\text{loop}}$ and clean activations $X_{\text{clean}}$ for deriving $u_{\text{loop}}$, $u_{\text{diff}}$, and $v_{\text{out}}$.
+   - **Val Prompts (4 prompts):** Used strictly during validation grid search to evaluate behavioral loop reduction without tuning on test prompts.
+   - **Final Test Prompts (6 prompts):** Strictly held out; evaluated only once on final frozen model configurations.
+   - *Independence Verification:* $\text{Dev} \cap \text{Val} = \emptyset$, $\text{Dev} \cap \text{Test} = \emptyset$, $\text{Val} \cap \text{Test} = \emptyset$.
 
 ---
 
 ## 4. Baselines for Comparison
 
-We benchmark the proposed framework against four distinct paradigms:
+We benchmark the proposed framework against six distinct paradigms:
 1. **Unmodified Base Model:** Pristine model parameters.
-2. **Unconstrained WSP (Takehi et al., 2026):** Raw vector subtraction $\Delta W = - v u^T$ applied directly to MLP down-projection columns without null-space protection.
-3. **Standard Model Editing (AlphaEdit / ROME):** Closed-form least-squares injection applied to target facts/tokens.
-4. **SP-SV-WSP (Proposed Framework):** Subspace-projected update $\Delta W_{\text{safe}} = \Delta W \cdot P_{\text{null}}$ with Frobenius budgeting and autonomous verification oracle.
+2. **Unconstrained WSP (Takehi et al., 2026):** Raw directional update $\Delta W_{\text{raw}} = -\eta v u^T$ applied directly to down-projection weights without null-space filtering.
+3. **Multi-Draw Random Subspace Control ($N=5$):** Projects updates onto $I - Q_k Q_k^T$ using 5 independent random orthogonal draws ($Q_k \in \mathbb{R}^{d_{\text{in}} \times 100}$), reporting mean $\pm$ standard deviation.
+4. **Validation-Selected SP-SV-WSP:** Null-space projected update with optimal $(\alpha^*, \gamma^*)$ selected exclusively via validation data.
+5. **Strict SP-SV-WSP ($\alpha = 10^{-3}$):** Evaluates high-stiffness null-space filtering.
+6. **Differential SP-SV-WSP ($u_{\text{diff}}$):** Applies differential activation surgery to decouple the behavioral pathology from anisotropic language centroids.
 
 ---
 
