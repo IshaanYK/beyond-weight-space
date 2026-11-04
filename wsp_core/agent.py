@@ -145,7 +145,9 @@ class CognitiveReasoningAgent:
                 break
             elif v_res.decision == VerificationDecision.ADAPT:
                 # Perplexity drifted or condition degraded: stiffen null-space projection & reduce budget
-                current_alpha = current_alpha * 2.0
+                # Note: In P_null = V diag(alpha / (lambda_i + alpha)) V^T, reducing alpha stiffens the null space
+                # by reducing pass-through along active retained feature directions (lambda_i >> alpha).
+                current_alpha = current_alpha * 0.5
                 current_gamma = current_gamma * 0.7
                 # Restore pristine layer before re-projecting in next round
                 self.verifier.restore_layer(layer_path)

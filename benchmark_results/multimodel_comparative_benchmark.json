@@ -1,0 +1,44 @@
+[
+  {
+    "model_name": "SmolLM2-360M",
+    "model_id": "HuggingFaceTB/SmolLM2-360M",
+    "architecture": "Llama / SwiGLU",
+    "target_layer": "model.layers.15.mlp.down_proj",
+    "layer_shape": [
+      960,
+      2560
+    ],
+    "frob_norm": 280.62890625,
+    "base_condition": 31.513638864740358,
+    "raw_condition": 31.55397605895996,
+    "safe_condition": 31.5136661529541,
+    "base_ppl": 12.539295803528471,
+    "raw_ppl": 12.671725972825897,
+    "raw_ppl_drift_pct": 1.0561212636850015,
+    "safe_ppl": 12.53930482134483,
+    "safe_ppl_drift_pct": 7.191644969407953e-05,
+    "invariance_score": 0.9998521646593388,
+    "residual_error": 0.00014783534066122224
+  },
+  {
+    "model_name": "Qwen2.5-0.5B",
+    "model_id": "Qwen/Qwen2.5-0.5B",
+    "architecture": "Qwen / SwiGLU",
+    "target_layer": "model.layers.12.mlp.down_proj",
+    "layer_shape": [
+      896,
+      4864
+    ],
+    "frob_norm": 38.75931167602539,
+    "base_condition": 15.07961521693157,
+    "raw_condition": 15.087053298950195,
+    "safe_condition": 15.079638481140137,
+    "base_ppl": 11.505683491289457,
+    "raw_ppl": 11.984873906125227,
+    "raw_ppl_drift_pct": 4.164814851708273,
+    "safe_ppl": 11.505700835207918,
+    "safe_ppl_drift_pct": 0.00015074218297897286,
+    "invariance_score": 0.9999144709320363,
+    "residual_error": 8.55290679636668e-05
+  }
+]

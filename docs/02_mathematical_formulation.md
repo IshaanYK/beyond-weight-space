@@ -57,29 +57,53 @@ $$\Delta W_{\text{safe}} = \Delta W_{\text{raw}} \cdot P_{\text{null}}$$
 The updated layer weight matrix is:
 $$W_{\text{new}}^{(l)} = W^{(l)} + \Delta W_{\text{safe}}$$
 
-### Theorem 1 (Guaranteed Invariance on Preserved Subspaces):
-*Let $x \in \mathbb{R}^{d_{\text{in}}}$ be an eigenvector of $C$ with eigenvalue $\lambda \gg \alpha$. Then the perturbation on the forward output satisfies:*
-$$\|\Delta W_{\text{safe}} x\|_2 = O\left(\frac{\alpha}{\lambda}\right) \|\Delta W_{\text{raw}} x\|_2 \approx 0$$
+### Theorem 1 (Approximate Null-Space Subspace Attenuation):
+*Let $x \in \mathbb{R}^{d_{\text{in}}}$ be an eigenvector of the activation covariance $C$ corresponding to an active feature direction with eigenvalue $\lambda \gg \alpha$. Then the forward perturbation under the projected update $\Delta W_{\text{safe}} = \Delta W_{\text{raw}} P_{\text{null}}$ satisfies:*
+$$\|\Delta W_{\text{safe}} x\|_2 = \left( \frac{\alpha}{\lambda + \alpha} \right) \|\Delta W_{\text{raw}} x\|_2 = O\left(\frac{\alpha}{\lambda}\right) \|\Delta W_{\text{raw}} x\|_2$$
+
 *Proof:*
-$$\Delta W_{\text{safe}} x = \Delta W_{\text{raw}} P_{\text{null}} x = \Delta W_{\text{raw}} \left( \frac{\alpha}{\lambda + \alpha} \right) x = \frac{\alpha}{\lambda + \alpha} \Delta W_{\text{raw}} x$$
-*As $\alpha / \lambda \to 0$, the perturbation vanishes identically. $\blacksquare$*
+$$\Delta W_{\text{safe}} x = \Delta W_{\text{raw}} P_{\text{null}} x = \Delta W_{\text{raw}} V \text{diag}\left(\frac{\alpha}{\lambda_i + \alpha}\right) V^T x$$
+Since $x$ is an eigenvector of $C$ with eigenvalue $\lambda$, $V^T x = e_k$ where $e_k$ is the $k$-th canonical basis vector. Therefore:
+$$P_{\text{null}} x = \left( \frac{\alpha}{\lambda + \alpha} \right) x \implies \Delta W_{\text{safe}} x = \frac{\alpha}{\lambda + \alpha} \Delta W_{\text{raw}} x$$
+Taking the $L_2$ norm yields:
+$$\|\Delta W_{\text{safe}} x\|_2 = \frac{\alpha}{\lambda + \alpha} \|\Delta W_{\text{raw}} x\|_2 \quad \blacksquare$$
+
+> [!NOTE]
+> **Scientific Qualification (Approximate vs. Exact Invariance):**
+> For any non-zero regularizer $\alpha > 0$ and finite eigenvalue $\lambda$, $\frac{\alpha}{\lambda + \alpha} > 0$. The projection does not achieve absolute zero forward perturbation on the active manifold; rather, it provides an asymptotic spectral attenuation ($O(\alpha / \lambda)$) that suppresses cross-talk energy by $>99.9\%$ when $\lambda / \alpha > 10^3$, empirically preserving language modeling perplexity without requiring hard singular value truncation.
 
 ---
 
-## 3. Spectral Conditioning & Frobenius Budgeting
+## 3. Spectral Conditioning & Rank-1 Perturbation Analysis
 
-Even with null-space projection, large parameter updates can degrade the condition number $\kappa(W)$ or cause internal numerical overflow. We enforce two quantitative guards:
+Even with subspace projection, unconstrained weight modifications risk distorting the singular value spectrum $\sigma_i(W)$ or inducing activation explosion. We enforce quantitative guards and establish rigorous perturbation bounds:
 
 ### 3.1 Frobenius Norm Budgeting
-We define the relative Frobenius perturbation budget $\gamma \in (0, 0.05]$:
+We define a relative Frobenius perturbation budget $\gamma \in (0, 0.05]$:
 $$\|\Delta W_{\text{safe}}\|_F \le \gamma \|W^{(l)}\|_F$$
-If $\|\Delta W_{\text{safe}}\|_F > \gamma \|W^{(l)}\|_F$, we rescale:
+If $\|\Delta W_{\text{safe}}\|_F > \gamma \|W^{(l)}\|_F$, we uniformly rescale:
 $$\Delta W_{\text{safe}} \leftarrow \Delta W_{\text{safe}} \cdot \left( \frac{\gamma \|W^{(l)}\|_F}{\|\Delta W_{\text{safe}}\|_F} \right)$$
 
-### 3.2 Singular Value Perturbation Bound (Weyl's Inequality)
-By Weyl's theorem, the singular values of $W_{\text{new}} = W + \Delta W$ satisfy:
-$$|\sigma_i(W_{\text{new}}) - \sigma_i(W)| \le \|\Delta W_{\text{safe}}\|_2 \le \|\Delta W_{\text{safe}}\|_F \le \gamma \|W\|_F$$
-This guarantees that no singular value shifts by more than $\gamma \|W\|_F$, preserving the condition number and transmission dynamics of the transformer block.
+### 3.2 Rank-1 Singular Value Perturbation Bound (Thompson / Mirsky Bounds)
+Let the base weight matrix $W \in \mathbb{R}^{d_{\text{out}} \times d_{\text{in}}}$ have singular values $\sigma_1(W) \ge \sigma_2(W) \ge \dots \ge \sigma_r(W) > 0$. Under a rank-1 directional update $\Delta W = -\eta v u^T$ with unit-norm vectors $\|v\|_2 = \|u\|_2 = 1$ and spectral norm $\|\Delta W\|_2 = \eta$:
+
+By Mirsky's singular value perturbation theorem:
+$$|\sigma_i(W + \Delta W) - \sigma_i(W)| \le \|\Delta W\|_2 \le \eta, \quad \forall i$$
+
+Furthermore, by Thompson's singular value interlacing theorem for rank-1 perturbations:
+$$\sigma_{i+1}(W) \le \sigma_i(W - \eta v u^T) \le \sigma_{i-1}(W)$$
+
+The perturbed condition number $\kappa(W') = \sigma_{\max}(W') / \sigma_{\min}(W')$ satisfies:
+$$\frac{\sigma_{\max}(W) - \eta}{\sigma_{\min}(W) + \eta} \le \kappa(W') \le \frac{\sigma_{\max}(W) + \eta}{\sigma_{\min}(W) - \eta}, \quad \text{provided } \sigma_{\min}(W) > \eta$$
+
+> [!WARNING]
+> **Mathematical Invalidation of Naive Frobenius Bounds on Condition Numbers:**
+> An unconstrained Frobenius bound $\|\Delta W\|_F \le \gamma \|W\|_F$ cannot guarantee condition number stability when $\gamma \|W\|_F \ge \sigma_{\min}(W)$. In wide transformer matrices (e.g. $960 \times 2560$), $\|W\|_F \gg \sigma_{\min}(W)$, so worst-case theoretical perturbations could force the denominator $\sigma_{\min}(W) - \epsilon$ below zero. 
+> 
+> In SP-SV-WSP, condition number stability is achieved in practice because:
+> 1. The edit $\Delta W_{\text{safe}}$ is a low-rank directional update rather than a full-rank adversarial distortion.
+> 2. The projection $P_{\text{null}}$ damps components aligned with high-variance activations.
+> 3. The verification oracle explicitly measures $\Delta \kappa$ in memory and triggers `ADAPT` or `ROLLBACK` if the condition number shifts by more than $\tau_{\kappa} = 5\%$.
 
 ---
 

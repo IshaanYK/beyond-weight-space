@@ -69,10 +69,10 @@ In Takehi et al., the agent guesses interventions in a REPL. To make weight-spac
 +----------------------+-------------+--------------+------------+--------------+
 | Modifies Weights?    | Yes (MLP)   | No (Hooks)   | Yes        | Yes          |
 | Gradient-Free?       | Yes (Closed)| Yes          | Yes        | Yes          |
-| Preserves Invariants | Weak (L2)   | N/A          | None       | Strict (Null)|
+| Preserves Invariants | Weak (L2)   | N/A          | None       | Soft Null ($O(\alpha/\lambda)$) |
 | Handles Symmetries   | No          | N/A          | No         | Canonical SVD|
 | Autonomous Loop      | No          | No           | Partial    | Full Closed  |
-| Safety Bounded       | No          | Safe (Hooks) | No         | Guaranteed   |
+| Safety Bounded       | No          | Safe (Hooks) | No         | In-Memory Rollback |
 +-------------------------------------------------------------------------------+
 ```
 
