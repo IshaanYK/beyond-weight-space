@@ -1,10 +1,13 @@
 """
-NullSpaceProjector: Linear algebraic projection engine for zero-interference weight editing.
+NullSpaceProjector: Linear algebraic spectral attenuation engine for zero-interference weight editing.
+Implements Tikhonov-regularized spectral attenuation operators to suppress cross-talk.
 """
 
 from dataclasses import dataclass
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Any
 import torch
+
+_UNSET: Any = object()
 
 
 @dataclass
@@ -21,16 +24,22 @@ class ProjectionResult:
 
 class NullSpaceProjector:
     """
-    Subspace projector implementing Tikhonov-regularized null-space projection
-    algebra to guarantee invariant preservation for neural network weight programming.
+    Subspace projector implementing Tikhonov-regularized null-space spectral attenuation
+    to guarantee invariant preservation for neural network weight programming.
+    
+    Mathematical Note:
+    For finite alpha > 0, P_null = I - C(C + alpha I)^(-1) is a smooth spectral attenuation
+    operator (P_null^2 != P_null), not an idempotent orthogonal projection matrix. It attenuates
+    perturbations along covariance eigenvectors as alpha / (lambda_i + alpha) = O(alpha / lambda_i).
     """
 
-    def __init__(self, alpha: float = 1e-3, gamma: float = 0.02):
+    def __init__(self, alpha: float = 1e-3, gamma: Optional[float] = 0.02):
         """
         Args:
             alpha: Tikhonov regularization parameter controlling null-space stiffness.
                    Higher alpha softens the boundary; lower alpha enforces sharper null space.
             gamma: Maximum allowable relative Frobenius norm perturbation ||Delta W||_F / ||W||_F.
+                   Pass None for unbudgeted edits.
         """
         self.alpha = alpha
         self.gamma = gamma
@@ -101,7 +110,7 @@ class NullSpaceProjector:
         covariance: torch.Tensor,
         base_w: Optional[torch.Tensor] = None,
         alpha: Optional[float] = None,
-        gamma: Optional[float] = None,
+        gamma: Any = _UNSET,
         test_activations: Optional[torch.Tensor] = None,
     ) -> ProjectionResult:
         """
@@ -113,7 +122,7 @@ class NullSpaceProjector:
             covariance: Covariance matrix of preserved representations [d_in, d_in]
             base_w: Pristine base weight tensor [d_out, d_in] for relative budget check
             alpha: Optional alpha override
-            gamma: Optional gamma budget override
+            gamma: Optional gamma budget override. Pass None explicitly for unbudgeted edits.
             test_activations: Optional sample [N_test, d_in] to verify invariance empirically
             
         Returns:
@@ -129,11 +138,11 @@ class NullSpaceProjector:
         safe_norm = float(torch.norm(delta_safe, p='fro').item())
         
         # Frobenius budgeting
-        gamma_val = gamma if gamma is not None else self.gamma
+        gamma_val = self.gamma if gamma is _UNSET else gamma
         rescaled = False
         budget_ratio = 1.0
         
-        if base_w is not None:
+        if base_w is not None and gamma_val is not None:
             base_norm = float(torch.norm(base_w.to(torch.float32), p='fro').item())
             max_allowed = gamma_val * base_norm
             budget_ratio = safe_norm / (base_norm + 1e-12)
@@ -143,6 +152,9 @@ class NullSpaceProjector:
                 safe_norm = float(torch.norm(delta_safe, p='fro').item())
                 rescaled = True
                 budget_ratio = safe_norm / (base_norm + 1e-12)
+        elif base_w is not None:
+            base_norm = float(torch.norm(base_w.to(torch.float32), p='fro').item())
+            budget_ratio = safe_norm / (base_norm + 1e-12)
 
         # Invariance residual calculation
         residual_error = 0.0

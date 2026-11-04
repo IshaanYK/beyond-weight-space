@@ -1,0 +1,1510 @@
+{
+  "metadata": {
+    "phase": "Phase 10 \u2014 Scientifically Validated Research Contribution",
+    "evaluated_models": [
+      "HuggingFaceTB/SmolLM2-360M",
+      "Qwen/Qwen2.5-0.5B"
+    ],
+    "train_passages_count": 40,
+    "val_passages_count": 15,
+    "test_passages_count": 15,
+    "dev_prompts_count": 8,
+    "val_prompts_count": 8,
+    "test_prompts_count": 12,
+    "random_control_draws_count": 20,
+    "stochastic_seeds_count": 20,
+    "test_set_protection_enforced": true
+  },
+  "architectures": {
+    "SmolLM2-360M": {
+      "model_id": "HuggingFaceTB/SmolLM2-360M",
+      "primary_layer": "model.layers.15.mlp.down_proj",
+      "late_layer": "model.layers.19.mlp.down_proj",
+      "base_spectral": {
+        "sigma_max": 38.99117044682047,
+        "sigma_min": 1.2372802107042582,
+        "condition_number": 31.513613577175658,
+        "frobenius_norm": 280.6173857464862
+      },
+      "baseline_val": {
+        "ppl": 36.23440170288086,
+        "rep": {
+          "mean_rep": 0.6973684210526316,
+          "sem_rep": 0.11842105263157893,
+          "loop_incidence": 0.875,
+          "scores": [
+            0.5789473684210527,
+            0.9473684210526315,
+            0.7894736842105263,
+            0.9473684210526315,
+            0.0,
+            0.9473684210526315,
+            0.8947368421052632,
+            0.47368421052631576
+          ],
+          "texts": [
+            " 1 2 3 4 1 2 3 4 1 2 3",
+            " hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello",
+            " A B C D A B C D A B C D A B C D A B C D A B",
+            " pulse pulse pulse pulse pulse pulse pulse pulse pulse pulse pulse pulse pulse pulse pulse pulse pulse pulse pulse pulse pulse pulse",
+            "\\n\\nThe first time I saw it, I was 12 years old. I was in the back",
+            " om om om om om om om om om om om om om om om om om om om om om om",
+            " day night day night day night day night day night day night day night day night day night day night day night",
+            "\\n\\nThe mirror is a mirror, and the mirror is a mirror, and the mirror is a mirror,"
+          ]
+        }
+      },
+      "baseline_test": {
+        "ppl": 19.59088706970215,
+        "rep": {
+          "mean_rep": 0.46491228070175444,
+          "sem_rep": 0.11712176349773984,
+          "loop_incidence": 0.6666666666666666,
+          "scores": [
+            0.47368421052631576,
+            0.0,
+            0.47368421052631576,
+            0.8947368421052632,
+            0.05263157894736842,
+            0.0,
+            0.0,
+            0.9473684210526315,
+            0.8421052631578947,
+            0.15789473684210525,
+            0.9473684210526315,
+            0.7894736842105263
+          ],
+          "texts": [
+            " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a",
+            " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good",
+            "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n",
+            " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue",
+            "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because",
+            "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n",
+            " \u201cWe are not a police state.\u201d\\n\\nThe truth is that the United States is a police state.",
+            " echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo",
+            " tick tock tick tock tick tock tick tock tick tock tick tock tick tock tick",
+            "\\n\\n\"I'm not a big fan of the wheel, but I'm a big fan of the wheel",
+            " ping ping ping ping ping ping ping ping ping ping ping ping ping ping ping ping ping ping ping ping ping ping",
+            " 0 1 0 1 0 1 0 1 0 1 0"
+          ]
+        },
+        "tokens": 284
+      },
+      "validation_tuning_records": [
+        {
+          "name": "SP-SV (alpha=0.0001, gamma=0.01)",
+          "alpha": 0.0001,
+          "gamma": 0.01,
+          "frobenius_norm": 2.8062949180603027,
+          "val_loop_red": 16.981132075471702,
+          "val_ppl_drift": -0.0016739254319911997,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.0001, gamma=0.02)",
+          "alpha": 0.0001,
+          "gamma": 0.02,
+          "frobenius_norm": 4.329770565032959,
+          "val_loop_red": 16.981132075471702,
+          "val_ppl_drift": -0.0023371789050443165,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.0001, gamma=0.05)",
+          "alpha": 0.0001,
+          "gamma": 0.05,
+          "frobenius_norm": 4.329770565032959,
+          "val_loop_red": 16.981132075471702,
+          "val_ppl_drift": -0.0023371789050443165,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.0001, gamma=0.1)",
+          "alpha": 0.0001,
+          "gamma": 0.1,
+          "frobenius_norm": 4.329770565032959,
+          "val_loop_red": 16.981132075471702,
+          "val_ppl_drift": -0.0023371789050443165,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.0001, gamma=None)",
+          "alpha": 0.0001,
+          "gamma": null,
+          "frobenius_norm": 4.329770565032959,
+          "val_loop_red": 16.981132075471702,
+          "val_ppl_drift": -0.0023371789050443165,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.001, gamma=0.01)",
+          "alpha": 0.001,
+          "gamma": 0.01,
+          "frobenius_norm": 2.8062961101531982,
+          "val_loop_red": 16.981132075471702,
+          "val_ppl_drift": -0.0020318717507817703,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.001, gamma=0.02)",
+          "alpha": 0.001,
+          "gamma": 0.02,
+          "frobenius_norm": 4.33543586730957,
+          "val_loop_red": 16.981132075471702,
+          "val_ppl_drift": -0.002958321046475013,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.001, gamma=0.05)",
+          "alpha": 0.001,
+          "gamma": 0.05,
+          "frobenius_norm": 4.33543586730957,
+          "val_loop_red": 16.981132075471702,
+          "val_ppl_drift": -0.002958321046475013,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.001, gamma=0.1)",
+          "alpha": 0.001,
+          "gamma": 0.1,
+          "frobenius_norm": 4.33543586730957,
+          "val_loop_red": 16.981132075471702,
+          "val_ppl_drift": -0.002958321046475013,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.001, gamma=None)",
+          "alpha": 0.001,
+          "gamma": null,
+          "frobenius_norm": 4.33543586730957,
+          "val_loop_red": 16.981132075471702,
+          "val_ppl_drift": -0.002958321046475013,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.01, gamma=0.01)",
+          "alpha": 0.01,
+          "gamma": 0.01,
+          "frobenius_norm": 2.8062984943389893,
+          "val_loop_red": 16.981132075471702,
+          "val_ppl_drift": -0.005390250447669775,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.01, gamma=0.02)",
+          "alpha": 0.01,
+          "gamma": 0.02,
+          "frobenius_norm": 4.427021026611328,
+          "val_loop_red": 16.981132075471702,
+          "val_ppl_drift": -0.008201181833466317,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.01, gamma=0.05)",
+          "alpha": 0.01,
+          "gamma": 0.05,
+          "frobenius_norm": 4.427021026611328,
+          "val_loop_red": 16.981132075471702,
+          "val_ppl_drift": -0.008201181833466317,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.01, gamma=0.1)",
+          "alpha": 0.01,
+          "gamma": 0.1,
+          "frobenius_norm": 4.427021026611328,
+          "val_loop_red": 16.981132075471702,
+          "val_ppl_drift": -0.008201181833466317,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.01, gamma=None)",
+          "alpha": 0.01,
+          "gamma": null,
+          "frobenius_norm": 4.427021026611328,
+          "val_loop_red": 16.981132075471702,
+          "val_ppl_drift": -0.008201181833466317,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.1, gamma=0.01)",
+          "alpha": 0.1,
+          "gamma": 0.01,
+          "frobenius_norm": 2.806314706802368,
+          "val_loop_red": 16.981132075471702,
+          "val_ppl_drift": -0.0144441867464901,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.1, gamma=0.02)",
+          "alpha": 0.1,
+          "gamma": 0.02,
+          "frobenius_norm": 4.832433700561523,
+          "val_loop_red": 16.981132075471702,
+          "val_ppl_drift": -0.02424559918160838,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.1, gamma=0.05)",
+          "alpha": 0.1,
+          "gamma": 0.05,
+          "frobenius_norm": 4.832433700561523,
+          "val_loop_red": 16.981132075471702,
+          "val_ppl_drift": -0.02424559918160838,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.1, gamma=0.1)",
+          "alpha": 0.1,
+          "gamma": 0.1,
+          "frobenius_norm": 4.832433700561523,
+          "val_loop_red": 16.981132075471702,
+          "val_ppl_drift": -0.02424559918160838,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.1, gamma=None)",
+          "alpha": 0.1,
+          "gamma": null,
+          "frobenius_norm": 4.832433700561523,
+          "val_loop_red": 16.981132075471702,
+          "val_ppl_drift": -0.02424559918160838,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.5, gamma=0.01)",
+          "alpha": 0.5,
+          "gamma": 0.01,
+          "frobenius_norm": 2.8062944412231445,
+          "val_loop_red": 16.981132075471702,
+          "val_ppl_drift": -0.04948081465634363,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.5, gamma=0.02)",
+          "alpha": 0.5,
+          "gamma": 0.02,
+          "frobenius_norm": 5.232060432434082,
+          "val_loop_red": 16.981132075471702,
+          "val_ppl_drift": -0.08986558168224452,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.5, gamma=0.05)",
+          "alpha": 0.5,
+          "gamma": 0.05,
+          "frobenius_norm": 5.232060432434082,
+          "val_loop_red": 16.981132075471702,
+          "val_ppl_drift": -0.08986558168224452,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.5, gamma=0.1)",
+          "alpha": 0.5,
+          "gamma": 0.1,
+          "frobenius_norm": 5.232060432434082,
+          "val_loop_red": 16.981132075471702,
+          "val_ppl_drift": -0.08986558168224452,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.5, gamma=None)",
+          "alpha": 0.5,
+          "gamma": null,
+          "frobenius_norm": 5.232060432434082,
+          "val_loop_red": 16.981132075471702,
+          "val_ppl_drift": -0.08986558168224452,
+          "val_incidence": 0.75
+        }
+      ],
+      "selected_hyperparameters": {
+        "pareto_alpha": 0.0001,
+        "pareto_gamma": 0.01
+      },
+      "random_subspace_control_n20": {
+        "frob_stats": {
+          "mean": 5.878048706054687,
+          "std": 0.018219386780874897,
+          "ci_95": 0.007984998320677877
+        },
+        "red_stats": {
+          "mean": 8.679245283018883,
+          "std": 0.9483484716038417,
+          "ci_95": 0.4156320431773869
+        },
+        "drift_stats": {
+          "mean": -0.9273476193345962,
+          "std": 0.012775226176828868,
+          "ci_95": 0.005598989735227523
+        },
+        "inv_stats": {
+          "mean": 4.0721354160565255,
+          "std": 1.186016780553429,
+          "ci_95": 0.5197947721794918
+        }
+      },
+      "frozen_greedy_records": [
+        {
+          "name": "Baseline",
+          "frobenius_norm": 0.0,
+          "test_loop_red": 0.0,
+          "test_ppl": 19.59088706970215,
+          "test_ppl_drift": 0.0,
+          "invariance": 100.0,
+          "loop_incidence": 0.6666666666666666,
+          "prompt_scores": [
+            0.47368421052631576,
+            0.0,
+            0.47368421052631576,
+            0.8947368421052632,
+            0.05263157894736842,
+            0.0,
+            0.0,
+            0.9473684210526315,
+            0.8421052631578947,
+            0.15789473684210525,
+            0.9473684210526315,
+            0.7894736842105263
+          ]
+        },
+        {
+          "name": "Raw WSP",
+          "frobenius_norm": 5.999174118041992,
+          "test_loop_red": 9.43396226415096,
+          "test_ppl": 19.402267456054688,
+          "test_ppl_drift": -0.9627926136084283,
+          "invariance": 1.3877787807814457e-12,
+          "loop_incidence": 0.5,
+          "prompt_scores": [
+            0.0,
+            0.0,
+            0.47368421052631576,
+            0.8947368421052632,
+            0.05263157894736842,
+            0.0,
+            0.0,
+            0.9473684210526315,
+            0.8421052631578947,
+            0.10526315789473684,
+            0.9473684210526315,
+            0.7894736842105263
+          ]
+        },
+        {
+          "name": "Strict SP-SV-WSP (gamma=0.01)",
+          "frobenius_norm": 2.8062961101531982,
+          "test_loop_red": 0.0,
+          "test_ppl": 19.58548927307129,
+          "test_ppl_drift": -0.027552589179114906,
+          "invariance": 91.10582357088605,
+          "loop_incidence": 0.6666666666666666,
+          "prompt_scores": [
+            0.47368421052631576,
+            0.0,
+            0.47368421052631576,
+            0.8947368421052632,
+            0.05263157894736842,
+            0.0,
+            0.0,
+            0.9473684210526315,
+            0.8421052631578947,
+            0.15789473684210525,
+            0.9473684210526315,
+            0.7894736842105263
+          ]
+        },
+        {
+          "name": "Balanced SP-SV-WSP (Val Selected)",
+          "frobenius_norm": 2.8062949180603027,
+          "test_loop_red": 0.0,
+          "test_ppl": 19.585647583007812,
+          "test_ppl_drift": -0.026744509708490686,
+          "invariance": 91.21563042523732,
+          "loop_incidence": 0.6666666666666666,
+          "prompt_scores": [
+            0.47368421052631576,
+            0.0,
+            0.47368421052631576,
+            0.8947368421052632,
+            0.05263157894736842,
+            0.0,
+            0.0,
+            0.9473684210526315,
+            0.8421052631578947,
+            0.15789473684210525,
+            0.9473684210526315,
+            0.7894736842105263
+          ]
+        },
+        {
+          "name": "Differential SP-SV-WSP (u_diff)",
+          "frobenius_norm": 2.8063013553619385,
+          "test_loop_red": 0.0,
+          "test_ppl": 19.58719253540039,
+          "test_ppl_drift": -0.01885843294697723,
+          "invariance": 91.34157023935148,
+          "loop_incidence": 0.6666666666666666,
+          "prompt_scores": [
+            0.47368421052631576,
+            0.0,
+            0.47368421052631576,
+            0.8947368421052632,
+            0.05263157894736842,
+            0.0,
+            0.0,
+            0.9473684210526315,
+            0.8421052631578947,
+            0.15789473684210525,
+            0.9473684210526315,
+            0.7894736842105263
+          ]
+        },
+        {
+          "name": "Dual-Layer SP-SV-WSP",
+          "frobenius_norm": 4.33543586730957,
+          "test_loop_red": 0.0,
+          "test_ppl": 19.582439422607422,
+          "test_ppl_drift": -0.043120288860176645,
+          "invariance": 86.25940507861458,
+          "loop_incidence": 0.6666666666666666,
+          "prompt_scores": [
+            0.47368421052631576,
+            0.0,
+            0.47368421052631576,
+            0.8947368421052632,
+            0.05263157894736842,
+            0.0,
+            0.0,
+            0.9473684210526315,
+            0.8421052631578947,
+            0.15789473684210525,
+            0.9473684210526315,
+            0.7894736842105263
+          ]
+        }
+      ],
+      "stochastic_statistical_summary": {
+        "Raw WSP": {
+          "score_stats": {
+            "mean": 0.2730263157894736,
+            "std": 0.051756244391254154,
+            "ci_95": 0.022683174220911557
+          },
+          "absolute_reduction_stats": {
+            "mean": 0.032675438596491226,
+            "std": 0.051039219664077616,
+            "ci_95": 0.02236892427873462
+          },
+          "incidence_stats": {
+            "mean": 0.35416666666666663,
+            "std": 0.05969586661761492,
+            "ci_95": 0.026162867083618487
+          },
+          "paired_t_test": {
+            "t_stat": 2.863072843874175,
+            "p_val": 0.009953274029203348,
+            "sig": true
+          },
+          "wilcoxon_test": {
+            "w_stat": 43.0,
+            "p_val": 0.03634762045535737,
+            "sig": true
+          },
+          "cohens_d": 0.6402025503310864
+        },
+        "Strict SP-SV-WSP (gamma=0.01)": {
+          "score_stats": {
+            "mean": 0.30219298245614035,
+            "std": 0.05152145651830575,
+            "ci_95": 0.022580273898647335
+          },
+          "absolute_reduction_stats": {
+            "mean": 0.0035087719298245766,
+            "std": 0.027651541250961847,
+            "ci_95": 0.012118822280278892
+          },
+          "incidence_stats": {
+            "mean": 0.39583333333333337,
+            "std": 0.08496215187636193,
+            "ci_95": 0.03723630483360049
+          },
+          "paired_t_test": {
+            "t_stat": 0.5674803065350262,
+            "p_val": 0.5770324017264903,
+            "sig": false
+          },
+          "wilcoxon_test": {
+            "w_stat": 31.0,
+            "p_val": 0.529491790036658,
+            "sig": false
+          },
+          "cohens_d": 0.12689245412588468
+        },
+        "Balanced SP-SV-WSP (Val Selected)": {
+          "score_stats": {
+            "mean": 0.29999999999999993,
+            "std": 0.05091856820488166,
+            "ci_95": 0.022316046445322667
+          },
+          "absolute_reduction_stats": {
+            "mean": 0.005701754385964926,
+            "std": 0.022277938770526837,
+            "ci_95": 0.009763737155937315
+          },
+          "incidence_stats": {
+            "mean": 0.39583333333333337,
+            "std": 0.08496215187636193,
+            "ci_95": 0.03723630483360049
+          },
+          "paired_t_test": {
+            "t_stat": 1.1445861782233133,
+            "p_val": 0.26659533455213213,
+            "sig": false
+          },
+          "wilcoxon_test": {
+            "w_stat": 21.0,
+            "p_val": 0.2848103636989193,
+            "sig": false
+          },
+          "cohens_d": 0.25593725004991347
+        },
+        "Differential SP-SV-WSP (u_diff)": {
+          "score_stats": {
+            "mean": 0.30021929824561405,
+            "std": 0.0519826686718858,
+            "ci_95": 0.022782409037228328
+          },
+          "absolute_reduction_stats": {
+            "mean": 0.005482456140350889,
+            "std": 0.01799258773657619,
+            "ci_95": 0.007885599256942233
+          },
+          "incidence_stats": {
+            "mean": 0.39583333333333337,
+            "std": 0.08916031293971985,
+            "ci_95": 0.03907623004316006
+          },
+          "paired_t_test": {
+            "t_stat": 1.362688323988521,
+            "p_val": 0.18891534176786626,
+            "sig": false
+          },
+          "wilcoxon_test": {
+            "w_stat": 6.0,
+            "p_val": 0.09088878524572704,
+            "sig": false
+          },
+          "cohens_d": 0.304706372441424
+        },
+        "Dual-Layer SP-SV-WSP": {
+          "score_stats": {
+            "mean": 0.30043859649122806,
+            "std": 0.045901237323459965,
+            "ci_95": 0.020117104233694966
+          },
+          "absolute_reduction_stats": {
+            "mean": 0.005263157894736856,
+            "std": 0.03177455576298394,
+            "ci_95": 0.013925813061614398
+          },
+          "incidence_stats": {
+            "mean": 0.4,
+            "std": 0.08377078165833911,
+            "ci_95": 0.0367141638140024
+          },
+          "paired_t_test": {
+            "t_stat": 0.7407674818010477,
+            "p_val": 0.46789122845761705,
+            "sig": false
+          },
+          "wilcoxon_test": {
+            "w_stat": 46.0,
+            "p_val": 0.42643498438261274,
+            "sig": false
+          },
+          "cohens_d": 0.16564064447763513
+        }
+      },
+      "seed_model_scores": {
+        "Baseline": [
+          0.22807017543859645,
+          0.2587719298245614,
+          0.2807017543859649,
+          0.33771929824561403,
+          0.37280701754385964,
+          0.2807017543859649,
+          0.40350877192982465,
+          0.23684210526315788,
+          0.2236842105263158,
+          0.33771929824561403,
+          0.293859649122807,
+          0.27192982456140347,
+          0.32894736842105265,
+          0.34649122807017546,
+          0.2456140350877193,
+          0.33771929824561403,
+          0.35964912280701755,
+          0.39035087719298245,
+          0.25438596491228066,
+          0.3245614035087719
+        ],
+        "Raw WSP": [
+          0.25438596491228066,
+          0.25,
+          0.2894736842105263,
+          0.35964912280701755,
+          0.3026315789473684,
+          0.2631578947368421,
+          0.40350877192982454,
+          0.23684210526315788,
+          0.25,
+          0.25,
+          0.1754385964912281,
+          0.25438596491228066,
+          0.20614035087719296,
+          0.28508771929824556,
+          0.25,
+          0.25438596491228066,
+          0.34649122807017546,
+          0.2675438596491228,
+          0.25877192982456143,
+          0.3026315789473684
+        ],
+        "Strict SP-SV-WSP (gamma=0.01)": [
+          0.22807017543859645,
+          0.2587719298245614,
+          0.33771929824561403,
+          0.3201754385964912,
+          0.2982456140350877,
+          0.28947368421052627,
+          0.39035087719298245,
+          0.25438596491228066,
+          0.2236842105263158,
+          0.3245614035087719,
+          0.30263157894736836,
+          0.25438596491228066,
+          0.32894736842105265,
+          0.28508771929824556,
+          0.2456140350877193,
+          0.33771929824561403,
+          0.3684210526315789,
+          0.39035087719298245,
+          0.25438596491228066,
+          0.3508771929824561
+        ],
+        "Balanced SP-SV-WSP (Val Selected)": [
+          0.22807017543859645,
+          0.2587719298245614,
+          0.2807017543859649,
+          0.3201754385964912,
+          0.2982456140350877,
+          0.28947368421052627,
+          0.39035087719298245,
+          0.25438596491228066,
+          0.2236842105263158,
+          0.3245614035087719,
+          0.30263157894736836,
+          0.25438596491228066,
+          0.32894736842105265,
+          0.2982456140350877,
+          0.2456140350877193,
+          0.33771929824561403,
+          0.3684210526315789,
+          0.39035087719298245,
+          0.25438596491228066,
+          0.3508771929824561
+        ],
+        "Differential SP-SV-WSP (u_diff)": [
+          0.22807017543859645,
+          0.2587719298245614,
+          0.2807017543859649,
+          0.3201754385964912,
+          0.2982456140350877,
+          0.28947368421052627,
+          0.39035087719298245,
+          0.23684210526315788,
+          0.2236842105263158,
+          0.3245614035087719,
+          0.30263157894736836,
+          0.25438596491228066,
+          0.32894736842105265,
+          0.34649122807017546,
+          0.2456140350877193,
+          0.33771929824561403,
+          0.3684210526315789,
+          0.39035087719298245,
+          0.25438596491228066,
+          0.3245614035087719
+        ],
+        "Dual-Layer SP-SV-WSP": [
+          0.25438596491228066,
+          0.2587719298245614,
+          0.33771929824561403,
+          0.3201754385964912,
+          0.2982456140350877,
+          0.2807017543859649,
+          0.3991228070175438,
+          0.27192982456140347,
+          0.2236842105263158,
+          0.3245614035087719,
+          0.293859649122807,
+          0.2675438596491228,
+          0.3201754385964912,
+          0.28508771929824556,
+          0.23684210526315788,
+          0.3333333333333333,
+          0.3684210526315789,
+          0.32894736842105265,
+          0.25438596491228066,
+          0.3508771929824561
+        ]
+      }
+    },
+    "Qwen2.5-0.5B": {
+      "model_id": "Qwen/Qwen2.5-0.5B",
+      "primary_layer": "model.layers.12.mlp.down_proj",
+      "late_layer": "model.layers.15.mlp.down_proj",
+      "base_spectral": {
+        "sigma_max": 4.900440148151731,
+        "sigma_min": 0.32497106482294746,
+        "condition_number": 15.079619937306159,
+        "frobenius_norm": 38.75914634765544
+      },
+      "baseline_val": {
+        "ppl": 30.26780128479004,
+        "rep": {
+          "mean_rep": 0.638157894736842,
+          "sem_rep": 0.14599165563157462,
+          "loop_incidence": 0.75,
+          "scores": [
+            0.5789473684210527,
+            0.9473684210526315,
+            0.7894736842105263,
+            0.9473684210526315,
+            0.0,
+            0.9473684210526315,
+            0.8947368421052632,
+            0.0
+          ],
+          "texts": [
+            " 1 2 3 4 1 2 3 4 1 2 3",
+            " hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello",
+            " A B C D A B C D A B C D A B C D A B C D A B",
+            " pulse pulse pulse pulse pulse pulse pulse pulse pulse pulse pulse pulse pulse pulse pulse pulse pulse pulse pulse pulse pulse pulse",
+            " the story of the spinning wheel\\n\\nThe spinning wheel is a very old invention. It was used in ancient Egypt",
+            " om om om om om om om om om om om om om om om om om om om om om om",
+            " day night day night day night day night day night day night day night day night day night day night day night",
+            " the first time, the first mirror is 10 cm from the second mirror, and the second mirror is"
+          ]
+        }
+      },
+      "baseline_test": {
+        "ppl": 17.110700607299805,
+        "rep": {
+          "mean_rep": 0.28508771929824556,
+          "sem_rep": 0.11396605688805396,
+          "loop_incidence": 0.4166666666666667,
+          "scores": [
+            0.0,
+            0.3684210526315789,
+            0.3684210526315789,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.9473684210526315,
+            0.0,
+            0.0,
+            0.9473684210526315,
+            0.7894736842105263
+          ],
+          "texts": [
+            " the best way to get a good night's sleep is to sleep in a dark room. But is that really",
+            " \"I love to eat pizza.\"\\nI love to eat pizza.",
+            " \u201cI am a human being, I am a person, I am a human being, I am a person",
+            " red blue ... . How many times does the sequence \"red blue\" appear in this pattern?\\nTo determine how",
+            " How to avoid it?\\n\\nI am a student of psychology and I am currently working on a project that involves a",
+            ". I want to loop through the cycle indefinitely, but I want to stop when I reach the end of the",
+            " \"I'm not a fan of the movie.\" The audience is silent. The director, who is a fan",
+            " echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo",
+            " tick tock tick tock. The ticking is so loud that it can be heard by the room. The",
+            " A. the end B. the beginning C. the middle D. the end or the beginning\\nthe end",
+            " ping ping ping ping ping ping ping ping ping ping ping ping ping ping ping ping ping ping ping ping ping ping",
+            " 0 1 0 1 0 1 0 1 0 1 0"
+          ]
+        },
+        "tokens": 292
+      },
+      "validation_tuning_records": [
+        {
+          "name": "SP-SV (alpha=0.0001, gamma=0.01)",
+          "alpha": 0.0001,
+          "gamma": 0.01,
+          "frobenius_norm": 0.38759681582450867,
+          "val_loop_red": 0.0,
+          "val_ppl_drift": -0.05410533526119561,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.0001, gamma=0.02)",
+          "alpha": 0.0001,
+          "gamma": 0.02,
+          "frobenius_norm": 0.7751936316490173,
+          "val_loop_red": 0.0,
+          "val_ppl_drift": -0.10725283090444321,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.0001, gamma=0.05)",
+          "alpha": 0.0001,
+          "gamma": 0.05,
+          "frobenius_norm": 1.9379628896713257,
+          "val_loop_red": -17.5257731958763,
+          "val_ppl_drift": -0.26132007313609606,
+          "val_incidence": 0.875
+        },
+        {
+          "name": "SP-SV (alpha=0.0001, gamma=0.1)",
+          "alpha": 0.0001,
+          "gamma": 0.1,
+          "frobenius_norm": 3.8759257793426514,
+          "val_loop_red": -11.340206185567022,
+          "val_ppl_drift": -0.4986185369062851,
+          "val_incidence": 0.875
+        },
+        {
+          "name": "SP-SV (alpha=0.0001, gamma=None)",
+          "alpha": 0.0001,
+          "gamma": null,
+          "frobenius_norm": 4.591670036315918,
+          "val_loop_red": -6.18556701030928,
+          "val_ppl_drift": -0.5797198256101738,
+          "val_incidence": 0.875
+        },
+        {
+          "name": "SP-SV (alpha=0.001, gamma=0.01)",
+          "alpha": 0.001,
+          "gamma": 0.01,
+          "frobenius_norm": 0.3875972330570221,
+          "val_loop_red": 0.0,
+          "val_ppl_drift": -0.054937143350466275,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.001, gamma=0.02)",
+          "alpha": 0.001,
+          "gamma": 0.02,
+          "frobenius_norm": 0.7751944661140442,
+          "val_loop_red": 0.0,
+          "val_ppl_drift": -0.10901727230592641,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.001, gamma=0.05)",
+          "alpha": 0.001,
+          "gamma": 0.05,
+          "frobenius_norm": 1.937972068786621,
+          "val_loop_red": -17.5257731958763,
+          "val_ppl_drift": -0.26546020885314775,
+          "val_incidence": 0.875
+        },
+        {
+          "name": "SP-SV (alpha=0.001, gamma=0.1)",
+          "alpha": 0.001,
+          "gamma": 0.1,
+          "frobenius_norm": 3.875944137573242,
+          "val_loop_red": -11.340206185567022,
+          "val_ppl_drift": -0.5060228892160807,
+          "val_incidence": 0.875
+        },
+        {
+          "name": "SP-SV (alpha=0.001, gamma=None)",
+          "alpha": 0.001,
+          "gamma": null,
+          "frobenius_norm": 4.599870681762695,
+          "val_loop_red": -6.18556701030928,
+          "val_ppl_drift": -0.5890587618851669,
+          "val_incidence": 0.875
+        },
+        {
+          "name": "SP-SV (alpha=0.01, gamma=0.01)",
+          "alpha": 0.01,
+          "gamma": 0.01,
+          "frobenius_norm": 0.38760197162628174,
+          "val_loop_red": 0.0,
+          "val_ppl_drift": -0.06016115021414332,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.01, gamma=0.02)",
+          "alpha": 0.01,
+          "gamma": 0.02,
+          "frobenius_norm": 0.7752039432525635,
+          "val_loop_red": 0.0,
+          "val_ppl_drift": -0.1192069213994919,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.01, gamma=0.05)",
+          "alpha": 0.01,
+          "gamma": 0.05,
+          "frobenius_norm": 1.937979817390442,
+          "val_loop_red": -17.5257731958763,
+          "val_ppl_drift": -0.2891667393973613,
+          "val_incidence": 0.875
+        },
+        {
+          "name": "SP-SV (alpha=0.01, gamma=0.1)",
+          "alpha": 0.01,
+          "gamma": 0.1,
+          "frobenius_norm": 3.875959634780884,
+          "val_loop_red": -12.37113402061856,
+          "val_ppl_drift": -0.5469579297304911,
+          "val_incidence": 0.875
+        },
+        {
+          "name": "SP-SV (alpha=0.01, gamma=None)",
+          "alpha": 0.01,
+          "gamma": null,
+          "frobenius_norm": 4.6515069007873535,
+          "val_loop_red": -2.0618556701030992,
+          "val_ppl_drift": -0.6405930539613442,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.1, gamma=0.01)",
+          "alpha": 0.1,
+          "gamma": 0.01,
+          "frobenius_norm": 0.38759922981262207,
+          "val_loop_red": 0.0,
+          "val_ppl_drift": -0.07357090486541565,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.1, gamma=0.02)",
+          "alpha": 0.1,
+          "gamma": 0.02,
+          "frobenius_norm": 0.7751984596252441,
+          "val_loop_red": 0.0,
+          "val_ppl_drift": -0.14446994132287103,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.1, gamma=0.05)",
+          "alpha": 0.1,
+          "gamma": 0.05,
+          "frobenius_norm": 1.93796968460083,
+          "val_loop_red": -17.5257731958763,
+          "val_ppl_drift": -0.3402158100881307,
+          "val_incidence": 0.875
+        },
+        {
+          "name": "SP-SV (alpha=0.1, gamma=0.1)",
+          "alpha": 0.1,
+          "gamma": 0.1,
+          "frobenius_norm": 3.87593936920166,
+          "val_loop_red": -6.18556701030928,
+          "val_ppl_drift": -0.6053420353902834,
+          "val_incidence": 0.875
+        },
+        {
+          "name": "SP-SV (alpha=0.1, gamma=None)",
+          "alpha": 0.1,
+          "gamma": null,
+          "frobenius_norm": 4.932134628295898,
+          "val_loop_red": 3.092783505154623,
+          "val_ppl_drift": -0.715405369384232,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.5, gamma=0.01)",
+          "alpha": 0.5,
+          "gamma": 0.01,
+          "frobenius_norm": 0.38759952783584595,
+          "val_loop_red": 0.0,
+          "val_ppl_drift": -0.07955110090115694,
+          "val_incidence": 0.75
+        },
+        {
+          "name": "SP-SV (alpha=0.5, gamma=0.02)",
+          "alpha": 0.5,
+          "gamma": 0.02,
+          "frobenius_norm": 0.7751990556716919,
+          "val_loop_red": -16.494845360824762,
+          "val_ppl_drift": -0.15130715175361845,
+          "val_incidence": 0.875
+        },
+        {
+          "name": "SP-SV (alpha=0.5, gamma=0.05)",
+          "alpha": 0.5,
+          "gamma": 0.05,
+          "frobenius_norm": 1.9379785060882568,
+          "val_loop_red": -17.5257731958763,
+          "val_ppl_drift": -0.31768767433705053,
+          "val_incidence": 0.875
+        },
+        {
+          "name": "SP-SV (alpha=0.5, gamma=0.1)",
+          "alpha": 0.5,
+          "gamma": 0.1,
+          "frobenius_norm": 3.8759570121765137,
+          "val_loop_red": 5.1546391752577225,
+          "val_ppl_drift": -0.42422212552803273,
+          "val_incidence": 0.875
+        },
+        {
+          "name": "SP-SV (alpha=0.5, gamma=None)",
+          "alpha": 0.5,
+          "gamma": null,
+          "frobenius_norm": 5.22381067276001,
+          "val_loop_red": 7.216494845360821,
+          "val_ppl_drift": -0.36977020356297435,
+          "val_incidence": 0.75
+        }
+      ],
+      "selected_hyperparameters": {
+        "pareto_alpha": 0.5,
+        "pareto_gamma": null
+      },
+      "random_subspace_control_n20": {
+        "frob_stats": {
+          "mean": 5.937298154830932,
+          "std": 0.010215295826250947,
+          "ci_95": 0.004477050792042332
+        },
+        "red_stats": {
+          "mean": -3.4615384615384697,
+          "std": 5.839651188586526,
+          "ci_95": 2.5593399764231153
+        },
+        "drift_stats": {
+          "mean": 16.020412587985533,
+          "std": 0.25571144813986013,
+          "ci_95": 0.1120704834104653
+        },
+        "inv_stats": {
+          "mean": 1.7939682097041119,
+          "std": 0.6586626804243628,
+          "ci_95": 0.2886716474235346
+        }
+      },
+      "frozen_greedy_records": [
+        {
+          "name": "Baseline",
+          "frobenius_norm": 0.0,
+          "test_loop_red": 0.0,
+          "test_ppl": 17.110700607299805,
+          "test_ppl_drift": 0.0,
+          "invariance": 100.0,
+          "loop_incidence": 0.4166666666666667,
+          "prompt_scores": [
+            0.0,
+            0.3684210526315789,
+            0.3684210526315789,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.9473684210526315,
+            0.0,
+            0.0,
+            0.9473684210526315,
+            0.7894736842105263
+          ]
+        },
+        {
+          "name": "Raw WSP",
+          "frobenius_norm": 5.998054027557373,
+          "test_loop_red": -6.153846153846155,
+          "test_ppl": 19.969568252563477,
+          "test_ppl_drift": 16.70806889136974,
+          "invariance": 9.769962616701378e-13,
+          "loop_incidence": 0.6666666666666666,
+          "prompt_scores": [
+            0.3157894736842105,
+            0.3684210526315789,
+            0.47368421052631576,
+            0.6842105263157895,
+            0.0,
+            0.0,
+            0.05263157894736842,
+            0.10526315789473684,
+            0.21052631578947367,
+            0.6842105263157895,
+            0.21052631578947367,
+            0.5263157894736842
+          ]
+        },
+        {
+          "name": "Strict SP-SV-WSP (gamma=0.01)",
+          "frobenius_norm": 0.3875972330570221,
+          "test_loop_red": -44.61538461538465,
+          "test_ppl": 17.110076904296875,
+          "test_ppl_drift": -0.003645104997416657,
+          "invariance": 99.35962364394184,
+          "loop_incidence": 0.5833333333333334,
+          "prompt_scores": [
+            0.0,
+            0.3684210526315789,
+            0.3684210526315789,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.9473684210526315,
+            0.8421052631578947,
+            0.6842105263157895,
+            0.9473684210526315,
+            0.7894736842105263
+          ]
+        },
+        {
+          "name": "Balanced SP-SV-WSP (Val Selected)",
+          "frobenius_norm": 5.22381067276001,
+          "test_loop_red": -50.7692307692308,
+          "test_ppl": 17.12372398376465,
+          "test_ppl_drift": 0.07611246765247992,
+          "invariance": 81.93572208175061,
+          "loop_incidence": 0.75,
+          "prompt_scores": [
+            0.47368421052631576,
+            0.47368421052631576,
+            0.631578947368421,
+            0.6842105263157895,
+            0.0,
+            0.05263157894736842,
+            0.3684210526315789,
+            0.6842105263157895,
+            0.7894736842105263,
+            0.47368421052631576,
+            0.0,
+            0.5263157894736842
+          ]
+        },
+        {
+          "name": "Differential SP-SV-WSP (u_diff)",
+          "frobenius_norm": 4.6990509033203125,
+          "test_loop_red": -96.92307692307699,
+          "test_ppl": 17.10248565673828,
+          "test_ppl_drift": -0.04801060313111175,
+          "invariance": 91.5168763069238,
+          "loop_incidence": 0.8333333333333334,
+          "prompt_scores": [
+            0.0,
+            0.3684210526315789,
+            0.5789473684210527,
+            0.631578947368421,
+            0.0,
+            0.8947368421052632,
+            0.21052631578947367,
+            0.7894736842105263,
+            0.8421052631578947,
+            0.6842105263157895,
+            0.9473684210526315,
+            0.7894736842105263
+          ]
+        },
+        {
+          "name": "Dual-Layer SP-SV-WSP",
+          "frobenius_norm": 0.9689860343933105,
+          "test_loop_red": -49.230769230769276,
+          "test_ppl": 17.124094009399414,
+          "test_ppl_drift": 0.07827500700874547,
+          "invariance": 98.39906077185067,
+          "loop_incidence": 0.6666666666666666,
+          "prompt_scores": [
+            0.0,
+            0.3684210526315789,
+            0.3684210526315789,
+            0.6842105263157895,
+            0.0,
+            0.0,
+            0.15789473684210525,
+            0.9473684210526315,
+            0.8421052631578947,
+            0.0,
+            0.9473684210526315,
+            0.7894736842105263
+          ]
+        }
+      ],
+      "stochastic_statistical_summary": {
+        "Raw WSP": {
+          "score_stats": {
+            "mean": 0.2026315789473684,
+            "std": 0.05816203439445069,
+            "ci_95": 0.02549063547267182
+          },
+          "absolute_reduction_stats": {
+            "mean": 0.05701754385964915,
+            "std": 0.08247234669128627,
+            "ci_95": 0.03614509959926661
+          },
+          "incidence_stats": {
+            "mean": 0.4916666666666667,
+            "std": 0.13217700342313002,
+            "ci_95": 0.05792912588440286
+          },
+          "paired_t_test": {
+            "t_stat": 3.0918267539420436,
+            "p_val": 0.006003471461467648,
+            "sig": true
+          },
+          "wilcoxon_test": {
+            "w_stat": 32.0,
+            "p_val": 0.00485992431640625,
+            "sig": true
+          },
+          "cohens_d": 0.6913534796383096
+        },
+        "Strict SP-SV-WSP (gamma=0.01)": {
+          "score_stats": {
+            "mean": 0.30745614035087715,
+            "std": 0.06761696946253654,
+            "ci_95": 0.02963444346954878
+          },
+          "absolute_reduction_stats": {
+            "mean": -0.047807017543859645,
+            "std": 0.04504177934150027,
+            "ci_95": 0.019740430165287502
+          },
+          "incidence_stats": {
+            "mean": 0.4625,
+            "std": 0.10635851871347202,
+            "ci_95": 0.04661367605458335
+          },
+          "paired_t_test": {
+            "t_stat": -4.746692630373094,
+            "p_val": 0.00014033852626661614,
+            "sig": true
+          },
+          "wilcoxon_test": {
+            "w_stat": 8.0,
+            "p_val": 0.000736675759382907,
+            "sig": true
+          },
+          "cohens_d": -1.0613927389575875
+        },
+        "Balanced SP-SV-WSP (Val Selected)": {
+          "score_stats": {
+            "mean": 0.28969298245614034,
+            "std": 0.05449299553765655,
+            "ci_95": 0.023882608294679374
+          },
+          "absolute_reduction_stats": {
+            "mean": -0.030043859649122807,
+            "std": 0.0730354829690966,
+            "ci_95": 0.03200921171893192
+          },
+          "incidence_stats": {
+            "mean": 0.5875000000000001,
+            "std": 0.106358518713472,
+            "ci_95": 0.046613676054583345
+          },
+          "paired_t_test": {
+            "t_stat": -1.8396568284576804,
+            "p_val": 0.08149712036890051,
+            "sig": false
+          },
+          "wilcoxon_test": {
+            "w_stat": 58.5,
+            "p_val": 0.08254255239408262,
+            "sig": false
+          },
+          "cohens_d": -0.41135977236467186
+        },
+        "Differential SP-SV-WSP (u_diff)": {
+          "score_stats": {
+            "mean": 0.4442982456140351,
+            "std": 0.05444885114136127,
+            "ci_95": 0.02386326115997476
+          },
+          "absolute_reduction_stats": {
+            "mean": -0.18464912280701756,
+            "std": 0.05892814233797393,
+            "ci_95": 0.025826397082876644
+          },
+          "incidence_stats": {
+            "mean": 0.6499999999999999,
+            "std": 0.10678721258619787,
+            "ci_95": 0.04680155942821007
+          },
+          "paired_t_test": {
+            "t_stat": -14.013270203365249,
+            "p_val": 1.810472862552401e-11,
+            "sig": true
+          },
+          "wilcoxon_test": {
+            "w_stat": 0.0,
+            "p_val": 8.832385863081277e-05,
+            "sig": true
+          },
+          "cohens_d": -3.133462476126525
+        },
+        "Dual-Layer SP-SV-WSP": {
+          "score_stats": {
+            "mean": 0.2989035087719298,
+            "std": 0.07226902152621044,
+            "ci_95": 0.03167329518080042
+          },
+          "absolute_reduction_stats": {
+            "mean": -0.039254385964912285,
+            "std": 0.06693334606851183,
+            "ci_95": 0.029334832307059307
+          },
+          "incidence_stats": {
+            "mean": 0.4666666666666667,
+            "std": 0.12211584951084109,
+            "ci_95": 0.05351963076472952
+          },
+          "paired_t_test": {
+            "t_stat": -2.6227726712694768,
+            "p_val": 0.016750079547418664,
+            "sig": true
+          },
+          "wilcoxon_test": {
+            "w_stat": 26.0,
+            "p_val": 0.003182495964600432,
+            "sig": true
+          },
+          "cohens_d": -0.5864697982399639
+        }
+      },
+      "seed_model_scores": {
+        "Baseline": [
+          0.28508771929824567,
+          0.17105263157894735,
+          0.1929824561403509,
+          0.2675438596491228,
+          0.2192982456140351,
+          0.30701754385964913,
+          0.2456140350877193,
+          0.3245614035087719,
+          0.21052631578947367,
+          0.25438596491228066,
+          0.39035087719298245,
+          0.3421052631578947,
+          0.24122807017543857,
+          0.1929824561403509,
+          0.18421052631578946,
+          0.30701754385964913,
+          0.293859649122807,
+          0.1929824561403509,
+          0.2631578947368421,
+          0.30701754385964913
+        ],
+        "Raw WSP": [
+          0.10526315789473684,
+          0.12280701754385964,
+          0.17543859649122806,
+          0.21052631578947367,
+          0.2587719298245614,
+          0.2631578947368421,
+          0.18421052631578946,
+          0.21052631578947364,
+          0.25438596491228066,
+          0.23245614035087717,
+          0.2763157894736842,
+          0.10964912280701754,
+          0.10087719298245612,
+          0.18421052631578946,
+          0.293859649122807,
+          0.17982456140350875,
+          0.18859649122807018,
+          0.22807017543859645,
+          0.24122807017543857,
+          0.23245614035087717
+        ],
+        "Strict SP-SV-WSP (gamma=0.01)": [
+          0.23684210526315788,
+          0.31578947368421045,
+          0.24122807017543857,
+          0.3333333333333333,
+          0.2894736842105263,
+          0.41228070175438597,
+          0.25438596491228077,
+          0.41228070175438597,
+          0.21052631578947367,
+          0.30701754385964913,
+          0.4078947368421053,
+          0.3421052631578947,
+          0.3201754385964912,
+          0.23245614035087722,
+          0.17982456140350878,
+          0.3201754385964912,
+          0.3640350877192982,
+          0.2675438596491228,
+          0.3421052631578947,
+          0.35964912280701755
+        ],
+        "Balanced SP-SV-WSP (Val Selected)": [
+          0.24999999999999997,
+          0.24122807017543857,
+          0.23245614035087722,
+          0.21929824561403508,
+          0.28070175438596495,
+          0.32456140350877194,
+          0.3201754385964912,
+          0.37719298245614036,
+          0.22807017543859645,
+          0.1929824561403509,
+          0.32894736842105265,
+          0.30701754385964913,
+          0.31140350877192985,
+          0.3684210526315789,
+          0.3552631578947369,
+          0.2894736842105263,
+          0.23684210526315785,
+          0.2850877192982456,
+          0.3640350877192982,
+          0.2807017543859649
+        ],
+        "Differential SP-SV-WSP (u_diff)": [
+          0.4385964912280702,
+          0.4473684210526316,
+          0.46491228070175433,
+          0.4210526315789474,
+          0.3991228070175439,
+          0.4605263157894737,
+          0.4298245614035088,
+          0.49561403508771934,
+          0.46491228070175444,
+          0.3508771929824561,
+          0.47368421052631576,
+          0.5043859649122807,
+          0.3508771929824561,
+          0.3508771929824561,
+          0.46491228070175444,
+          0.5614035087719299,
+          0.44298245614035087,
+          0.3991228070175438,
+          0.4824561403508772,
+          0.4824561403508772
+        ],
+        "Dual-Layer SP-SV-WSP": [
+          0.31578947368421056,
+          0.2894736842105263,
+          0.23684210526315788,
+          0.4517543859649123,
+          0.33771929824561403,
+          0.3859649122807018,
+          0.3201754385964912,
+          0.39035087719298245,
+          0.21491228070175436,
+          0.2675438596491228,
+          0.3947368421052631,
+          0.18859649122807018,
+          0.25438596491228066,
+          0.2456140350877193,
+          0.18859649122807018,
+          0.3289473684210526,
+          0.31578947368421056,
+          0.2675438596491228,
+          0.24122807017543857,
+          0.3421052631578947
+        ]
+      }
+    }
+  }
+}

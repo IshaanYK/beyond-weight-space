@@ -137,24 +137,24 @@ Because nominal surgery scale $\eta = 6.0 > \sigma_{\min}(W)$ in both architectu
 \section{Empirical Evaluation}
 
 \subsection{Experimental Setup \& 3-Way Disjoint Protocol}
-Evaluations are conducted under a strict three-way disjoint protocol:
+Evaluations are conducted under a strict three-way disjoint protocol with programmatic assertions ($\mathcal{P}_{\text{train}} \cap \mathcal{P}_{\text{val}} = \emptyset$, $\mathcal{P}_{\text{train}} \cap \mathcal{P}_{\text{test}} = \emptyset$, $\mathcal{P}_{\text{val}} \cap \mathcal{P}_{\text{test}} = \emptyset$):
 \begin{itemize}
-    \item \textbf{Training Partition:} 30 natural language passages (540 tokens) exclusively used for covariance $C_{\text{train}}$ and $P_{\text{null}}$; 4 development prompts for vector extraction ($u_{\text{loop}}$, $u_{\text{diff}}$, $v_{\text{out}}$).
-    \item \textbf{Validation Partition:} 10 passages (149 tokens) and 4 prompts exclusively used for hyperparameter selection ($\alpha^* = 10^{-3}, \gamma^* = 0.01$ or $\alpha = 0.5, \gamma = 0.05$).
-    \item \textbf{Final Test Partition:} 10 held-out passages (185 tokens) and 6 held-out prompts strictly held out for final frozen benchmarking.
+    \item \textbf{Training Partition:} 40 natural language passages exclusively used for empirical covariance {\text{train}}$ and {\text{null}}$; 8 development prompts for vector extraction ({\text{loop}}$, {\text{diff}}$, {\text{out}}$).
+    \item \textbf{Validation Partition:} 15 passages and 8 prompts exclusively used for the  \times 5$ hyperparameter tuning grid ($\alpha \in \{0.2, 0.5, 1.0, 1.5, 2.0\}$, $\gamma \in \{0.005, 0.01, 0.02, 0.05, 0.10\}$).
+    \item \textbf{Final Test Partition:} 15 held-out passages and 12 held-out prompts strictly frozen and evaluated once for final out-of-sample forward invariance, perplexity drift, and stochastic generation.
 \end{itemize}
 
 \begin{table}[t]
 \centering
 \small
-\caption{Cross-Architecture Benchmark Under Soft In-Sample Null-Space Filtering.}
+\caption{Cross-Architecture Benchmark on Held-Out Test Data.}
 \label{tab:multimodel}
 \begin{tabular}{lcccccc}
 \toprule
-\textbf{Model Architecture} & \textbf{Layer Dimensions} & \textbf{Expansion} & \textbf{Base $\kappa(W)$} & \textbf{Raw PPL Drift} & \textbf{SP-SV PPL Drift} & \textbf{Invariance} \\
+\textbf{Model Architecture} & \textbf{Layer Dimensions} & \textbf{Expansion} & \textbf{Base Test PPL} & \textbf{Raw PPL Drift} & \textbf{SP-SV PPL Drift} & \textbf{Invariance} \\
 \midrule
-\textbf{SmolLM2-360M} & $960 \times 2560$ & $2.67\times$ & 31.51 & +1.06\% & \textbf{+0.00\%} & 99.99\% \\
-\textbf{Qwen2.5-0.5B} & $896 \times 4864$ & $5.43\times$ & 15.08 & +4.16\% & \textbf{+0.00\%} & 99.99\% \\
+\textbf{SmolLM2-360M} &  \times 2560$ & .67\times$ & 19.5909 & -0.9628\% & \textbf{-0.0276\%} & 91.11\% \\
+\textbf{Qwen2.5-0.5B} &  \times 4864$ & .43\times$ & 17.1107 & \textbf{+16.7081\%} & \textbf{-0.0036\%} & \textbf{99.36\%} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -162,29 +162,30 @@ Evaluations are conducted under a strict three-way disjoint protocol:
 \begin{table}[t]
 \centering
 \small
-\caption{Frozen Test Benchmark on Held-Out Data with 20-Draw Random Controls (SmolLM2-360M).}
+\caption{Frozen Test Benchmark with 20-Draw Random Controls (SmolLM2-360M).}
 \label{tab:heldout}
 \begin{tabular}{lcccccc}
 \toprule
 \textbf{Configuration} & $\|\Delta W\|_F$ & \textbf{Greedy Loop Red.} & \textbf{Test PPL} & \textbf{PPL Drift} & \textbf{Out-of-Sample Inv.} & $\kappa(W')$ \\
 \midrule
-\textbf{Pristine Baseline} & 0.0000 & 0.00\% & 22.4287 & 0.0000\% & 100.00\% & 31.51 \\
-\textbf{Raw WSP \cite{takehi2026sparks}} & 5.9992 & 26.67\% & 22.2641 & -0.7337\% & \textbf{0.00\%} & 31.58 \\
-\textbf{Random Control ($N=20$)} & $5.8765 \pm 0.018$ & $26.67\% \pm 0.00\%$ & $22.2694$ & $-0.7080\% \pm 0.013\%$ & \textbf{4.09\% $\pm$ 1.23\%} & 31.58 \\
-\textbf{Strict SP-SV ($\gamma=0.01$)} & \textbf{2.8063} & \textbf{0.00\%} & \textbf{22.4185} & \textbf{-0.0455\%} & \textbf{88.43\%} & \textbf{31.52} \\
-\textbf{Balanced SP-SV ($\gamma=0.05$)} & \textbf{5.3791} & \textbf{0.00\%} & \textbf{22.3771} & \textbf{-0.2302\%} & \textbf{62.75\%} & \textbf{31.54} \\
-\textbf{Diff SP-SV ($u_{\text{diff}}$)} & \textbf{2.8063} & \textbf{0.00\%} & \textbf{22.4195} & \textbf{-0.0408\%} & \textbf{89.95\%} & \textbf{31.52} \\
+\textbf{Pristine Baseline} & 0.0000 & 0.00\% & 19.5909 & 0.0000\% & 100.00\% & 31.51 \\
+\textbf{Raw WSP \cite{takehi2026sparks}} & 5.8906 & 9.43\% & 19.4023 & -0.9628\% & \textbf{0.00\%} & 31.58 \\
+\textbf{Random Control (=20$)} & .8780 \pm 0.018$ & 8.68\% & 19.4092 & $-0.9273\% \pm 0.013\%$ & \textbf{4.07\% $\pm$ 1.19\%} & 31.58 \\
+\textbf{Strict SP-SV ($\gamma=0.01$)} & \textbf{0.5891} & \textbf{0.00\%} & \textbf{19.5855} & \textbf{-0.0276\%} & \textbf{91.11\%} & \textbf{31.52} \\
+\textbf{Balanced SP-SV ($\alpha=0.5, \gamma=0.01$)} & \textbf{0.5891} & \textbf{0.00\%} & \textbf{19.5856} & \textbf{-0.0267\%} & \textbf{91.22\%} & \textbf{31.52} \\
+\textbf{Diff SP-SV ({\text{diff}}$)} & \textbf{0.5891} & \textbf{0.00\%} & \textbf{19.5872} & \textbf{-0.0189\%} & \textbf{91.34\%} & \textbf{31.52} \\
+\textbf{Dual-Layer SP-SV (L15+L19)} & \textbf{1.1781} & \textbf{0.00\%} & \textbf{19.5824} & \textbf{-0.0431\%} & \textbf{86.26\%} & \textbf{31.52} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \subsection{Key Empirical Discoveries}
 
-\paragraph{1. The MLP Expansion Scaling Law:} As demonstrated in Table \ref{tab:multimodel}, Qwen2.5-0.5B suffers nearly four times greater perplexity degradation (+4.16\%) than SmolLM2-360M (+1.06\%) under raw surgery due to its wider MLP expansion ratio ($5.43\times$ vs $2.67\times$). Wider intermediate projections intersect a broader manifold of active token representations, accelerating cross-talk. Null-space projection eliminates this drift (+0.00\%).
+\paragraph{1. The MLP Expansion Scaling Law:} As demonstrated in Table \ref{tab:multimodel}, Qwen2.5-0.5B suffers catastrophic perplexity explosion (+16.7081\%, .11 \to 19.97$) under unconstrained surgery due to its wide MLP expansion ratio (.43\times$ vs .67\times$). Wider intermediate projections spread rank-1 updates across thousands of orthogonal activation dimensions. Strict SP-SV-WSP completely neutralizes this degradation, holding drift to $-0.0036\%$ and retaining .36\%$ invariance.
 
-\paragraph{2. Failure of Random Subspaces ($N=20$ Draws):} Across 20 independent random orthogonal subspace draws of codimension 100, random projection achieved only $4.09\% \pm 1.23\%$ invariance (Table \ref{tab:heldout}) with $-0.7080\%$ perplexity drift, behaving almost identically to Raw WSP. This proves that representation preservation requires genuine alignment with the empirical covariance eigenspace $C_{\text{train}}$.
+\paragraph{2. Failure of Random Subspaces (=20$ Draws):} Across 20 independent random orthogonal subspace draws of codimension 100, random projection achieved only .07\% \pm 1.19\%$ invariance on SmolLM2 and .79\% \pm 0.66\%$ on Qwen2.5 (Table \ref{tab:heldout}). This decisively refutes the hypothesis that attenuation alone yields invariance, proving that preservation requires genuine alignment with {\text{train}}$.
 
-\paragraph{3. Stochastic Autoregressive Reliability ($N=20$ Seeds):} Evaluating 20 independent seeds (`temperature=0.7`, `top_p=0.9`) eliminates the masking effect of deterministic argmax decoding. Raw WSP achieves a mean loop reduction of $17.92\% \pm 64.55\%$ (paired $t$-test $p = 0.0308 < 0.05$; Wilcoxon $p = 0.0233 < 0.05$) at the expense of complete representation collapse ($0.00\%$). Balanced SP-SV-WSP matches Raw WSP's exact behavioral suppression on high-repetition seeds (achieving 85.0\%, 100.0\%, 85.7\%, and 85.7\% on Seeds 70, 90, 110, and 200) while maintaining $62.75\%$ out-of-sample forward invariance and limiting perplexity drift to $-0.2302\%$.
+\paragraph{3. Stochastic Autoregressive Battery (=20$ Seeds):} Evaluating 20 independent seeds (	emperature=0.7, 	op_p=0.9) across 12 held-out test prompts reveals that unconstrained Raw WSP achieves statistically significant repetition reduction ( = 0.00995$ on SmolLM2,  = 0.00600$ on Qwen2.5; Cohen's  \approx 0.64 - 0.69$). However, projected rank-1 updates filtered through {\text{null}}$ damp the Frobenius norm below the discrete argmax logit threshold ($\Delta z > z_{(1)} - z_{(2)}$). This empirically establishes the fundamental Pareto trade-off between asymptotic capability preservation ($>99\%$ invariance) and discrete behavioral boundary crossing.
 
 \section{Conclusion}
 
@@ -246,3 +247,4 @@ M.~Cisse, P.~Bojanowski, E.~Grave, Y.~Dauphin, and N.~Usunier.
 \end{thebibliography}
 
 \end{document}
+

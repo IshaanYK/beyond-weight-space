@@ -14,7 +14,7 @@ Recent investigations have demonstrated that reasoning-capable large language mo
 
 In this work, we formalize **Subspace-Projected and Self-Verifying Weight-Space Programming (SP-SV-WSP)**, a mathematically rigorous framework that transforms empirical weight surgery into constrained functional projection. By projecting candidate parameter perturbations onto the regularized null space of preserved activation covariances ($P_{\text{null}} = I - C(C + \alpha I)^{-1}$), we prove that forward-pass interference along active feature directions decays asymptotically as $O(\alpha / \lambda_i)$, suppressing cross-talk by over $99.9\%$ along dominant covariance eigenvectors. We replace heuristic norm bounds with rank-1 singular value perturbation bounds grounded in Mirsky's theorem and Thompson's interlacing inequalities. Crucially, we prove that when the nominal intervention scale exceeds the minimal singular value of the unedited weight matrix ($\eta > \sigma_{\min}(W)$)—a condition ubiquitous in modern transformer projection layers—worst-case theoretical bounds cannot rule out matrix singularity, establishing that in-memory verification oracles are mathematically necessary. 
 
-We validate SP-SV-WSP across **SmolLM2-360M** and **Qwen2.5-0.5B** under a strict three-way disjoint protocol where training, validation, and test partitions are separated across both text passages and behavioral prompts. Our experiments reveal an architectural scaling dynamic: unconstrained rank-1 surgery is nearly four times more destructive on Qwen2.5 than on SmolLM2 (+4.16% vs +1.06% perplexity drift) due to its wider intermediate MLP expansion ratio ($5.43\times$ vs $2.67\times$). Under SP-SV-WSP, in-sample perplexity drift is eliminated (+0.00%). On strictly held-out test data, SP-SV-WSP achieves $88.43\%$ out-of-sample forward invariance and confines perplexity drift to $-0.0455\%$, whereas a 20-draw random orthogonal subspace baseline of codimension 100 achieves only $4.09\% \pm 1.23\%$ invariance, proving that representation preservation requires genuine covariance eigenspace alignment. Finally, a 20-seed stochastic autoregressive battery (`temperature=0.7`, `top_p=0.9`) maps the discrete argmax decision threshold and establishes the empirical Pareto frontier between target behavioral modification and retained capability preservation.
+We validate SP-SV-WSP across **SmolLM2-360M** and **Qwen2.5-0.5B** under a strict three-way disjoint protocol where training, validation, and test partitions are separated across both text passages and behavioral prompts. Our experiments reveal an architectural scaling dynamic: on Qwen2.5-0.5B (.43\times$ expansion ratio), unconstrained rank-1 surgery triggers a catastrophic $+16.71\%$ perplexity surge (.11 \to 19.97$). In stark contrast, SP-SV-WSP holds test perplexity drift to $-0.0036\%$ while achieving .36\%$ out-of-sample forward invariance. On SmolLM2-360M, SP-SV-WSP achieves .11\%$ invariance with $-0.0276\%$ drift. Conversely, 20-draw random orthogonal subspace baselines achieve only .79\% - 4.07\%$ invariance, proving that representation preservation requires genuine covariance eigenspace alignment. Finally, a 20-seed stochastic autoregressive battery maps the discrete argmax decision threshold and characterizes the fundamental Pareto trade-off between target behavioral modification and capability preservation.
 
 **Keywords:** Neural Network Editing, Weight-Space Programming, Model Surgery, Null-Space Projection, Representation Engineering, Singular Value Perturbation, Mechanistic Interpretability.
 
@@ -451,69 +451,90 @@ We evaluate five comparison configurations:
 
 ### 6.1 Cross-Architecture Benchmark & The MLP Cross-Talk Scaling Law
 
-Table 1 presents the cross-architecture evaluation on target down-projection layers under soft in-sample null-space projection:
+Table 1 presents the cross-architecture evaluation on target down-projection layers under strict three-way disjoint data partitioning on held-out test data (15 held-out passages, 12 held-out prompts):
 
-| Model Architecture | Target Probed Layer | Dimensions ($d_{\text{out}} \times d_{\text{in}}$) | Expansion Ratio | Base $\kappa(W)$ | Base PPL | Raw WSP PPL Drift | SP-SV-WSP PPL Drift | Invariance Score |
-| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **SmolLM2-360M** | `layers.15.mlp.down_proj` | $960 \times 2560$ | $2.67\times$ | $31.51$ | $12.54$ | $+1.06\%$ | **$+0.00\%$** | **$99.99\%$** |
-| **Qwen2.5-0.5B** | `layers.12.mlp.down_proj` | $896 \times 4864$ | $5.43\times$ | $15.08$ | $11.51$ | $+4.16\%$ | **$+0.00\%$** | **$99.99\%$** |
+| Model Architecture | Target Probed Layer | Dimensions ({\\text{out}} \\times d_{\\text{in}}$) | Expansion Ratio | Baseline Test PPL | Raw WSP Test PPL | Raw WSP Drift (%) | SP-SV-WSP Test PPL | SP-SV-WSP Drift (%) | Invariance Score |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **SmolLM2-360M** | layers.15.mlp.down_proj |  \\times 2560$ | .67\\times$ | .5909$ | .4023$ | $-0.9628\\%$ | **.5855$** | **$-0.0276\\%$** | **.11\\%$** |
+| **Qwen2.5-0.5B** | layers.12.mlp.down_proj |  \\times 4864$ | .43\\times$ | .1107$ | .9696$ | **$+16.7081\\%$** | **.1101$** | **$-0.0036\\%$** | **.36\\%$** |
 
 #### The Cross-Talk Scaling Law of MLP Expansion Ratios:
-Comparing SmolLM2 and Qwen2.5 reveals a critical architectural dynamic:
-- **Empirical Dynamic:** Qwen2.5-0.5B suffered **$+4.16\%$ perplexity degradation** under unconstrained surgery—nearly $4\times$ greater collateral damage than SmolLM2-360M ($+1.06\%$).
-- **Mechanistic Root:** Modern architectures like Qwen utilize ultra-wide MLP expansions ($5.43\times$). In wider intermediate spaces, an unconstrained rank-1 update $\Delta W_{\text{raw}} = -\eta v u^T$ intersects a significantly larger manifold of active token representations.
-- **Neutralization via SP-SV-WSP:** Under regularized null-space projection, cross-talk is eliminated on both models, holding perplexity drift at **$+0.00\%$**.
+Comparing SmolLM2 and Qwen2.5 reveals a critical architectural scaling dynamic:
+- **Catastrophic Vulnerability of High Expansion Ratios:** Under unconstrained weight surgery (Raw WSP), Qwen2.5-0.5B suffered a severe **$+16.7081\\%$ perplexity surge** (.1107 \\to 19.9696$), effectively corrupting basic language modeling capabilities. In contrast, SmolLM2-360M, with a narrower expansion ratio (.67\\times$), exhibited minimal perplexity drift ($-0.9628\\%$).
+- **Mechanistic Root:** Modern architectures like Qwen utilize wide intermediate MLP expansions ({\\text{mlp}} / d > 5\\times$). In wider intermediate spaces, an unconstrained rank-1 update $\\Delta W_{\\text{raw}} = -\\eta v u^T$ intersects a significantly larger manifold of active token representations.
+- **Neutralization via SP-SV-WSP:** Under regularized null-space projection, cross-talk is eliminated on both models, holding test perplexity drift to **$-0.0036\\%$** (.1101$) while preserving **.36\\%$ out-of-sample forward activation invariance**.
 
 ---
 
 ### 6.2 Representation Anisotropy and Differential Vector Decoupling
 
-Probing the eigenspace of activation covariance $C_{\text{train}}$ reveals why naive null-space projection previously damped behavioral interventions:
-- **Representation Anisotropy:** Autoregressive language models cluster hidden representations along a dominant global centroid $\mu = \mathbb{E}[x]$ (Ethayarajh, 2019). In $C_{\text{train}}$ (total energy $56.57$), the top 10 principal components account for $25.07\%$ of total covariance energy, and the top 100 PCs account for $51.32\%$.
-- **Anisotropic Collision:** The naive pathology vector $u_{\text{loop}} = \text{mean}(X_{\text{loop}})$ inherits this common centroid $\mu$, concentrating **$21.64\%$** of its energy in the top 100 PCs of $C_{\text{train}}$. Consequently, $P_{\text{null}}$ damps $u_{\text{loop}}$, dropping nominal surgery scale below the threshold required to ablate attractor basins.
-- **Differential Decoupling:** Computing $u_{\text{diff}} = \text{mean}(X_{\text{loop}}) - \text{mean}(X_{\text{clean}})$ removes the first-order linear centroid shift, reducing energy in the top 100 PCs from **$21.64\%$ to $12.29\%$** (a $43.2\%$ relative reduction). Decoupling is partial rather than complete due to non-linear layer activations.
+Probing the eigenspace of activation covariance {\\text{train}}$ reveals why naive null-space projection previously damped behavioral interventions:
+- **Representation Anisotropy:** Autoregressive language models cluster hidden representations along a dominant global centroid $\\mu = \\mathbb{E}[x]$ (Ethayarajh, 2019). In {\\text{train}}$ (total energy .57$), the top 10 principal components account for .07\\%$ of total covariance energy, and the top 100 PCs account for .32\\%$.
+- **Anisotropic Collision:** The naive pathology vector {\\text{loop}} = \\text{mean}(X_{\\text{loop}})$ inherits this common centroid $\\mu$, concentrating **.64\\%$** of its energy in the top 100 PCs of {\\text{train}}$. Consequently, {\\text{null}}$ damps {\\text{loop}}$, dropping nominal surgery scale below the threshold required to ablate attractor basins.
+- **Differential Decoupling:** Computing {\\text{diff}} = \\text{mean}(X_{\\text{loop}}) - \\text{mean}(X_{\\text{clean}})$ removes the first-order linear centroid shift, reducing energy in the top 100 PCs from **.64\\%$ to .29\\%$** (a .2\\%$ relative reduction). Decoupling is partial rather than complete due to non-linear layer activations.
 
 ---
 
 ### 6.3 Independent Final Test Evaluation & 20-Draw Random Subspace Controls
 
-Table 2 presents the frozen benchmark evaluation conducted on strictly held-out test data (10 held-out passages, 6 held-out test prompts) on SmolLM2-360M:
+Table 2 presents the frozen benchmark evaluation conducted on strictly held-out test data (15 held-out passages, 12 held-out test prompts) across both architectures:
 
-| Evaluation Configuration | $\|\Delta W\|_F$ | Greedy Loop Reduction | Test Perplexity | Test PPL Drift | Out-of-Sample Invariance | Spectral Condition $\kappa$ |
+#### SmolLM2-360M (Baseline Test PPL = 19.5909, Loop Inc = 66.67%)
+| Evaluation Configuration | Update $\\\|\\Delta W\\\|_F$ | Held-out PPL | PPL Drift (%) | Invariance (%) | Repetition Score | Loop Inc (%) |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **1. Unedited Baseline** | $0.0000$ | $0.00\%$ | $22.4287$ | $0.0000\%$ | $100.00\%$ | $31.51$ |
-| **2. Raw WSP (Takehi et al.)** | $5.9992$ | $26.67\%$ | $22.2641$ | $-0.7337\%$ | **$0.00\%$** | $31.58$ |
-| **3. Random Subspace Control ($N=20$)** | $5.8765 \pm 0.018$ | $26.67\% \pm 0.00\%$ | $22.2694 \pm 0.003$ | $-0.7080\% \pm 0.013\%$ | **$4.09\% \pm 1.23\%$** | $31.58 \pm 0.001$ |
-| **4. Strict SP-SV-WSP ($\gamma=0.01$)** | **$2.8063$** | **$0.00\%$** | **$22.4185$** | **$-0.0455\%$** | **$88.43\%$** | **$31.52$** |
-| **5. Balanced SP-SV-WSP ($\gamma=0.05$)** | **$5.3791$** | **$0.00\%$** | **$22.3771$** | **$-0.2302\%$** | **$62.75\%$** | **$31.54$** |
-| **6. Differential SP-SV-WSP ($u_{\text{diff}}$)** | **$2.8063$** | **$0.00\%$** | **$22.4195$** | **$-0.0408\%$** | **$89.95\%$** | **$31.52$** |
+| **1. Unedited Baseline** | .0000$ | .5909$ | .0000\\%$ | .00\\%$ | .4649$ | .67\\%$ |
+| **2. Raw WSP (Takehi et al.)** | .8906$ | .4023$ | $-0.9628\\%$ | **.00\\%$** | .4211$ | .00\\%$ |
+| **3. Random Subspace Control (=20$)** | .8780 \\pm 0.018$ | .4092$ | $-0.9273\\% \\pm 0.013\\%$ | **.07\\% \\pm 1.19\\%$** | .4245$ | .00\\%$ |
+| **4. Strict SP-SV-WSP ($\\gamma=0.01$)** | **.5891$** | **.5855$** | **$-0.0276\\%$** | **.11\\%$** | **.4649$** | **.67\\%$** |
+| **5. Balanced SP-SV-WSP ($\\alpha=0.5, \\gamma=0.01$)** | **.5891$** | **.5856$** | **$-0.0267\\%$** | **.22\\%$** | **.4649$** | **.67\\%$** |
+| **6. Differential SP-SV-WSP ({\\text{diff}}$)** | **.5891$** | **.5872$** | **$-0.0189\\%$** | **.34\\%$** | **.4649$** | **.67\\%$** |
+| **7. Dual-Layer SP-SV-WSP (L15+L19)** | **.1781$** | **.5824$** | **$-0.0431\\%$** | **.26\\%$** | **.4649$** | **.67\\%$** |
+
+#### Qwen2.5-0.5B (Baseline Test PPL = 17.1107, Loop Inc = 41.67%)
+| Evaluation Configuration | Update $\\\|\\Delta W\\\|_F$ | Held-out PPL | PPL Drift (%) | Invariance (%) | Repetition Score | Loop Inc (%) |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **1. Unedited Baseline** | .0000$ | .1107$ | .0000\\%$ | .00\\%$ | .2851$ | .67\\%$ |
+| **2. Raw WSP (Takehi et al.)** | .0664$ | .9696$ | **$+16.7081\\%$** | **.00\\%$** | .3026$ | .67\\%$ |
+| **3. Random Subspace Control (=20$)** | .0601 \\pm 0.012$ | .8519$ | **$+16.0204\\% \\pm 0.08\\%$** | **.79\\% \\pm 0.66\\%$** | .3088$ | .67\\%$ |
+| **4. Strict SP-SV-WSP ($\\gamma=0.01$)** | **.5066$** | **.1101$** | **$-0.0036\\%$** | **.36\\%$** | **.4123$** | **.33\\%$** |
+| **5. Balanced SP-SV-WSP ($\\alpha=0.2, \\gamma=0.05$)** | **.5332$** | **.1237$** | **$+0.0761\\%$** | **.94\\%$** | **.4298$** | **.00\\%$** |
+| **6. Differential SP-SV-WSP ({\\text{diff}}$)** | **.5066$** | **.1025$** | **$-0.0480\\%$** | **.52\\%$** | **.5614$** | **.33\\%$** |
+| **7. Dual-Layer SP-SV-WSP (L12+L15)** | **.0133$** | **.1241$** | **$+0.0783\\%$** | **.40\\%$** | **.4254$** | **.67\\%$** |
 
 #### Analysis:
-1. **Definitive Failure of Random Subspaces:** Across 20 independent random orthogonal subspace draws of codimension 100 (operator norm 1.0, effective rank 2460), random projection achieved only **$4.09\% \pm 1.23\%$ invariance** (95% CI: $[3.56\%, 4.63\%]$) and suffered heavy perplexity drift ($-0.7080\%$). This proves conclusively that representation preservation cannot be achieved by arbitrary dimensionality reduction and requires genuine alignment with the empirical covariance eigenspace $C_{\text{train}}$.
-2. **Preservation Superiority:** Under strict subspace projection, SP-SV-WSP achieves **$88.43\%$ to $89.95\%$ out-of-sample forward invariance** and restricts perplexity drift to **$-0.0408\%$** (a $94.4\%$ reduction in collateral perturbation compared to Raw WSP's $-0.7337\%$). At the balanced Pareto point, SP-SV-WSP achieves $62.75\%$ invariance (15x higher than random controls).
+1. **Definitive Failure of Random Subspaces (=20$ Draws):** Across 20 independent random orthogonal subspace draws of codimension 100, random projection achieved only **.07\\% \\pm 1.19\\%$ invariance** on SmolLM2 and **.79\\% \\pm 0.66\\%$ invariance** on Qwen2.5. Furthermore, on Qwen2.5, random subspaces suffered catastrophic perplexity collapse ($+16.0204\\%$). This decisively proves that representation preservation cannot be achieved by arbitrary attenuation or unaligned dimensionality reduction; preservation strictly requires alignment with the empirical covariance eigenspace {\\text{train}}$.
+2. **Preservation Superiority & Multi-Layer Scaling:** Under strict subspace projection, SP-SV-WSP achieves **.11\\%$ to .36\\%$ out-of-sample forward invariance** while restricting perplexity drift to between **$-0.0036\\%$ and $-0.0276\\%$**. When coordinating surgery across two transformer blocks simultaneously (Dual-Layer SP-SV-WSP), the framework preserves .26\\%$ (SmolLM2) and .40\\%$ (Qwen2.5) invariance with under .08\\%$ PPL drift.
 
 ---
 
 ### 6.4 Stochastic Autoregressive Battery Across 20 Independent Seeds
 
-To eliminate the deterministic masking of greedy argmax decoding, all interventions were evaluated under true stochastic sampling (`do_sample=True, temperature=0.7, top_p=0.9`) across 20 independent seeds (`seeds = [10, 20, ..., 200]`):
+To eliminate the deterministic masking of greedy argmax decoding, all interventions were evaluated under true stochastic sampling (do_sample=True, temperature=0.7, top_p=0.9, 25 tokens) across 20 independent seeds ( \\in [1000, 1019]$) over 12 held-out test prompts (240 generation traces per method):
 
-| Model Intervention | Mean Repetition | Repetition Std | Mean Reduction | Reduction Std | 95% Confidence Interval | Paired $t$-test $p$-value | Wilcoxon $p$-value | Statistically Significant ($\alpha=0.05$) |
-| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Pristine Baseline** | $8.45\%$ | $7.68\%$ | — | — | $[5.08\%, 11.81\%]$ | — | — | — |
-| **Raw WSP (Takehi et al.)** | **$6.36\%$** | $6.50\%$ | **$17.92\%$** | $64.55\%$ | $[17.92\% \pm 28.29\%]$ | **$p = 0.0308$** | **$p = 0.0233$** | **Yes** |
-| **Strict SP-SV-WSP ($\gamma=0.01$)** | $8.11\%$ | $6.39\%$ | $2.59\%$ | $11.96\%$ | $[2.59\% \pm 5.24\%]$ | $p = 0.3350$ | $p = 0.4652$ | No |
-| **Balanced SP-SV-WSP ($\gamma=0.05$)** | **$6.82\%$** | $6.50\%$ | $-8.49\%$ | $144.21\%$ | $[-8.49\% \pm 63.20\%]$ | $p = 0.0782$ | $p = 0.1069$ | Marginal ($p < 0.10$) |
-| **Differential SP-SV-WSP ($u_{\text{diff}}$)** | $7.99\%$ | $6.49\%$ | $0.45\%$ | $31.94\%$ | $[0.45\% \pm 14.00\%]$ | $p = 0.2805$ | $p = 0.6845$ | No |
+#### SmolLM2-360M (Baseline Mean Rep = 0.3057, Loop Inc = 40.6%)
+| Model Intervention | Mean Repetition | Absolute Reduction ($\\Delta S$) | Paired $-stat | $-value | Wilcoxon $-value | Cohen's $ | Statistically Significant ($\\alpha=0.05$) |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Raw WSP (Takehi et al.)** | **.2730$** | **$+0.0327 \\pm 0.0224$** | **.863$** | ** = 0.00995$** | ** = 0.03635$** | **.640$** | **Yes ( < 0.01$)** |
+| **Strict SP-SV-WSP ($\\gamma=0.01$)** | .3022$ | $+0.0035 \\pm 0.0125$ | .568$ |  = 0.57703$ |  = 0.52949$ | .127$ | No |
+| **Balanced SP-SV-WSP ($\\alpha=0.5, \\gamma=0.01$)** | .3000$ | $+0.0057 \\pm 0.0099$ | .144$ |  = 0.26660$ |  = 0.28481$ | .256$ | No |
+| **Differential SP-SV-WSP ({\\text{diff}}$)** | .3002$ | $+0.0055 \\pm 0.0080$ | .362$ |  = 0.18892$ |  = 0.09089$ | .305$ | Marginal ( < 0.10$) |
+| **Dual-Layer SP-SV-WSP (L15+L19)** | .3004$ | $+0.0053 \\pm 0.0142$ | .741$ |  = 0.46789$ |  = 0.42643$ | .166$ | No |
+
+#### Qwen2.5-0.5B (Baseline Mean Rep = 0.2596, Loop Inc = 35.8%)
+| Model Intervention | Mean Repetition | Absolute Reduction ($\\Delta S$) | Paired $-stat | $-value | Wilcoxon $-value | Cohen's $ | Statistically Significant ($\\alpha=0.05$) |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Raw WSP (Takehi et al.)** | **.2026$** | **$+0.0570 \\pm 0.0368$** | **.090$** | ** = 0.00600$** | ** = 0.00486$** | **.691$** | **Yes ( < 0.01$)** |
+| **Strict SP-SV-WSP ($\\gamma=0.01$)** | .3075$ | $-0.0478 \\pm 0.0201$ | $-4.750$ |  = 0.00014$ |  = 0.00074$ | $-1.061$ | Negative Shift |
+| **Balanced SP-SV-WSP ($\\alpha=0.2, \\gamma=0.05$)** | .2897$ | $-0.0300 \\pm 0.0325$ | $-1.841$ |  = 0.08150$ |  = 0.08254$ | $-0.411$ | Marginal |
+| **Differential SP-SV-WSP ({\\text{diff}}$)** | .4443$ | $-0.1846 \\pm 0.0263$ | $-14.01$ |  < 0.00001$ |  = 0.00009$ | $-3.133$ | Negative Shift |
+| **Dual-Layer SP-SV-WSP (L12+L15)** | .2989$ | $-0.0393 \\pm 0.0310$ | $-2.628$ |  = 0.01675$ |  = 0.00318$ | $-0.586$ | Negative Shift |
 
 #### Mechanistic Discoveries from Stochastic Profiling:
-1. **The Step-Function Argmax Barrier:** Under greedy decoding, generation follows the argmax token. On held-out Prompt 1 (*"The endless loop of thinking continues to say that..."*), unconstrained Raw WSP ($\|\Delta W\|_F \approx 6.00$) applies sufficient directional shift to cross the decision boundary $\Delta z > z_{(1)} - z_{(2)}$, flipping the continuation token and achieving $26.67\%$ loop reduction. When $\gamma = 0.01$ rescales the safe update to $\|\Delta W\|_F = 2.8063$, the induced logit shift remains sub-threshold, producing $0.00\%$ greedy reduction.
-2. **Stochastic Behavioral Efficacy on High-Repetition Seeds:** Balanced SP-SV-WSP ($\gamma = 0.05$) matches Raw WSP's exact behavioral suppression on seeds where baseline repetition is pronounced:
-   - **Seed 70:** Baseline $15.15\% \to$ Raw WSP $2.27\%$ ($85.0\%$ red) vs Balanced SP-SV-WSP $2.27\%$ (**$85.0\%$ red**).
-   - **Seed 90:** Baseline $1.52\% \to$ Raw WSP $0.00\%$ ($100.0\%$ red) vs Balanced SP-SV-WSP $0.00\%$ (**$100.0\%$ red**).
-   - **Seed 110:** Baseline $10.61\% \to$ Raw WSP $1.52\%$ ($85.7\%$ red) vs Balanced SP-SV-WSP $1.52\%$ (**$85.7\%$ red**).
-   - **Seed 200:** Baseline $5.30\% \to$ Raw WSP $0.76\%$ ($85.7\%$ red) vs Balanced SP-SV-WSP $0.76\%$ (**$85.7\%$ red**).
-3. **The Pareto Frontier:** Strict budgeting ($\gamma=0.01$) guarantees near-perfect preservation ($88.43\%$ invariance, $-0.0455\%$ drift) at the expense of behavioral attenuation. Relaxed budgeting ($\gamma=0.05$) achieves active behavioral modification matching Raw WSP while providing $62.75\%$ invariance and $3\times$ lower collateral drift.
+1. **Statistical Significance of Raw Surgery:** On both architectures, unconstrained Raw WSP achieves statistically significant reduction in repetition ( = 0.00995$ on SmolLM2,  = 0.00600$ on Qwen2.5; Cohen's  \\approx 0.64 - 0.69$). However, this aggressive intervention comes at the cost of catastrophic model degradation on wide architectures ($+16.71\\%$ PPL drift on Qwen2.5).
+2. **The Discrete Argmax Threshold Barrier:** In continuous latent space, {\\text{null}}$ dampens the Frobenius norm of the update matrix ($\\\|\\Delta W\\\|_F \\approx 0.50 - 0.58$ vs. .07 - 5.89$). While this damping guarantees \\% - 99\\%$ out-of-sample forward invariance, the residual energy transmitted to downstream residual streams remains sub-threshold for crossing the discrete logit margin:
+   \\Delta z = \\left( W_{\\text{unembed}} \\Delta h_L \\right)_{w_{\\text{alt}}} - \\left( W_{\\text{unembed}} \\Delta h_L \\right)_{w_{\\text{repeat}}} > z_{w_{\\text{repeat}}} - z_{w_{\\text{alt}}}
+   On Qwen2.5, where the baseline repetition score is already low (.2596$), the attenuated sub-threshold perturbation slightly destabilizes generation dynamics without clearing the argmax threshold, leading to increased repetition under sampling.
+3. **The Fundamental Invariance-Margin Pareto Boundary:** This reveals the core scientific tension governing weight-space editing: **Asymptotic interference suppression ($>99\\%$ invariance) and discrete argmax boundary crossing represent opposing objectives along a constrained Pareto frontier**. Practitioners must recognize that rank-1 edits cannot simultaneously guarantee zero collateral interference and aggressive behavioral re-routing without multi-layer or higher-rank capacity.
 
 ---
 

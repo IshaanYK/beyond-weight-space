@@ -75,6 +75,25 @@ Evaluated on SmolLM2-360M across an independent 3-way split: 30 Train passages, 
 
 ---
 
+### 5. Phase 10 — Scientifically Validated Research Contribution (Cross-Architecture & Statistical Battery)
+Conducted across **SmolLM2-360M** and **Qwen2.5-0.5B** under a strict three-way disjoint protocol (40 train passages, 15 validation passages, 15 held-out test passages; 8 dev prompts, 8 val prompts, 12 held-out test prompts) with 20 random orthogonal subspace draws ($N=20$) and 20 stochastic seeds ($N=20$):
+
+| Architecture | Method | $\|\Delta W\|_F$ | Held-out PPL | PPL Drift (%) | Invariance (%) | Greedy Rep | Stochastic Mean Rep ($\Delta S$) | Cohen's $d$ |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **SmolLM2-360M** | Baseline | 0.0000 | 19.5909 | 0.0000% | 100.00% | 0.4649 | 0.3057 (—) | — |
+| | Raw WSP | 5.8906 | 19.4023 | -0.9628% | **0.00%** | 0.4211 | **0.2730 (+0.0327)** | **0.640 ($p < 0.01$)** |
+| | Strict SP-SV | 0.5891 | 19.5855 | -0.0276% | **91.11%** | 0.4649 | 0.3022 (+0.0035) | 0.127 ($p = 0.58$) |
+| | Random Subspace ($N=20$) | 5.8780 | 19.4092 | -0.9273% | **4.07% $\pm$ 1.19%** | 0.4245 | — | — |
+| **Qwen2.5-0.5B** | Baseline | 0.0000 | 17.1107 | 0.0000% | 100.00% | 0.2851 | 0.2596 (—) | — |
+| | Raw WSP | 5.0664 | 19.9696 | **+16.7081%** | **0.00%** | 0.3026 | **0.2026 (+0.0570)** | **0.691 ($p < 0.01$)** |
+| | Strict SP-SV | 0.5066 | 17.1101 | **-0.0036%** | **99.36%** | 0.4123 | 0.3075 (-0.0478) | -1.061 ($p < 0.001$) |
+| | Random Subspace ($N=20$) | 5.0601 | 19.8519 | **+16.0204%** | **1.79% $\pm$ 0.66%** | 0.3088 | — | — |
+
+*Phase 10 Comprehensive Report:* [`docs/PHASE_10_FINAL_REPORT.md`](docs/PHASE_10_FINAL_REPORT.md)  
+*Raw Benchmark Artifact:* [`benchmark_results/PHASE_10_RESULTS.json`](benchmark_results/PHASE_10_RESULTS.json)
+
+---
+
 ## 📚 Documentation Index
 
 - **[Theoretical Foundations & Critique of Takehi et al. (2026)](docs/01_theoretical_foundations.md):** Deconstructs the 5 structural flaws of unconstrained WSP.

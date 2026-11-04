@@ -110,26 +110,40 @@ class VerificationOracle:
         return float(s[0] / s[-1])
 
     @staticmethod
-    def detect_repetition_loops(token_ids: List[int], n_gram_window: int = 16) -> float:
+    def detect_repetition_loops(token_ids: List[int], n_gram_window: int = 4) -> float:
         """
         Calculate token repetition score: fraction of repeating n-grams.
         0.0 = completely unique, 1.0 = degenerate loop.
+        Defaults to n_gram_window=4 to support both short (e.g. 25 tokens) and long generations.
         """
         if len(token_ids) < n_gram_window * 2:
-            return 0.0
+            effective_window = max(2, len(token_ids) // 4)
+            if len(token_ids) < effective_window * 2:
+                return 0.0
+        else:
+            effective_window = n_gram_window
             
         seen = set()
         duplicates = 0
-        total_ngrams = len(token_ids) - n_gram_window + 1
+        total_ngrams = len(token_ids) - effective_window + 1
         
         for i in range(total_ngrams):
-            ngram = tuple(token_ids[i:i + n_gram_window])
+            ngram = tuple(token_ids[i:i + effective_window])
             if ngram in seen:
                 duplicates += 1
             else:
                 seen.add(ngram)
                 
         return float(duplicates / max(1, total_ngrams))
+
+    @staticmethod
+    def detect_loop_incidence(token_ids: List[int], threshold: float = 0.15, n_gram_window: int = 4) -> bool:
+        """
+        Binary indicator of whether generation exhibits a pathological loop.
+        Returns True if repetition score exceeds threshold.
+        """
+        score = VerificationOracle.detect_repetition_loops(token_ids, n_gram_window=n_gram_window)
+        return score >= threshold
 
     @torch.no_grad()
     def evaluate_perplexity(
