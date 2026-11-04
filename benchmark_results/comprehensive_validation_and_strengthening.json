@@ -1,0 +1,503 @@
+{
+  "metadata": {
+    "model_id": "HuggingFaceTB/SmolLM2-360M",
+    "layer": "model.layers.15.mlp.down_proj",
+    "shape": [
+      960,
+      2560
+    ],
+    "train_passages_count": 30,
+    "val_passages_count": 10,
+    "test_passages_count": 10,
+    "val_tokens": 149,
+    "test_tokens": 185,
+    "independence_verified": true
+  },
+  "mechanistic_subspace_analysis": {
+    "total_covariance_energy": 56.56538391113281,
+    "top_10_pc_energy_ratio": 0.2507452821892444,
+    "top_50_pc_energy_ratio": 0.5131846075700236,
+    "top_100_pc_energy_ratio": 0.6697663302193728,
+    "u_loop_top10_energy": 0.1599461743808428,
+    "u_diff_top10_energy": 0.04174059720351431,
+    "u_loop_top50_energy": 0.22272475771547207,
+    "u_diff_top50_energy": 0.08808931270057574,
+    "u_loop_top100_energy": 0.26153878380401707,
+    "u_diff_top100_energy": 0.12735240752596155,
+    "attenuation_sweep": [
+      {
+        "alpha": 0.0001,
+        "u_loop_norm": 0.7639786005020142,
+        "u_loop_damping_pct": 23.602139949798584,
+        "u_diff_norm": 0.8294684290885925,
+        "u_diff_damping_pct": 17.053157091140747
+      },
+      {
+        "alpha": 0.001,
+        "u_loop_norm": 0.7645254731178284,
+        "u_loop_damping_pct": 23.547452688217163,
+        "u_diff_norm": 0.830379843711853,
+        "u_diff_damping_pct": 16.962015628814697
+      },
+      {
+        "alpha": 0.01,
+        "u_loop_norm": 0.7720946669578552,
+        "u_loop_damping_pct": 22.790533304214478,
+        "u_diff_norm": 0.8387084603309631,
+        "u_diff_damping_pct": 16.129153966903687
+      },
+      {
+        "alpha": 0.1,
+        "u_loop_norm": 0.8195444345474243,
+        "u_loop_damping_pct": 18.04555654525757,
+        "u_diff_norm": 0.8898269534111023,
+        "u_diff_damping_pct": 11.01730465888977
+      },
+      {
+        "alpha": 0.5,
+        "u_loop_norm": 0.8749861717224121,
+        "u_loop_damping_pct": 12.501382827758789,
+        "u_diff_norm": 0.9404788017272949,
+        "u_diff_damping_pct": 5.952119827270508
+      },
+      {
+        "alpha": 1.0,
+        "u_loop_norm": 0.8996374607086182,
+        "u_loop_damping_pct": 10.036253929138184,
+        "u_diff_norm": 0.9580863118171692,
+        "u_diff_damping_pct": 4.191368818283081
+      }
+    ]
+  },
+  "validation_grid_search": {
+    "grid_results": [
+      {
+        "alpha": 0.001,
+        "gamma": 0.01,
+        "final_frob_norm": 2.806321620941162,
+        "budget_ratio": 0.01000011601955617,
+        "budget_rescaled": true,
+        "val_loop_reduction_pct": 0.0,
+        "val_ppl_drift_pct": -0.023413857356440852,
+        "val_condition": 31.516765594482422,
+        "invariance_score": 0.9025026019906772,
+        "composite_score": -0.023413857356440852
+      },
+      {
+        "alpha": 0.001,
+        "gamma": 0.05,
+        "final_frob_norm": 4.586613178253174,
+        "budget_ratio": 0.016344051079923833,
+        "budget_rescaled": false,
+        "val_loop_reduction_pct": 0.0,
+        "val_ppl_drift_pct": -0.03776378965015173,
+        "val_condition": 31.520654678344727,
+        "invariance_score": 0.8406497035219902,
+        "composite_score": -0.03776378965015173
+      },
+      {
+        "alpha": 0.001,
+        "gamma": 0.1,
+        "final_frob_norm": 4.586613178253174,
+        "budget_ratio": 0.016344051079923833,
+        "budget_rescaled": false,
+        "val_loop_reduction_pct": 0.0,
+        "val_ppl_drift_pct": -0.03776378965015173,
+        "val_condition": 31.520654678344727,
+        "invariance_score": 0.8406497035219902,
+        "composite_score": -0.03776378965015173
+      },
+      {
+        "alpha": 0.001,
+        "gamma": null,
+        "final_frob_norm": 4.586613178253174,
+        "budget_ratio": 0.016344051079923833,
+        "budget_rescaled": false,
+        "val_loop_reduction_pct": 0.0,
+        "val_ppl_drift_pct": -0.03776378965015173,
+        "val_condition": 31.520654678344727,
+        "invariance_score": 0.8406497035219902,
+        "composite_score": -0.03776378965015173
+      },
+      {
+        "alpha": 0.01,
+        "gamma": 0.01,
+        "final_frob_norm": 2.8063180446624756,
+        "budget_ratio": 0.01000010327575606,
+        "budget_rescaled": true,
+        "val_loop_reduction_pct": 0.0,
+        "val_ppl_drift_pct": -0.02536821810850657,
+        "val_condition": 31.51833724975586,
+        "invariance_score": 0.8997498472217678,
+        "composite_score": -0.02536821810850657
+      },
+      {
+        "alpha": 0.01,
+        "gamma": 0.05,
+        "final_frob_norm": 4.632005214691162,
+        "budget_ratio": 0.016505802187621738,
+        "budget_rescaled": false,
+        "val_loop_reduction_pct": 0.0,
+        "val_ppl_drift_pct": -0.041118519130075554,
+        "val_condition": 31.5227108001709,
+        "invariance_score": 0.8345291573972632,
+        "composite_score": -0.041118519130075554
+      },
+      {
+        "alpha": 0.01,
+        "gamma": 0.1,
+        "final_frob_norm": 4.632005214691162,
+        "budget_ratio": 0.016505802187621738,
+        "budget_rescaled": false,
+        "val_loop_reduction_pct": 0.0,
+        "val_ppl_drift_pct": -0.041118519130075554,
+        "val_condition": 31.5227108001709,
+        "invariance_score": 0.8345291573972632,
+        "composite_score": -0.041118519130075554
+      },
+      {
+        "alpha": 0.01,
+        "gamma": null,
+        "final_frob_norm": 4.632005214691162,
+        "budget_ratio": 0.016505802187621738,
+        "budget_rescaled": false,
+        "val_loop_reduction_pct": 0.0,
+        "val_ppl_drift_pct": -0.041118519130075554,
+        "val_condition": 31.5227108001709,
+        "invariance_score": 0.8345291573972632,
+        "composite_score": -0.041118519130075554
+      },
+      {
+        "alpha": 0.1,
+        "gamma": 0.01,
+        "final_frob_norm": 2.8063156604766846,
+        "budget_ratio": 0.010000094779889319,
+        "budget_rescaled": true,
+        "val_loop_reduction_pct": 0.0,
+        "val_ppl_drift_pct": -0.03604795324184206,
+        "val_condition": 31.523794174194336,
+        "invariance_score": 0.8808460649690988,
+        "composite_score": -0.03604795324184206
+      },
+      {
+        "alpha": 0.1,
+        "gamma": 0.05,
+        "final_frob_norm": 4.916643142700195,
+        "budget_ratio": 0.017520088035122637,
+        "budget_rescaled": false,
+        "val_loop_reduction_pct": 0.0,
+        "val_ppl_drift_pct": -0.06166239002777424,
+        "val_condition": 31.532377243041992,
+        "invariance_score": 0.7912412295946667,
+        "composite_score": -0.06166239002777424
+      },
+      {
+        "alpha": 0.1,
+        "gamma": 0.1,
+        "final_frob_norm": 4.916643142700195,
+        "budget_ratio": 0.017520088035122637,
+        "budget_rescaled": false,
+        "val_loop_reduction_pct": 0.0,
+        "val_ppl_drift_pct": -0.06166239002777424,
+        "val_condition": 31.532377243041992,
+        "invariance_score": 0.7912412295946667,
+        "composite_score": -0.06166239002777424
+      },
+      {
+        "alpha": 0.1,
+        "gamma": null,
+        "final_frob_norm": 4.916643142700195,
+        "budget_ratio": 0.017520088035122637,
+        "budget_rescaled": false,
+        "val_loop_reduction_pct": 0.0,
+        "val_ppl_drift_pct": -0.06166239002777424,
+        "val_condition": 31.532377243041992,
+        "invariance_score": 0.7912412295946667,
+        "composite_score": -0.06166239002777424
+      },
+      {
+        "alpha": 0.5,
+        "gamma": 0.01,
+        "final_frob_norm": 2.8062961101531982,
+        "budget_ratio": 0.010000025113782049,
+        "budget_rescaled": true,
+        "val_loop_reduction_pct": 0.0,
+        "val_ppl_drift_pct": -0.07552757930030346,
+        "val_condition": 31.53125,
+        "invariance_score": 0.8357187210587205,
+        "composite_score": -0.07552757930030346
+      },
+      {
+        "alpha": 0.5,
+        "gamma": 0.05,
+        "final_frob_norm": 5.24924373626709,
+        "budget_ratio": 0.018705285233840983,
+        "budget_rescaled": false,
+        "val_loop_reduction_pct": 10.619469026548664,
+        "val_ppl_drift_pct": -0.13728230133211228,
+        "val_condition": 31.548160552978516,
+        "invariance_score": 0.6927072554193343,
+        "composite_score": 10.482186725216552
+      },
+      {
+        "alpha": 0.5,
+        "gamma": 0.1,
+        "final_frob_norm": 5.24924373626709,
+        "budget_ratio": 0.018705285233840983,
+        "budget_rescaled": false,
+        "val_loop_reduction_pct": 10.619469026548664,
+        "val_ppl_drift_pct": -0.13728230133211228,
+        "val_condition": 31.548160552978516,
+        "invariance_score": 0.6927072554193343,
+        "composite_score": 10.482186725216552
+      },
+      {
+        "alpha": 0.5,
+        "gamma": null,
+        "final_frob_norm": 5.24924373626709,
+        "budget_ratio": 0.018705285233840983,
+        "budget_rescaled": false,
+        "val_loop_reduction_pct": 10.619469026548664,
+        "val_ppl_drift_pct": -0.13728230133211228,
+        "val_condition": 31.548160552978516,
+        "invariance_score": 0.6927072554193343,
+        "composite_score": 10.482186725216552
+      }
+    ],
+    "selected_best_configuration": {
+      "alpha": 0.5,
+      "gamma": 0.05,
+      "final_frob_norm": 5.24924373626709,
+      "budget_ratio": 0.018705285233840983,
+      "budget_rescaled": false,
+      "val_loop_reduction_pct": 10.619469026548664,
+      "val_ppl_drift_pct": -0.13728230133211228,
+      "val_condition": 31.548160552978516,
+      "invariance_score": 0.6927072554193343,
+      "composite_score": 10.482186725216552
+    }
+  },
+  "final_test_set_evaluation": [
+    {
+      "configuration": "1. Unedited Baseline",
+      "final_frobenius_norm": 0.0,
+      "budget_ratio": 0.0,
+      "budget_rescaled": false,
+      "test_loop_reduction_pct": 0.0,
+      "test_ppl": 22.428688049316406,
+      "test_ppl_drift_pct": 0.0,
+      "test_invariance_pct": 100.0,
+      "condition_number": 31.513639450073242,
+      "per_prompt_scores": [
+        0.8636363636363636,
+        0.5909090909090909,
+        0.5454545454545454,
+        0.0,
+        0.6363636363636364,
+        0.6363636363636364,
+        0.9545454545454546,
+        0.9090909090909091
+      ],
+      "per_prompt_texts": [
+        " A B C A B C A B C A B C A B C A B C A B C A B C A",
+        " 1, 2, 3, 1, 2, 3, 1, 2, ",
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I'm sorry, I'm sorry, I'm sorry, I'm sorry, I'm sorry, I'm",
+        " 1 2 3 4 1 2 3 4 1 2 3 4 ",
+        " hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello",
+        " true false true false true false true false true false true false true false true false true false true false true false true false true"
+      ]
+    },
+    {
+      "configuration": "2. Raw WSP (Takehi et al.)",
+      "final_frobenius_norm": 5.999196529388428,
+      "budget_ratio": 0.021377685604646895,
+      "budget_rescaled": false,
+      "test_loop_reduction_pct": 10.619469026548664,
+      "test_ppl": 22.212724685668945,
+      "test_ppl_drift_pct": -0.9628889713593534,
+      "test_invariance_pct": 1.709743457922741e-12,
+      "condition_number": 31.59670639038086,
+      "per_prompt_scores": [
+        0.8636363636363636,
+        0.5909090909090909,
+        0.0,
+        0.0,
+        0.6363636363636364,
+        0.6363636363636364,
+        0.9545454545454546,
+        0.9090909090909091
+      ],
+      "per_prompt_texts": [
+        " A B C A B C A B C A B C A B C A B C A B C A B C A",
+        " 1, 2, 3, 1, 2, 3, 1, 2, ",
+        " the world is a bad place and that we are all doomed.\\n\\nThe world is not a bad place. It is",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I'm sorry, I'm sorry, I'm sorry, I'm sorry, I'm sorry, I'm",
+        " 1 2 3 4 1 2 3 4 1 2 3 4 ",
+        " hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello",
+        " true false true false true false true false true false true false true false true false true false true false true false true false true"
+      ]
+    },
+    {
+      "configuration": "3. Random Subspace Control",
+      "final_frobenius_norm": 5.895877838134766,
+      "budget_ratio": 0.021009517219449898,
+      "budget_rescaled": false,
+      "test_loop_reduction_pct": 10.619469026548664,
+      "test_ppl": 22.217300415039062,
+      "test_ppl_drift_pct": -0.9424877362980066,
+      "test_invariance_pct": 3.6640086668774496,
+      "condition_number": 31.59775161743164,
+      "per_prompt_scores": [
+        0.8636363636363636,
+        0.5909090909090909,
+        0.0,
+        0.0,
+        0.6363636363636364,
+        0.6363636363636364,
+        0.9545454545454546,
+        0.9090909090909091
+      ],
+      "per_prompt_texts": [
+        " A B C A B C A B C A B C A B C A B C A B C A B C A",
+        " 1, 2, 3, 1, 2, 3, 1, 2, ",
+        " the world is a bad place and that we are all doomed.\\n\\nThe world is not a bad place. It is",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I'm sorry, I'm sorry, I'm sorry, I'm sorry, I'm sorry, I'm",
+        " 1 2 3 4 1 2 3 4 1 2 3 4 ",
+        " hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello",
+        " true false true false true false true false true false true false true false true false true false true false true false true false true"
+      ]
+    },
+    {
+      "configuration": "4. Selected SP-SV-WSP (alpha=0.5, gamma=0.05)",
+      "final_frobenius_norm": 5.24924373626709,
+      "budget_ratio": 0.018705285233840983,
+      "budget_rescaled": false,
+      "test_loop_reduction_pct": 10.619469026548664,
+      "test_ppl": 22.36635971069336,
+      "test_ppl_drift_pct": -0.2778956062253786,
+      "test_invariance_pct": 65.61163488521666,
+      "condition_number": 31.548160552978516,
+      "per_prompt_scores": [
+        0.8636363636363636,
+        0.5909090909090909,
+        0.0,
+        0.0,
+        0.6363636363636364,
+        0.6363636363636364,
+        0.9545454545454546,
+        0.9090909090909091
+      ],
+      "per_prompt_texts": [
+        " A B C A B C A B C A B C A B C A B C A B C A B C A",
+        " 1, 2, 3, 1, 2, 3, 1, 2, ",
+        " the world is a bad place and that we are all doomed.\\n\\nThe world is not a bad place. It is",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I'm sorry, I'm sorry, I'm sorry, I'm sorry, I'm sorry, I'm",
+        " 1 2 3 4 1 2 3 4 1 2 3 4 ",
+        " hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello",
+        " true false true false true false true false true false true false true false true false true false true false true false true false true"
+      ]
+    },
+    {
+      "configuration": "5. SP-SV-WSP Strict (alpha=1e-3, gamma=0.05)",
+      "final_frobenius_norm": 4.586613178253174,
+      "budget_ratio": 0.016344051079923833,
+      "budget_rescaled": false,
+      "test_loop_reduction_pct": 0.0,
+      "test_ppl": 22.411645889282227,
+      "test_ppl_drift_pct": -0.07598375792960885,
+      "test_invariance_pct": 82.87002236592154,
+      "condition_number": 31.520654678344727,
+      "per_prompt_scores": [
+        0.8636363636363636,
+        0.5909090909090909,
+        0.5454545454545454,
+        0.0,
+        0.6363636363636364,
+        0.6363636363636364,
+        0.9545454545454546,
+        0.9090909090909091
+      ],
+      "per_prompt_texts": [
+        " A B C A B C A B C A B C A B C A B C A B C A B C A",
+        " 1, 2, 3, 1, 2, 3, 1, 2, ",
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I'm sorry, I'm sorry, I'm sorry, I'm sorry, I'm sorry, I'm",
+        " 1 2 3 4 1 2 3 4 1 2 3 4 ",
+        " hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello",
+        " true false true false true false true false true false true false true false true false true false true false true false true false true"
+      ]
+    },
+    {
+      "configuration": "6. Differential SP-SV-WSP (u_diff, alpha=1e-3)",
+      "final_frobenius_norm": 4.981692790985107,
+      "budget_ratio": 0.017751887564095473,
+      "budget_rescaled": false,
+      "test_loop_reduction_pct": 0.0,
+      "test_ppl": 22.410844802856445,
+      "test_ppl_drift_pct": -0.07955546227548861,
+      "test_invariance_pct": 83.82213055145316,
+      "condition_number": 31.512310028076172,
+      "per_prompt_scores": [
+        0.8636363636363636,
+        0.5909090909090909,
+        0.5454545454545454,
+        0.0,
+        0.6363636363636364,
+        0.6363636363636364,
+        0.9545454545454546,
+        0.9090909090909091
+      ],
+      "per_prompt_texts": [
+        " A B C A B C A B C A B C A B C A B C A B C A B C A",
+        " 1, 2, 3, 1, 2, 3, 1, 2, ",
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I'm sorry, I'm sorry, I'm sorry, I'm sorry, I'm sorry, I'm",
+        " 1 2 3 4 1 2 3 4 1 2 3 4 ",
+        " hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello",
+        " true false true false true false true false true false true false true false true false true false true false true false true false true"
+      ]
+    }
+  ],
+  "statistical_reliability": {
+    "per_seed_results": {
+      "seed_42": {
+        "baseline_rep": 0.6420454545454545,
+        "raw_rep": 0.5738636363636364,
+        "selected_sp_sv_rep": 0.5738636363636364,
+        "raw_reduction_pct": 10.619469026548664,
+        "selected_sp_sv_reduction_pct": 10.619469026548664
+      },
+      "seed_123": {
+        "baseline_rep": 0.6420454545454545,
+        "raw_rep": 0.5738636363636364,
+        "selected_sp_sv_rep": 0.5738636363636364,
+        "raw_reduction_pct": 10.619469026548664,
+        "selected_sp_sv_reduction_pct": 10.619469026548664
+      },
+      "seed_999": {
+        "baseline_rep": 0.6420454545454545,
+        "raw_rep": 0.5738636363636364,
+        "selected_sp_sv_rep": 0.5738636363636364,
+        "raw_reduction_pct": 10.619469026548664,
+        "selected_sp_sv_reduction_pct": 10.619469026548664
+      }
+    },
+    "raw_wsp_aggregate": {
+      "mean": 10.619469026548664,
+      "std": 0.0,
+      "ci_95": 0.0
+    },
+    "selected_sp_sv_aggregate": {
+      "mean": 10.619469026548664,
+      "std": 0.0,
+      "ci_95": 0.0
+    }
+  }
+}

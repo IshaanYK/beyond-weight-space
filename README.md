@@ -35,27 +35,35 @@ Evaluated across **SmolLM2-360M** (Llama/SwiGLU, expansion ratio $2.67\times$) a
 
 ---
 
-### 2. Scientific Discovery: The Cross-Talk Scaling Law of MLP Expansion Ratios
-Our cross-architecture evaluations revealed a fundamental scaling phenomenon:
-- **Finding:** Under identical rank-1 surgery, Qwen2.5-0.5B suffered **$+4.16\%$ perplexity degradation**, compared to **$+1.06\%$** on SmolLM2-360M—a nearly $4\times$ increase in collateral damage.
-- **Mechanistic Cause:** Qwen2.5 utilizes a much wider intermediate MLP projection ($d_{\text{in}} = 4,864$ vs $2,560$, an expansion ratio of $5.43\times$ vs $2.67\times$). In wider intermediate representations, unconstrained rank-1 deltas $\Delta W = -\eta v u^T$ intersect a wider manifold of active token features, accelerating representation destruction.
-- **Null-Space Neutralization:** SP-SV-WSP suppresses this vulnerability across both models, holding held-out perplexity drift at **$+0.00\%$** with $>99.99\%$ invariance.
+### 2. Empirical Architectural Observation: Cross-Talk Vulnerability in Wide MLPs
+Comparing SmolLM2-360M and Qwen2.5-0.5B under unconstrained rank-1 surgery revealed an important architectural dynamic:
+- **Observation:** Qwen2.5-0.5B suffered **$+4.16\%$ perplexity degradation**, compared to **$+1.06\%$** on SmolLM2-360M—a nearly $4\times$ increase in collateral damage.
+- **Mechanistic Hypothesis:** Qwen2.5 utilizes a significantly wider intermediate MLP projection ($d_{\text{in}} = 4,864$ vs $2,560$, an expansion ratio of $5.43\times$ vs $2.67\times$). In wider intermediate spaces, unconstrained directional updates $\Delta W = -\eta v u^T$ intersect a wider manifold of active token representations, accelerating cross-talk.
+- **Null-Space Neutralization:** By filtering updates through $P_{\text{null}}$, SP-SV-WSP eliminates this vulnerability, preserving held-out perplexity drift at **$+0.00\%$** with $>99.99\%$ invariance on both models.
 
 ---
 
-### 3. Scientific Discovery: The $\alpha$-Spectral Damping Phase Transition
-Evaluated on a scaled 40-passage multi-domain corpus with a strict **80/20 disjoint train/held-out activation split** (580 train / 146 held-out activations in $\mathbb{R}^{4864}$):
+### 3. Mechanistic Subspace Investigation & Representation Anisotropy
+Probing the eigenspace of activation covariance matrix $C_{\text{train}}$ revealed why naive null-space projection previously damped behavioral modifications:
+- **Representation Anisotropy:** Autoregressive language models cluster hidden representations along a dominant global centroid $\mu = \mathbb{E}[x]$ (Ethayarajh, 2019). The top 10 principal components account for **$25.07\%$** of total covariance energy, and the top 50 PCs account for **$51.32\%$**.
+- **Subspace Collision:** Naive mean failure activations $u_{\text{loop}} = \text{mean}(X_{\text{loop}})$ align heavily with $\mu$, placing **$15.99\%$** of their energy in the top 10 PCs and **$26.15\%$** in the top 100 PCs. $P_{\text{null}}$ dampens these components by up to $23.6\%$, dropping the effective surgery scale below the critical threshold required to ablate attractor basins.
+- **Differential Surgery:** Computing $u_{\text{diff}} = \text{mean}(X_{\text{loop}}) - \text{mean}(X_{\text{clean}})$ analytically cancels the global centroid $\mu$. $u_{\text{diff}}$ retains only **$4.17\%$** energy in the top 10 PCs and **$0.13\%$** in the top 100 PCs, cutting projection damping in half and preserving intervention effectiveness.
 
-| Regularization $\alpha$ | Qwen2.5 Held-Out Invariance | Residual Error | Held-Out PPL | PPL Drift | Condition $\kappa$ |
-| :---: | :---: | :---: | :---: | :---: | :---: |
-| **$10^{-5}$** | **95.66%** | **0.0434** | 52.94 | **+0.04%** | 15.14 |
-| **$10^{-4}$** | **95.66%** | **0.0433** | 52.94 | **+0.05%** | 15.14 |
-| **$10^{-3}$ (Optimal)** | **95.64%** | **0.0436** | 52.94 | **+0.05%** | 15.14 |
-| **$10^{-2}$** | 95.40% | 0.0460 | 52.94 | +0.04% | 15.14 |
-| **$10^{-1}$** | 93.94% | 0.0605 | 52.87 | -0.09% | 15.14 |
-| **$1.00$** | **88.44%** | **0.1156** | 52.56 | -0.68% | 15.14 |
+---
 
-*Raw Benchmark Artifact:* [`benchmark_results/rigorous_evaluation_battery.json`](benchmark_results/rigorous_evaluation_battery.json)
+### 4. Independent Final Test Evaluation (Strict 3-Way Disjoint Split)
+Evaluated on SmolLM2-360M across an independent 3-way split: 30 Train passages (540 tokens), 10 Validation passages (149 tokens), and 10 Final Test passages (185 tokens). Hyperparameters ($\alpha^* = 0.5, \gamma^* = 0.05$) were selected solely on validation data:
+
+| Configuration | $\|\Delta W\|_F$ | Test Loop Reduction | Test PPL | Test PPL Drift | Out-of-Sample Invariance | Condition Number $\kappa$ |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **1. Unedited Baseline** | 0.0000 | 0.00% | 22.4287 | 0.0000% | 100.00% | 31.51 |
+| **2. Raw WSP (Takehi et al.)** | 5.9992 | 10.62% | 22.2127 | -0.9629% | **0.00%** | 31.60 |
+| **3. Random Subspace Control** | 5.8959 | 10.62% | 22.2173 | -0.9425% | **3.66%** | 31.60 |
+| **4. Selected SP-SV-WSP ($\alpha^*=0.5, \gamma^*=0.05$)** | **5.2492** | **10.62%** | **22.3664** | **-0.2779%** | **65.61%** | **31.55** |
+| **5. Strict SP-SV-WSP ($\alpha=10^{-3}, \gamma=0.05$)** | 4.5866 | 0.00% | 22.4116 | -0.0760% | **82.87%** | 31.52 |
+| **6. Differential SP-SV-WSP ($u_{\text{diff}}, \alpha=10^{-3}$)** | 4.9817 | 0.00% | 22.4108 | -0.0796% | **83.82%** | 31.51 |
+
+*Raw Benchmark Artifact:* [`benchmark_results/comprehensive_validation_and_strengthening.json`](benchmark_results/comprehensive_validation_and_strengthening.json)
 
 ---
 

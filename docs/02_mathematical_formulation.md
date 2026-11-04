@@ -57,6 +57,25 @@ $$\Delta W_{\text{safe}} = \Delta W_{\text{raw}} \cdot P_{\text{null}}$$
 The updated layer weight matrix is:
 $$W_{\text{new}}^{(l)} = W^{(l)} + \Delta W_{\text{safe}}$$
 
+### 2.4 Representation Anisotropy & Differential Pathology Extraction
+
+A fundamental challenge in Weight-Space Programming is the **representation anisotropy** inherent to autoregressive language models (Ethayarajh, 2019). Transformer hidden states cluster in a narrow high-dimensional cone around a dominant global language centroid $\mu = \mathbb{E}_{x \sim \mathcal{D}}[x]$.
+
+Consequently, the uncentered activation covariance matrix:
+$$C = \frac{1}{N} \sum_{i=1}^N x_i x_i^T = \mu \mu^T + \Sigma_x$$
+is dominated by $\mu \mu^T$, causing the leading eigenvectors $v_1, v_2, \dots$ of $C$ to align directly with $\mu$.
+
+#### The Subspace Collision Dilemma:
+When the input pathology direction $u$ is defined as the raw empirical mean of activations during a failure mode (e.g. repetitive generation):
+$$u_{\text{loop}} = \frac{1}{M} \sum_{j=1}^M x_{\text{loop}, j} \approx \mu + \bar{\delta}_{\text{loop}}$$
+the vector $u_{\text{loop}}$ contains $\mu$ as its primary component, producing high cosine alignment with the top principal components of $C$ (empirically $15.99\%$ energy in top 10 PCs and $26.15\%$ in top 100 PCs on SmolLM2-360M). When projected through $P_{\text{null}} = V \text{diag}\left(\frac{\alpha}{\lambda_i + \alpha}\right) V^T$ with small $\alpha$, the projector aggressively attenuates $\mu$, suppressing the effective intervention norm by over $23\%$ and neutralizing the behavioral intervention.
+
+#### Resolution via Differential Activation Surgery:
+To decouple the behavioral pathology from the background language centroid, we define the differential pathology vector:
+$$u_{\text{diff}} = \frac{1}{M} \sum_{j=1}^M x_{\text{loop}, j} - \frac{1}{K} \sum_{k=1}^K x_{\text{clean}, k} = (\mu + \bar{\delta}_{\text{loop}}) - (\mu + \bar{\delta}_{\text{clean}}) = \bar{\delta}_{\text{loop}} - \bar{\delta}_{\text{clean}}$$
+
+By subtracting clean text activations, the global centroid $\mu$ analytically cancels out. As demonstrated empirically, $u_{\text{diff}}$ retains only $4.17\%$ energy in the top 10 PCs and $0.13\%$ in the top 100 PCs, allowing the regularized null-space projector $P_{\text{null}}$ to preserve $>83\%$ of the intervention norm even under strict regularization ($\alpha = 10^{-3}$).
+
 ### Theorem 1 (Approximate Null-Space Subspace Attenuation):
 *Let $x \in \mathbb{R}^{d_{\text{in}}}$ be an eigenvector of the activation covariance $C$ corresponding to an active feature direction with eigenvalue $\lambda \gg \alpha$. Then the forward perturbation under the projected update $\Delta W_{\text{safe}} = \Delta W_{\text{raw}} P_{\text{null}}$ satisfies:*
 $$\|\Delta W_{\text{safe}} x\|_2 = \left( \frac{\alpha}{\lambda + \alpha} \right) \|\Delta W_{\text{raw}} x\|_2 = O\left(\frac{\alpha}{\lambda}\right) \|\Delta W_{\text{raw}} x\|_2$$

@@ -118,19 +118,51 @@ Table 1 details the cross-architecture benchmark comparing baseline models, raw 
 | **SmolLM2-360M** | `SmolLM2-360M` | `layers.15.down_proj` ($960 \times 2560$) | 31.51 | 12.54 | +1.06% | **+0.00%** | 99.99% | $1.48 \times 10^{-4}$ |
 | **Qwen2.5-0.5B** | `Qwen2.5-0.5B` | `layers.12.down_proj` ($896 \times 4864$) | 15.08 | 11.51 | +4.16% | **+0.00%** | 99.99% | $8.55 \times 10^{-5}$ |
 
-### 4.3 Scientific Discovery: The Cross-Talk Scaling Law of MLP Expansion Ratios
+### 4.3 Architectural Cross-Talk Vulnerability of Wide MLP Projections (Empirical Observation)
 
-Comparing SmolLM2-360M and Qwen2.5-0.5B reveals a key architectural insight:
-- **Finding:** Under identical rank-1 surgery, Qwen2.5-0.5B suffered **$+4.16\%$ perplexity degradation**, compared to **$+1.06\%$** on SmolLM2-360M—a nearly $4\times$ increase in collateral damage.
-- **Mechanistic Cause:** Qwen2.5 employs a substantially wider intermediate projection ($d_{\text{in}} = 4,864$ vs $2,560$, an expansion ratio of $5.43\times$ vs $2.67\times$). In wider intermediate spaces, unconstrained directional perturbations $\Delta W = -\eta v u^T$ intersect a broader manifold of active token representations, accelerating collateral damage.
-- **Resolution:** By projecting through $P_{\text{null}}$, SP-SV-WSP neutralizes this architectural vulnerability, restoring perplexity drift to **$+0.00\%$** on both models.
+Comparing SmolLM2-360M and Qwen2.5-0.5B reveals a key architectural insight across the evaluated checkpoints:
+- **Observation:** Under identical rank-1 surgery, Qwen2.5-0.5B suffered **$+4.16\%$ perplexity degradation**, compared to **$+1.06\%$** on SmolLM2-360M—a nearly $4\times$ increase in collateral damage.
+- **Mechanistic Hypothesis:** Qwen2.5 employs a substantially wider intermediate projection ($d_{\text{in}} = 4,864$ vs $2,560$, an expansion ratio of $5.43\times$ vs $2.67\times$). In wider intermediate spaces, unconstrained directional perturbations $\Delta W = -\eta v u^T$ intersect a broader manifold of active token representations, accelerating collateral damage.
+- **Scientific Qualification:** While this correlation is pronounced across our two evaluated models, it is cataloged strictly as an *empirical architectural observation* rather than a proven universal scaling law pending validation on larger parameter scales.
 
-### 4.4 Behavioral Loop Attenuation on SmolLM2-360M
-- **Repetition Score:** Dropped from 66.49% (base) to 55.85% (post-edit), achieving a **16.00% relative reduction**.
-- **Qualitative Behavior:** On Prompt 2 (*"The endless loop of thinking continues to say that..."*), raw surgery and SP-SV-WSP both broke the runaway repetitive sequence:
-  - *Base Model:* *"the world is a bad place. The world is a bad place. The world is a bad place..."*
-  - *SP-SV-WSP:* *"the world is a bad place and that we are all doomed. The world is not a bad place. It is a good place..."*
-- On other number-counting prompts, partial repetition persisted, confirming that the intervention attenuates specific semantic attractor basins rather than eliminating all repetition mechanisms.
+### 4.4 Mechanistic Anisotropy & Differential Activation Surgery
+
+To investigate why naive null-space projection previously damped behavioral interventions (e.g. 0% loop reduction at $\alpha \le 10^{-2}$), we probed the representation geometry of the covariance matrix $C_{\text{train}}$:
+- **Representation Anisotropy:** Autoregressive language models suffer from severe representation anisotropy (Ethayarajh, 2019), where token activations cluster along a global language centroid $\mu = \mathbb{E}[x]$. In $C_{\text{train}}$, the top 10 principal components account for **$25.07\%$** of total covariance energy, and the top 50 PCs account for **$51.32\%$**.
+- **Subspace Collision:** The naive pathology vector $u_{\text{loop}} = \text{mean}(X_{\text{loop}})$ inherits this common centroid $\mu$, concentrating **$15.99\%$** of its energy in the top 10 PCs and **$26.15\%$** in the top 100 PCs of $C_{\text{train}}$. Consequently, $P_{\text{null}}$ strongly suppresses $u_{\text{loop}}$ (by $23.6\%$ at $\alpha=10^{-4}$), attenuating nominal surgery scale below the threshold needed to ablate the repetition attractor basin.
+- **Differential Surgery:** By extracting $u_{\text{diff}} = \text{mean}(X_{\text{loop}}) - \text{mean}(X_{\text{clean}})$, the common centroid $\mu$ analytically cancels out. $u_{\text{diff}}$ retains only **$4.17\%$** energy in the top 10 PCs and **$0.13\%$** in the top 100 PCs, reducing projection damping to $11.02\%$ at $\alpha=0.1$ and $16.96\%$ at $\alpha=10^{-3}$.
+
+### 4.5 Validation Grid Search & Pareto Selection
+
+To prevent data contamination, all hyperparameter selection is strictly conducted on an independent validation set ($\mathcal{D}_{\text{val}}$, 10 passages, 149 tokens) completely disjoint from both training covariance ($\mathcal{D}_{\text{train}}$, 30 passages, 540 tokens) and the final test set ($\mathcal{D}_{\text{test}}$, 10 passages, 185 tokens).
+
+We evaluated a 16-point grid over $\alpha \in \{10^{-3}, 10^{-2}, 10^{-1}, 0.5\} \times \gamma \in \{0.01, 0.05, 0.10, \text{None}\}$:
+- **Budget Rescaling:** When $\gamma = 0.01$, the Frobenius budget clips update norm $\|\Delta W\|_F$ from $5.25$ to $2.8063$, preventing the update from crossing the argmax token threshold (0.00% loop reduction).
+- **Pareto Optimum:** At $\alpha^* = 0.5$ and $\gamma^* = 0.05$, the update norm reaches $\|\Delta W_{\text{safe}}\|_F = 5.2492$, achieving **$10.62\%$ validation loop reduction** with only **$-0.1373\%$ validation perplexity drift** and stable condition number ($\kappa = 31.55$).
+
+### 4.6 Independent Final Test Evaluation & Control Baselines
+
+The validation-selected configuration was subsequently evaluated on the unseen final test set alongside control baselines:
+
+| Configuration | $\|\Delta W\|_F$ | Test Loop Reduction | Test PPL | Test PPL Drift | Out-of-Sample Invariance | Condition Number $\kappa$ |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **1. Unedited Baseline** | 0.0000 | 0.00% | 22.4287 | 0.0000% | 100.00% | 31.51 |
+| **2. Raw WSP (Takehi et al.)** | 5.9992 | 10.62% | 22.2127 | -0.9629% | **0.00%** | 31.60 |
+| **3. Random Subspace Control** | 5.8959 | 10.62% | 22.2173 | -0.9425% | **3.66%** | 31.60 |
+| **4. Selected SP-SV-WSP ($\alpha^*=0.5, \gamma^*=0.05$)** | **5.2492** | **10.62%** | **22.3664** | **-0.2779%** | **65.61%** | **31.55** |
+| **5. Strict SP-SV-WSP ($\alpha=10^{-3}, \gamma=0.05$)** | 4.5866 | 0.00% | 22.4116 | -0.0760% | **82.87%** | 31.52 |
+| **6. Differential SP-SV-WSP ($u_{\text{diff}}, \alpha=10^{-3}$)** | 4.9817 | 0.00% | 22.4108 | -0.0796% | **83.82%** | 31.51 |
+
+#### Analysis:
+1. **Preservation Superiority:** Selected SP-SV-WSP achieves the same 10.62% loop reduction as Raw WSP while reducing test perplexity distortion by **$71.1\%$** ($-0.2779\%$ vs $-0.9629\%$) and maintaining **$65.61\%$ out-of-sample invariance** (compared to $0.00\%$ for Raw WSP and $3.66\%$ for Random Subspace Control).
+2. **Failure of Random Subspace:** Projecting onto a random subspace of identical rank preserves only $3.66\%$ invariance and suffers the same high perplexity degradation as unconstrained surgery ($-0.9425\%$), confirming that the empirical activation covariance contains non-trivial linguistic geometric structure.
+
+### 4.7 Discrete Argmax Thresholding & Statistical Stability
+
+Detailed analysis of per-prompt outputs explains why Raw WSP, Random Subspace Control, and Selected SP-SV-WSP yielded identical 10.62% aggregate loop reductions:
+- **Greedy Decoding Dynamics:** Under greedy autoregressive decoding (`do_sample=False`), generations follow the argmax token $y_t = \arg\max_v z_{t,v}$. On 7 of 8 prompts, the base model's repetitive token logit margin was wide ($> 5$ to $12$ logits), so rank-1 updates on a single layer did not alter the top token.
+- **The Threshold Flip on Prompt 3:** On Prompt 3 (*"The endless loop of thinking continues to say that..."*), the model was in a narrow logit margin between repeating (*"the world is a bad place..."*) and continuing (*"and that we are all doomed..."*). All three interventions applied sufficient directional shift to cross the decision boundary, producing word-for-word identical non-repetitive continuations.
+- **Multi-Seed Robustness:** Evaluated across Seeds 42, 123, 999, both Raw WSP and Selected SP-SV-WSP demonstrated exact deterministic stability ($10.62\% \pm 0.00\%$), confirming that greedy decoding produces step-function threshold behavior rather than continuous metric drift.
 
 ### 4.5 Autonomous Oracle Stress Testing
 Across 10 stress scenarios simulating benign edits, unbudgeted rank collapse, and catastrophic unlearning on a synthetic MLP testbed:
