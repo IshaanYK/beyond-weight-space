@@ -1,0 +1,2958 @@
+{
+  "metadata": {
+    "phase": "Phase 9 \u2014 Final Scientific Verification & Research Freeze",
+    "model_id": "HuggingFaceTB/SmolLM2-360M",
+    "layer_path": "model.layers.15.mlp.down_proj",
+    "d_out": 960,
+    "d_in": 2560,
+    "train_passages_count": 30,
+    "val_passages_count": 10,
+    "test_passages_count": 10,
+    "dev_prompts_count": 4,
+    "val_prompts_count": 4,
+    "test_prompts_count": 6,
+    "random_control_draws_count": 20,
+    "stochastic_sampling_seeds_count": 20,
+    "independence_verified": true,
+    "oracle_bitwise_exact": true
+  },
+  "spectral_numerical_audit": {
+    "model_id": "HuggingFaceTB/SmolLM2-360M",
+    "layer_path": "model.layers.15.mlp.down_proj",
+    "dimensions": [
+      960,
+      2560
+    ],
+    "base_frobenius_norm": 280.6173857464862,
+    "base_sigma_max": 38.99117044682047,
+    "base_sigma_min": 1.2372802107042582,
+    "base_condition_number": 31.513613577175658,
+    "eta": 6.0,
+    "weyl_theoretical_lower_bound": -4.762719789295742,
+    "sigma_min_less_than_eta": true,
+    "mathematical_implication": "Because sigma_min(W) = 1.2373 is strictly LESS than nominal eta = 6.0, the theoretical worst-case lower bound sigma_min - eta = -4.7627 is strictly negative. Worst-case Frobenius or spectral bounds CANNOT theoretically guarantee non-singularity. In SP-SV-WSP, non-singularity is preserved through low-rank directional alignment with data representations, and rigorously verified in memory by the Verification Oracle gating delta_kappa <= 5% before checkpoint persistence.",
+    "oracle_bitwise_exact_restoration": true
+  },
+  "mechanistic_subspace_analysis": {
+    "total_covariance_energy": 56.56538391113281,
+    "u_loop_top100_pc_energy": 0.21641259925261025,
+    "u_diff_top100_pc_energy": 0.12286461503153134,
+    "centroid_cancellation_pct": 43.22668113785921,
+    "qualification": "Differential extraction removes first-order linear centroid shift (reducing top-100 PC energy from 21.64% to 12.29%), but does NOT achieve complete cancellation due to non-linear layer activations."
+  },
+  "random_subspace_baseline_n20": {
+    "aggregate": {
+      "loop_reduction": {
+        "mean": 26.666666666666664,
+        "std": 3.645007325606123e-15,
+        "ci_95": 1.5974948950738401e-15
+      },
+      "ppl_drift": {
+        "mean": -0.7079509200200151,
+        "std": 0.013199967754330789,
+        "ci_95": 0.005785140939099822
+      },
+      "invariance": {
+        "mean": 4.094779032618367,
+        "std": 1.2276470246389344,
+        "ci_95": 0.5380400310957312
+      },
+      "frobenius_norm": {
+        "mean": 5.876476764678955,
+        "std": 0.01846538192944713,
+        "ci_95": 0.008092810448049041
+      },
+      "operator_norm": 1.0,
+      "effective_rank": 2460
+    },
+    "draw_records": [
+      {
+        "draw_idx": 1,
+        "seed": 100,
+        "frobenius_norm": 5.916088581085205,
+        "operator_norm": 1.0,
+        "effective_rank": 2460,
+        "test_loop_reduction_pct": 26.66666666666666,
+        "test_ppl": 22.2672119140625,
+        "test_ppl_drift_pct": -0.7199535474337645,
+        "test_invariance_pct": 2.5969792474897613,
+        "condition_number": 31.580116725131383
+      },
+      {
+        "draw_idx": 2,
+        "seed": 111,
+        "frobenius_norm": 5.869299411773682,
+        "operator_norm": 1.0,
+        "effective_rank": 2460,
+        "test_loop_reduction_pct": 26.66666666666666,
+        "test_ppl": 22.268943786621094,
+        "test_ppl_drift_pct": -0.712231862800291,
+        "test_invariance_pct": 3.4657334603130585,
+        "condition_number": 31.577895111354497
+      },
+      {
+        "draw_idx": 3,
+        "seed": 122,
+        "frobenius_norm": 5.909234046936035,
+        "operator_norm": 1.0,
+        "effective_rank": 2460,
+        "test_loop_reduction_pct": 26.66666666666666,
+        "test_ppl": 22.269006729125977,
+        "test_ppl_drift_pct": -0.7119512288874005,
+        "test_invariance_pct": 2.73999028792159,
+        "condition_number": 31.57456346830073
+      },
+      {
+        "draw_idx": 4,
+        "seed": 133,
+        "frobenius_norm": 5.883570671081543,
+        "operator_norm": 1.0,
+        "effective_rank": 2460,
+        "test_loop_reduction_pct": 26.66666666666666,
+        "test_ppl": 22.264272689819336,
+        "test_ppl_drift_pct": -0.7330583007599567,
+        "test_invariance_pct": 2.559289704275025,
+        "condition_number": 31.579864818668312
+      },
+      {
+        "draw_idx": 5,
+        "seed": 144,
+        "frobenius_norm": 5.872559547424316,
+        "operator_norm": 1.0,
+        "effective_rank": 2460,
+        "test_loop_reduction_pct": 26.66666666666666,
+        "test_ppl": 22.272947311401367,
+        "test_ppl_drift_pct": -0.6943818451288586,
+        "test_invariance_pct": 6.50302635619987,
+        "condition_number": 31.578222700897133
+      },
+      {
+        "draw_idx": 6,
+        "seed": 155,
+        "frobenius_norm": 5.85842227935791,
+        "operator_norm": 1.0,
+        "effective_rank": 2460,
+        "test_loop_reduction_pct": 26.66666666666666,
+        "test_ppl": 22.26944351196289,
+        "test_ppl_drift_pct": -0.7100037996130993,
+        "test_invariance_pct": 2.82863240654212,
+        "condition_number": 31.572482733740728
+      },
+      {
+        "draw_idx": 7,
+        "seed": 166,
+        "frobenius_norm": 5.874760150909424,
+        "operator_norm": 1.0,
+        "effective_rank": 2460,
+        "test_loop_reduction_pct": 26.66666666666666,
+        "test_ppl": 22.27367401123047,
+        "test_ppl_drift_pct": -0.6911417990436677,
+        "test_invariance_pct": 5.27393172603805,
+        "condition_number": 31.577362851597023
+      },
+      {
+        "draw_idx": 8,
+        "seed": 177,
+        "frobenius_norm": 5.88599157333374,
+        "operator_norm": 1.0,
+        "effective_rank": 2460,
+        "test_loop_reduction_pct": 26.66666666666666,
+        "test_ppl": 22.270450592041016,
+        "test_ppl_drift_pct": -0.7055136570068505,
+        "test_invariance_pct": 5.035526344860852,
+        "condition_number": 31.57692820449984
+      },
+      {
+        "draw_idx": 9,
+        "seed": 188,
+        "frobenius_norm": 5.865005016326904,
+        "operator_norm": 1.0,
+        "effective_rank": 2460,
+        "test_loop_reduction_pct": 26.66666666666666,
+        "test_ppl": 22.265493392944336,
+        "test_ppl_drift_pct": -0.7276157036614732,
+        "test_invariance_pct": 3.24239804400821,
+        "condition_number": 31.576156899689668
+      },
+      {
+        "draw_idx": 10,
+        "seed": 199,
+        "frobenius_norm": 5.848596096038818,
+        "operator_norm": 1.0,
+        "effective_rank": 2460,
+        "test_loop_reduction_pct": 26.66666666666666,
+        "test_ppl": 22.27137565612793,
+        "test_ppl_drift_pct": -0.701389188893156,
+        "test_invariance_pct": 5.563465255027323,
+        "condition_number": 31.574189652408027
+      },
+      {
+        "draw_idx": 11,
+        "seed": 210,
+        "frobenius_norm": 5.873466968536377,
+        "operator_norm": 1.0,
+        "effective_rank": 2460,
+        "test_loop_reduction_pct": 26.66666666666666,
+        "test_ppl": 22.275501251220703,
+        "test_ppl_drift_pct": -0.6829949115118752,
+        "test_invariance_pct": 5.431661586529679,
+        "condition_number": 31.572697080127963
+      },
+      {
+        "draw_idx": 12,
+        "seed": 221,
+        "frobenius_norm": 5.8799638748168945,
+        "operator_norm": 1.0,
+        "effective_rank": 2460,
+        "test_loop_reduction_pct": 26.66666666666666,
+        "test_ppl": 22.268444061279297,
+        "test_ppl_drift_pct": -0.7144599259874828,
+        "test_invariance_pct": 3.1260374317462647,
+        "condition_number": 31.582031196239083
+      },
+      {
+        "draw_idx": 13,
+        "seed": 232,
+        "frobenius_norm": 5.871537208557129,
+        "operator_norm": 1.0,
+        "effective_rank": 2460,
+        "test_loop_reduction_pct": 26.66666666666666,
+        "test_ppl": 22.270450592041016,
+        "test_ppl_drift_pct": -0.7055136570068505,
+        "test_invariance_pct": 4.43660497393884,
+        "condition_number": 31.580331396800393
+      },
+      {
+        "draw_idx": 14,
+        "seed": 243,
+        "frobenius_norm": 5.870658874511719,
+        "operator_norm": 1.0,
+        "effective_rank": 2460,
+        "test_loop_reduction_pct": 26.66666666666666,
+        "test_ppl": 22.268949508666992,
+        "test_ppl_drift_pct": -0.7122063506263919,
+        "test_invariance_pct": 4.643977932306087,
+        "condition_number": 31.578344562270814
+      },
+      {
+        "draw_idx": 15,
+        "seed": 254,
+        "frobenius_norm": 5.886174201965332,
+        "operator_norm": 1.0,
+        "effective_rank": 2460,
+        "test_loop_reduction_pct": 26.66666666666666,
+        "test_ppl": 22.266416549682617,
+        "test_ppl_drift_pct": -0.7234997396057451,
+        "test_invariance_pct": 3.0370587993470366,
+        "condition_number": 31.583869788097342
+      },
+      {
+        "draw_idx": 16,
+        "seed": 265,
+        "frobenius_norm": 5.856032371520996,
+        "operator_norm": 1.0,
+        "effective_rank": 2460,
+        "test_loop_reduction_pct": 26.66666666666666,
+        "test_ppl": 22.272146224975586,
+        "test_ppl_drift_pct": -0.6979535494747384,
+        "test_invariance_pct": 4.852616475101934,
+        "condition_number": 31.580797658015573
+      },
+      {
+        "draw_idx": 17,
+        "seed": 276,
+        "frobenius_norm": 5.854992389678955,
+        "operator_norm": 1.0,
+        "effective_rank": 2460,
+        "test_loop_reduction_pct": 26.66666666666666,
+        "test_ppl": 22.270557403564453,
+        "test_ppl_drift_pct": -0.7050374297607331,
+        "test_invariance_pct": 4.0847505562371715,
+        "condition_number": 31.574237427514216
+      },
+      {
+        "draw_idx": 18,
+        "seed": 287,
+        "frobenius_norm": 5.9011616706848145,
+        "operator_norm": 1.0,
+        "effective_rank": 2460,
+        "test_loop_reduction_pct": 26.66666666666666,
+        "test_ppl": 22.266925811767578,
+        "test_ppl_drift_pct": -0.7212291561287215,
+        "test_invariance_pct": 2.66262138088762,
+        "condition_number": 31.5772684759479
+      },
+      {
+        "draw_idx": 19,
+        "seed": 298,
+        "frobenius_norm": 5.895087718963623,
+        "operator_norm": 1.0,
+        "effective_rank": 2460,
+        "test_loop_reduction_pct": 26.66666666666666,
+        "test_ppl": 22.273536682128906,
+        "test_ppl_drift_pct": -0.6917540912172471,
+        "test_invariance_pct": 4.185316967450858,
+        "condition_number": 31.58123536630147
+      },
+      {
+        "draw_idx": 20,
+        "seed": 309,
+        "frobenius_norm": 5.856932640075684,
+        "operator_norm": 1.0,
+        "effective_rank": 2460,
+        "test_loop_reduction_pct": 26.66666666666666,
+        "test_ppl": 22.27233123779297,
+        "test_ppl_drift_pct": -0.6971286558519995,
+        "test_invariance_pct": 5.625961716146,
+        "condition_number": 31.57803525253825
+      }
+    ]
+  },
+  "pareto_frontier_mapping": [
+    {
+      "configuration": "Unedited Baseline",
+      "type": "none",
+      "alpha": 0.0,
+      "gamma": 0.0,
+      "final_frobenius_norm": 0.0,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.428688049316406,
+      "test_ppl_drift_pct": 0.0,
+      "test_invariance_pct": 100.0,
+      "condition_number": 31.513613577175658,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "Raw WSP (Takehi et al.)",
+      "type": "raw",
+      "alpha": 0.0,
+      "gamma": 0.0,
+      "final_frobenius_norm": 5.999178409576416,
+      "test_loop_reduction_pct": 26.66666666666666,
+      "test_rep_mean": 0.25,
+      "test_rep_sem": 0.1582227393951577,
+      "test_ppl": 22.26413345336914,
+      "test_ppl_drift_pct": -0.7336790969915025,
+      "test_invariance_pct": 1.920685832601521e-12,
+      "condition_number": 31.581631817677735,
+      "per_prompt_scores": [
+        0.0,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place and that we are all doomed.\\n\\nThe world is not a bad place. It is",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "Random Subspace Control (N=20 Mean)",
+      "type": "random_control",
+      "alpha": null,
+      "gamma": null,
+      "final_frobenius_norm": 5.876476764678955,
+      "test_loop_reduction_pct": 26.666666666666664,
+      "test_ppl_drift_pct": -0.7079509200200151,
+      "test_invariance_pct": 4.094779032618367,
+      "condition_number": 31.58
+    },
+    {
+      "configuration": "SP-SV-WSP (alpha=0.0001, gamma=0.01)",
+      "type": "sp_sv",
+      "alpha": 0.0001,
+      "gamma": 0.01,
+      "final_frobenius_norm": 2.8063106536865234,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.418487548828125,
+      "test_ppl_drift_pct": -0.045479702004202364,
+      "test_invariance_pct": 88.4309763420574,
+      "condition_number": 31.51763384675572,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "Diff SP-SV-WSP (u_diff, alpha=0.0001, gamma=0.01)",
+      "type": "diff_sp_sv",
+      "alpha": 0.0001,
+      "gamma": 0.01,
+      "final_frobenius_norm": 2.8063056468963623,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.41953468322754,
+      "test_ppl_drift_pct": -0.04081097418065953,
+      "test_invariance_pct": 89.95122763152696,
+      "condition_number": 31.515652876078633,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "SP-SV-WSP (alpha=0.0001, gamma=0.02)",
+      "type": "sp_sv",
+      "alpha": 0.0001,
+      "gamma": 0.02,
+      "final_frobenius_norm": 4.741305351257324,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.41156578063965,
+      "test_ppl_drift_pct": -0.07634092836419683,
+      "test_invariance_pct": 80.45379834075335,
+      "condition_number": 31.521855785520046,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "Diff SP-SV-WSP (u_diff, alpha=0.0001, gamma=0.02)",
+      "type": "diff_sp_sv",
+      "alpha": 0.0001,
+      "gamma": 0.02,
+      "final_frobenius_norm": 5.002344608306885,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.412479400634766,
+      "test_ppl_drift_pct": -0.07226748459830061,
+      "test_invariance_pct": 82.08758188075245,
+      "condition_number": 31.515717457988398,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "SP-SV-WSP (alpha=0.0001, gamma=0.05)",
+      "type": "sp_sv",
+      "alpha": 0.0001,
+      "gamma": 0.05,
+      "final_frobenius_norm": 4.741305351257324,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.41156578063965,
+      "test_ppl_drift_pct": -0.07634092836419683,
+      "test_invariance_pct": 80.45379834075335,
+      "condition_number": 31.521855785520046,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "Diff SP-SV-WSP (u_diff, alpha=0.0001, gamma=0.05)",
+      "type": "diff_sp_sv",
+      "alpha": 0.0001,
+      "gamma": 0.05,
+      "final_frobenius_norm": 5.002344608306885,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.412479400634766,
+      "test_ppl_drift_pct": -0.07226748459830061,
+      "test_invariance_pct": 82.08758188075245,
+      "condition_number": 31.515717457988398,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "SP-SV-WSP (alpha=0.0001, gamma=None)",
+      "type": "sp_sv",
+      "alpha": 0.0001,
+      "gamma": null,
+      "final_frobenius_norm": 4.741305351257324,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.41156578063965,
+      "test_ppl_drift_pct": -0.07634092836419683,
+      "test_invariance_pct": 80.45379834075335,
+      "condition_number": 31.521855785520046,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "Diff SP-SV-WSP (u_diff, alpha=0.0001, gamma=None)",
+      "type": "diff_sp_sv",
+      "alpha": 0.0001,
+      "gamma": null,
+      "final_frobenius_norm": 5.002344608306885,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.412479400634766,
+      "test_ppl_drift_pct": -0.07226748459830061,
+      "test_invariance_pct": 82.08758188075245,
+      "condition_number": 31.515717457988398,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "SP-SV-WSP (alpha=0.001, gamma=0.01)",
+      "type": "sp_sv",
+      "alpha": 0.001,
+      "gamma": 0.01,
+      "final_frobenius_norm": 2.8063180446624756,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.418277740478516,
+      "test_ppl_drift_pct": -0.04641514838050421,
+      "test_invariance_pct": 88.33027459378054,
+      "condition_number": 31.517804680494912,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "Diff SP-SV-WSP (u_diff, alpha=0.001, gamma=0.01)",
+      "type": "diff_sp_sv",
+      "alpha": 0.001,
+      "gamma": 0.01,
+      "final_frobenius_norm": 2.806302785873413,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.419416427612305,
+      "test_ppl_drift_pct": -0.04133822577457511,
+      "test_invariance_pct": 89.86855771803882,
+      "condition_number": 31.51566553024982,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "SP-SV-WSP (alpha=0.001, gamma=0.02)",
+      "type": "sp_sv",
+      "alpha": 0.001,
+      "gamma": 0.02,
+      "final_frobenius_norm": 4.744532585144043,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.411224365234375,
+      "test_ppl_drift_pct": -0.07786315474017892,
+      "test_invariance_pct": 80.27026482317629,
+      "condition_number": 31.522006516811267,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "Diff SP-SV-WSP (u_diff, alpha=0.001, gamma=0.02)",
+      "type": "diff_sp_sv",
+      "alpha": 0.001,
+      "gamma": 0.02,
+      "final_frobenius_norm": 5.006965160369873,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.412256240844727,
+      "test_ppl_drift_pct": -0.07326245938036713,
+      "test_invariance_pct": 81.92354970242707,
+      "condition_number": 31.515745683095982,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "SP-SV-WSP (alpha=0.001, gamma=0.05)",
+      "type": "sp_sv",
+      "alpha": 0.001,
+      "gamma": 0.05,
+      "final_frobenius_norm": 4.744532585144043,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.411224365234375,
+      "test_ppl_drift_pct": -0.07786315474017892,
+      "test_invariance_pct": 80.27026482317629,
+      "condition_number": 31.522006516811267,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "Diff SP-SV-WSP (u_diff, alpha=0.001, gamma=0.05)",
+      "type": "diff_sp_sv",
+      "alpha": 0.001,
+      "gamma": 0.05,
+      "final_frobenius_norm": 5.006965160369873,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.412256240844727,
+      "test_ppl_drift_pct": -0.07326245938036713,
+      "test_invariance_pct": 81.92354970242707,
+      "condition_number": 31.515745683095982,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "SP-SV-WSP (alpha=0.001, gamma=None)",
+      "type": "sp_sv",
+      "alpha": 0.001,
+      "gamma": null,
+      "final_frobenius_norm": 4.744532585144043,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.411224365234375,
+      "test_ppl_drift_pct": -0.07786315474017892,
+      "test_invariance_pct": 80.27026482317629,
+      "condition_number": 31.522006516811267,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "Diff SP-SV-WSP (u_diff, alpha=0.001, gamma=None)",
+      "type": "diff_sp_sv",
+      "alpha": 0.001,
+      "gamma": null,
+      "final_frobenius_norm": 5.006965160369873,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.412256240844727,
+      "test_ppl_drift_pct": -0.07326245938036713,
+      "test_invariance_pct": 81.92354970242707,
+      "condition_number": 31.515745683095982,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "SP-SV-WSP (alpha=0.01, gamma=0.01)",
+      "type": "sp_sv",
+      "alpha": 0.01,
+      "gamma": 0.01,
+      "final_frobenius_norm": 2.806316614151001,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.41681480407715,
+      "test_ppl_drift_pct": -0.05293776084071797,
+      "test_invariance_pct": 87.69400476562058,
+      "condition_number": 31.519021602143294,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "Diff SP-SV-WSP (u_diff, alpha=0.01, gamma=0.01)",
+      "type": "diff_sp_sv",
+      "alpha": 0.01,
+      "gamma": 0.01,
+      "final_frobenius_norm": 2.8063106536865234,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.418882369995117,
+      "test_ppl_drift_pct": -0.043719362005161626,
+      "test_invariance_pct": 89.34480328355534,
+      "condition_number": 31.51648532164134,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "SP-SV-WSP (alpha=0.01, gamma=0.02)",
+      "type": "sp_sv",
+      "alpha": 0.01,
+      "gamma": 0.02,
+      "final_frobenius_norm": 4.788769245147705,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.408601760864258,
+      "test_ppl_drift_pct": -0.08955623444395197,
+      "test_invariance_pct": 79.00052700983991,
+      "condition_number": 31.52352968580551,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "Diff SP-SV-WSP (u_diff, alpha=0.01, gamma=0.02)",
+      "type": "diff_sp_sv",
+      "alpha": 0.01,
+      "gamma": 0.02,
+      "final_frobenius_norm": 5.054599285125732,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.411144256591797,
+      "test_ppl_drift_pct": -0.07822032517476689,
+      "test_invariance_pct": 80.80821318937994,
+      "condition_number": 31.51723410367919,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "SP-SV-WSP (alpha=0.01, gamma=0.05)",
+      "type": "sp_sv",
+      "alpha": 0.01,
+      "gamma": 0.05,
+      "final_frobenius_norm": 4.788769245147705,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.408601760864258,
+      "test_ppl_drift_pct": -0.08955623444395197,
+      "test_invariance_pct": 79.00052700983991,
+      "condition_number": 31.52352968580551,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "Diff SP-SV-WSP (u_diff, alpha=0.01, gamma=0.05)",
+      "type": "diff_sp_sv",
+      "alpha": 0.01,
+      "gamma": 0.05,
+      "final_frobenius_norm": 5.054599285125732,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.411144256591797,
+      "test_ppl_drift_pct": -0.07822032517476689,
+      "test_invariance_pct": 80.80821318937994,
+      "condition_number": 31.51723410367919,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "SP-SV-WSP (alpha=0.01, gamma=None)",
+      "type": "sp_sv",
+      "alpha": 0.01,
+      "gamma": null,
+      "final_frobenius_norm": 4.788769245147705,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.408601760864258,
+      "test_ppl_drift_pct": -0.08955623444395197,
+      "test_invariance_pct": 79.00052700983991,
+      "condition_number": 31.52352968580551,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "Diff SP-SV-WSP (u_diff, alpha=0.01, gamma=None)",
+      "type": "diff_sp_sv",
+      "alpha": 0.01,
+      "gamma": null,
+      "final_frobenius_norm": 5.054599285125732,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.411144256591797,
+      "test_ppl_drift_pct": -0.07822032517476689,
+      "test_invariance_pct": 80.80821318937994,
+      "condition_number": 31.51723410367919,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "SP-SV-WSP (alpha=0.1, gamma=0.01)",
+      "type": "sp_sv",
+      "alpha": 0.1,
+      "gamma": 0.01,
+      "final_frobenius_norm": 2.806304454803467,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.41103172302246,
+      "test_ppl_drift_pct": -0.07872206459478334,
+      "test_invariance_pct": 85.15803418599613,
+      "condition_number": 31.523136640381846,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "Diff SP-SV-WSP (u_diff, alpha=0.1, gamma=0.01)",
+      "type": "diff_sp_sv",
+      "alpha": 0.1,
+      "gamma": 0.01,
+      "final_frobenius_norm": 2.8062896728515625,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.416969299316406,
+      "test_ppl_drift_pct": -0.05224893214544116,
+      "test_invariance_pct": 87.70906467165716,
+      "condition_number": 31.51903345123629,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "SP-SV-WSP (alpha=0.1, gamma=0.02)",
+      "type": "sp_sv",
+      "alpha": 0.1,
+      "gamma": 0.02,
+      "final_frobenius_norm": 5.067028045654297,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.397127151489258,
+      "test_ppl_drift_pct": -0.14071664716969642,
+      "test_invariance_pct": 73.20138506145159,
+      "condition_number": 31.530837534093568,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "Diff SP-SV-WSP (u_diff, alpha=0.1, gamma=0.02)",
+      "type": "diff_sp_sv",
+      "alpha": 0.1,
+      "gamma": 0.02,
+      "final_frobenius_norm": 5.352916717529297,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.40650749206543,
+      "test_ppl_drift_pct": -0.09889369009103764,
+      "test_invariance_pct": 76.55536485628639,
+      "condition_number": 31.52179152632743,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "SP-SV-WSP (alpha=0.1, gamma=0.05)",
+      "type": "sp_sv",
+      "alpha": 0.1,
+      "gamma": 0.05,
+      "final_frobenius_norm": 5.067028045654297,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.397127151489258,
+      "test_ppl_drift_pct": -0.14071664716969642,
+      "test_invariance_pct": 73.20138506145159,
+      "condition_number": 31.530837534093568,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "Diff SP-SV-WSP (u_diff, alpha=0.1, gamma=0.05)",
+      "type": "diff_sp_sv",
+      "alpha": 0.1,
+      "gamma": 0.05,
+      "final_frobenius_norm": 5.352916717529297,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.40650749206543,
+      "test_ppl_drift_pct": -0.09889369009103764,
+      "test_invariance_pct": 76.55536485628639,
+      "condition_number": 31.52179152632743,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "SP-SV-WSP (alpha=0.1, gamma=None)",
+      "type": "sp_sv",
+      "alpha": 0.1,
+      "gamma": null,
+      "final_frobenius_norm": 5.067028045654297,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.397127151489258,
+      "test_ppl_drift_pct": -0.14071664716969642,
+      "test_invariance_pct": 73.20138506145159,
+      "condition_number": 31.530837534093568,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "Diff SP-SV-WSP (u_diff, alpha=0.1, gamma=None)",
+      "type": "diff_sp_sv",
+      "alpha": 0.1,
+      "gamma": null,
+      "final_frobenius_norm": 5.352916717529297,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.40650749206543,
+      "test_ppl_drift_pct": -0.09889369009103764,
+      "test_invariance_pct": 76.55536485628639,
+      "condition_number": 31.52179152632743,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "SP-SV-WSP (alpha=0.5, gamma=0.01)",
+      "type": "sp_sv",
+      "alpha": 0.5,
+      "gamma": 0.01,
+      "final_frobenius_norm": 2.806295871734619,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.40129280090332,
+      "test_ppl_drift_pct": -0.12214378457112164,
+      "test_invariance_pct": 80.56775214794587,
+      "condition_number": 31.52904984440258,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "Diff SP-SV-WSP (u_diff, alpha=0.5, gamma=0.01)",
+      "type": "diff_sp_sv",
+      "alpha": 0.5,
+      "gamma": 0.01,
+      "final_frobenius_norm": 2.806288480758667,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.416648864746094,
+      "test_ppl_drift_pct": -0.05367761388379307,
+      "test_invariance_pct": 85.7965562789304,
+      "condition_number": 31.521261889989603,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "SP-SV-WSP (alpha=0.5, gamma=0.02)",
+      "type": "sp_sv",
+      "alpha": 0.5,
+      "gamma": 0.02,
+      "final_frobenius_norm": 5.379093647003174,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.377058029174805,
+      "test_ppl_drift_pct": -0.23019634509195097,
+      "test_invariance_pct": 62.75229571894558,
+      "condition_number": 31.543355364459632,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "Diff SP-SV-WSP (u_diff, alpha=0.5, gamma=0.02)",
+      "type": "diff_sp_sv",
+      "alpha": 0.5,
+      "gamma": 0.02,
+      "final_frobenius_norm": 5.612576961517334,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.404876708984375,
+      "test_ppl_drift_pct": -0.10616465965229288,
+      "test_invariance_pct": 71.5931125578608,
+      "condition_number": 31.526113653327087,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "SP-SV-WSP (alpha=0.5, gamma=0.05)",
+      "type": "sp_sv",
+      "alpha": 0.5,
+      "gamma": 0.05,
+      "final_frobenius_norm": 5.379093647003174,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.377058029174805,
+      "test_ppl_drift_pct": -0.23019634509195097,
+      "test_invariance_pct": 62.75229571894558,
+      "condition_number": 31.543355364459632,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "Diff SP-SV-WSP (u_diff, alpha=0.5, gamma=0.05)",
+      "type": "diff_sp_sv",
+      "alpha": 0.5,
+      "gamma": 0.05,
+      "final_frobenius_norm": 5.650430679321289,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.404712677001953,
+      "test_ppl_drift_pct": -0.10689600863740159,
+      "test_invariance_pct": 71.4015447738172,
+      "condition_number": 31.526098623896953,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "SP-SV-WSP (alpha=0.5, gamma=None)",
+      "type": "sp_sv",
+      "alpha": 0.5,
+      "gamma": null,
+      "final_frobenius_norm": 5.379093647003174,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.377058029174805,
+      "test_ppl_drift_pct": -0.23019634509195097,
+      "test_invariance_pct": 62.75229571894558,
+      "condition_number": 31.543355364459632,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "Diff SP-SV-WSP (u_diff, alpha=0.5, gamma=None)",
+      "type": "diff_sp_sv",
+      "alpha": 0.5,
+      "gamma": null,
+      "final_frobenius_norm": 5.650430679321289,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.404712677001953,
+      "test_ppl_drift_pct": -0.10689600863740159,
+      "test_invariance_pct": 71.4015447738172,
+      "condition_number": 31.526098623896953,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "SP-SV-WSP (alpha=1.0, gamma=0.01)",
+      "type": "sp_sv",
+      "alpha": 1.0,
+      "gamma": 0.01,
+      "final_frobenius_norm": 2.806298017501831,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.3941707611084,
+      "test_ppl_drift_pct": -0.15389793701758606,
+      "test_invariance_pct": 77.25282075359524,
+      "condition_number": 31.532043850367593,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "Diff SP-SV-WSP (u_diff, alpha=1.0, gamma=0.01)",
+      "type": "diff_sp_sv",
+      "alpha": 1.0,
+      "gamma": 0.01,
+      "final_frobenius_norm": 2.8062961101531982,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.418123245239258,
+      "test_ppl_drift_pct": -0.04710397707578102,
+      "test_invariance_pct": 84.92872199236085,
+      "condition_number": 31.52188684438549,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "SP-SV-WSP (alpha=1.0, gamma=0.02)",
+      "type": "sp_sv",
+      "alpha": 1.0,
+      "gamma": 0.02,
+      "final_frobenius_norm": 5.510720252990723,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.362398147583008,
+      "test_ppl_drift_pct": -0.2955585346215507,
+      "test_invariance_pct": 55.33128903651363,
+      "condition_number": 31.55040138382744,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "Diff SP-SV-WSP (u_diff, alpha=1.0, gamma=0.02)",
+      "type": "diff_sp_sv",
+      "alpha": 1.0,
+      "gamma": 0.02,
+      "final_frobenius_norm": 5.6125922203063965,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.407869338989258,
+      "test_ppl_drift_pct": -0.09282179270304204,
+      "test_invariance_pct": 69.85744398472168,
+      "condition_number": 31.527440317794568,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "SP-SV-WSP (alpha=1.0, gamma=0.05)",
+      "type": "sp_sv",
+      "alpha": 1.0,
+      "gamma": 0.05,
+      "final_frobenius_norm": 5.510720252990723,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.362398147583008,
+      "test_ppl_drift_pct": -0.2955585346215507,
+      "test_invariance_pct": 55.33128903651363,
+      "condition_number": 31.55040138382744,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "Diff SP-SV-WSP (u_diff, alpha=1.0, gamma=0.05)",
+      "type": "diff_sp_sv",
+      "alpha": 1.0,
+      "gamma": 0.05,
+      "final_frobenius_norm": 5.754070281982422,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.407344818115234,
+      "test_ppl_drift_pct": -0.09516040864379664,
+      "test_invariance_pct": 69.09756661034265,
+      "condition_number": 31.527396690478753,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "SP-SV-WSP (alpha=1.0, gamma=None)",
+      "type": "sp_sv",
+      "alpha": 1.0,
+      "gamma": null,
+      "final_frobenius_norm": 5.510720252990723,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.362398147583008,
+      "test_ppl_drift_pct": -0.2955585346215507,
+      "test_invariance_pct": 55.33128903651363,
+      "condition_number": 31.55040138382744,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    },
+    {
+      "configuration": "Diff SP-SV-WSP (u_diff, alpha=1.0, gamma=None)",
+      "type": "diff_sp_sv",
+      "alpha": 1.0,
+      "gamma": null,
+      "final_frobenius_norm": 5.754070281982422,
+      "test_loop_reduction_pct": 0.0,
+      "test_rep_mean": 0.3409090909090909,
+      "test_rep_sem": 0.15558916729874303,
+      "test_ppl": 22.407344818115234,
+      "test_ppl_drift_pct": -0.09516040864379664,
+      "test_invariance_pct": 69.09756661034265,
+      "condition_number": 31.527396690478753,
+      "per_prompt_scores": [
+        0.5454545454545454,
+        0.0,
+        0.5454545454545454,
+        0.9090909090909091,
+        0.045454545454545456,
+        0.0
+      ],
+      "per_prompt_texts": [
+        " the world is a bad place.\\n\\nThe world is a bad place.\\n\\nThe world is a bad place.",
+        " \u201cI am a good person.\u201d\\n\\nThe more you repeat this sentence, the more you will feel good about yourself.",
+        "\\n\\n\"I am a child of God.\"\\n\\n\"I am a child of God.\"\\n\\n\"I am",
+        " red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red blue red",
+        "\\n\\nThe problem with the feedback loop is that it is a feedback loop. It is a feedback loop because it is a",
+        "\\n\\nThe following code is a simple example of a while loop.\\n\\nwhile (true) {\\n\\nThe while"
+      ]
+    }
+  ],
+  "stochastic_sampling_battery_n20": {
+    "statistical_summary": {
+      "raw_wsp": {
+        "reduction_stats": {
+          "mean": 17.919642857142858,
+          "std": 64.55375370743279,
+          "ci_95": 28.29192997254936
+        },
+        "repetition_score_stats": {
+          "mean": 0.06363636363636363,
+          "std": 0.064955567508307,
+          "ci_95": 0.028468032635267614
+        },
+        "paired_t_test": {
+          "statistic": 2.333333333333333,
+          "p_value": 0.03077138103808426,
+          "significant_p05": true
+        },
+        "wilcoxon_test": {
+          "statistic": 7.5,
+          "p_value": 0.023308032081359925,
+          "significant_p05": true
+        }
+      },
+      "strict_sp_sv": {
+        "reduction_stats": {
+          "mean": 2.5892857142857144,
+          "std": 11.959515377131883,
+          "ci_95": 5.241488714799301
+        },
+        "repetition_score_stats": {
+          "mean": 0.08106060606060607,
+          "std": 0.06386285357312452,
+          "ci_95": 0.027989129638017862
+        },
+        "paired_t_test": {
+          "statistic": 0.9892489261504706,
+          "p_value": 0.3349729871419642,
+          "significant_p05": false
+        },
+        "wilcoxon_test": {
+          "statistic": 3.0,
+          "p_value": 0.4652088184521418,
+          "significant_p05": false
+        }
+      },
+      "pareto_sp_sv": {
+        "reduction_stats": {
+          "mean": -8.491071428571427,
+          "std": 144.21013983090208,
+          "ci_95": 63.202880438502824
+        },
+        "repetition_score_stats": {
+          "mean": 0.06818181818181818,
+          "std": 0.06498346339428628,
+          "ci_95": 0.028480258546346688
+        },
+        "paired_t_test": {
+          "statistic": 1.8616688928740035,
+          "p_value": 0.07819245028115059,
+          "significant_p05": false
+        },
+        "wilcoxon_test": {
+          "statistic": 6.5,
+          "p_value": 0.10689685480449326,
+          "significant_p05": false
+        }
+      },
+      "diff_sp_sv": {
+        "reduction_stats": {
+          "mean": 0.4464285714285715,
+          "std": 31.93602522706879,
+          "ci_95": 13.996580174419298
+        },
+        "repetition_score_stats": {
+          "mean": 0.07992424242424243,
+          "std": 0.06486598721909119,
+          "ci_95": 0.028428772342506004
+        },
+        "paired_t_test": {
+          "statistic": 1.110750302167969,
+          "p_value": 0.2805352959465252,
+          "significant_p05": false
+        },
+        "wilcoxon_test": {
+          "statistic": 6.0,
+          "p_value": 0.6844698210251553,
+          "significant_p05": false
+        }
+      }
+    },
+    "per_seed_records": [
+      {
+        "seed": 10,
+        "baseline_rep": 0.007575757575757576,
+        "baseline_prompt_scores": [
+          0.0,
+          0.0,
+          0.045454545454545456,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_wsp_rep": 0.022727272727272724,
+        "raw_wsp_prompt_scores": [
+          0.0,
+          0.0,
+          0.045454545454545456,
+          0.09090909090909091,
+          0.0,
+          0.0
+        ],
+        "raw_wsp_reduction_pct": -199.99999999999994,
+        "strict_sp_sv_rep": 0.007575757575757576,
+        "strict_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.045454545454545456,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "strict_sp_sv_reduction_pct": 0.0,
+        "pareto_sp_sv_rep": 0.05303030303030303,
+        "pareto_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.045454545454545456,
+          0.2727272727272727,
+          0.0,
+          0.0
+        ],
+        "pareto_sp_sv_reduction_pct": -600.0,
+        "diff_sp_sv_rep": 0.015151515151515152,
+        "diff_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.045454545454545456,
+          0.045454545454545456,
+          0.0,
+          0.0
+        ],
+        "diff_sp_sv_reduction_pct": -100.0
+      },
+      {
+        "seed": 20,
+        "baseline_rep": 0.022727272727272724,
+        "baseline_prompt_scores": [
+          0.0,
+          0.0,
+          0.13636363636363635,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_wsp_rep": 0.022727272727272724,
+        "raw_wsp_prompt_scores": [
+          0.0,
+          0.0,
+          0.13636363636363635,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_wsp_reduction_pct": 0.0,
+        "strict_sp_sv_rep": 0.022727272727272724,
+        "strict_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.13636363636363635,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "strict_sp_sv_reduction_pct": 0.0,
+        "pareto_sp_sv_rep": 0.022727272727272724,
+        "pareto_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.13636363636363635,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pareto_sp_sv_reduction_pct": 0.0,
+        "diff_sp_sv_rep": 0.022727272727272724,
+        "diff_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.13636363636363635,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "diff_sp_sv_reduction_pct": 0.0
+      },
+      {
+        "seed": 30,
+        "baseline_rep": 0.1212121212121212,
+        "baseline_prompt_scores": [
+          0.0,
+          0.0,
+          0.045454545454545456,
+          0.6363636363636364,
+          0.0,
+          0.045454545454545456
+        ],
+        "raw_wsp_rep": 0.1212121212121212,
+        "raw_wsp_prompt_scores": [
+          0.0,
+          0.0,
+          0.045454545454545456,
+          0.6363636363636364,
+          0.0,
+          0.045454545454545456
+        ],
+        "raw_wsp_reduction_pct": 0.0,
+        "strict_sp_sv_rep": 0.1212121212121212,
+        "strict_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.045454545454545456,
+          0.6363636363636364,
+          0.0,
+          0.045454545454545456
+        ],
+        "strict_sp_sv_reduction_pct": 0.0,
+        "pareto_sp_sv_rep": 0.1212121212121212,
+        "pareto_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.045454545454545456,
+          0.6363636363636364,
+          0.0,
+          0.045454545454545456
+        ],
+        "pareto_sp_sv_reduction_pct": 0.0,
+        "diff_sp_sv_rep": 0.1212121212121212,
+        "diff_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.045454545454545456,
+          0.6363636363636364,
+          0.0,
+          0.045454545454545456
+        ],
+        "diff_sp_sv_reduction_pct": 0.0
+      },
+      {
+        "seed": 40,
+        "baseline_rep": 0.0,
+        "baseline_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_wsp_rep": 0.0,
+        "raw_wsp_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_wsp_reduction_pct": 0.0,
+        "strict_sp_sv_rep": 0.0,
+        "strict_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "strict_sp_sv_reduction_pct": 0.0,
+        "pareto_sp_sv_rep": 0.0,
+        "pareto_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pareto_sp_sv_reduction_pct": 0.0,
+        "diff_sp_sv_rep": 0.0,
+        "diff_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "diff_sp_sv_reduction_pct": 0.0
+      },
+      {
+        "seed": 50,
+        "baseline_rep": 0.12121212121212122,
+        "baseline_prompt_scores": [
+          0.0,
+          0.09090909090909091,
+          0.045454545454545456,
+          0.5909090909090909,
+          0.0,
+          0.0
+        ],
+        "raw_wsp_rep": 0.12878787878787878,
+        "raw_wsp_prompt_scores": [
+          0.0,
+          0.09090909090909091,
+          0.045454545454545456,
+          0.6363636363636364,
+          0.0,
+          0.0
+        ],
+        "raw_wsp_reduction_pct": -6.249999999999995,
+        "strict_sp_sv_rep": 0.12121212121212122,
+        "strict_sp_sv_prompt_scores": [
+          0.0,
+          0.09090909090909091,
+          0.045454545454545456,
+          0.5909090909090909,
+          0.0,
+          0.0
+        ],
+        "strict_sp_sv_reduction_pct": 0.0,
+        "pareto_sp_sv_rep": 0.14393939393939395,
+        "pareto_sp_sv_prompt_scores": [
+          0.0,
+          0.09090909090909091,
+          0.045454545454545456,
+          0.7272727272727273,
+          0.0,
+          0.0
+        ],
+        "pareto_sp_sv_reduction_pct": -18.750000000000007,
+        "diff_sp_sv_rep": 0.12121212121212122,
+        "diff_sp_sv_prompt_scores": [
+          0.0,
+          0.09090909090909091,
+          0.045454545454545456,
+          0.5909090909090909,
+          0.0,
+          0.0
+        ],
+        "diff_sp_sv_reduction_pct": 0.0
+      },
+      {
+        "seed": 60,
+        "baseline_rep": 0.04545454545454545,
+        "baseline_prompt_scores": [
+          0.2727272727272727,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_wsp_rep": 0.007575757575757576,
+        "raw_wsp_prompt_scores": [
+          0.045454545454545456,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_wsp_reduction_pct": 83.33333333333333,
+        "strict_sp_sv_rep": 0.04545454545454545,
+        "strict_sp_sv_prompt_scores": [
+          0.2727272727272727,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "strict_sp_sv_reduction_pct": 0.0,
+        "pareto_sp_sv_rep": 0.04545454545454545,
+        "pareto_sp_sv_prompt_scores": [
+          0.2727272727272727,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pareto_sp_sv_reduction_pct": 0.0,
+        "diff_sp_sv_rep": 0.04545454545454545,
+        "diff_sp_sv_prompt_scores": [
+          0.2727272727272727,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "diff_sp_sv_reduction_pct": 0.0
+      },
+      {
+        "seed": 70,
+        "baseline_rep": 0.15151515151515152,
+        "baseline_prompt_scores": [
+          0.045454545454545456,
+          0.0,
+          0.09090909090909091,
+          0.7727272727272727,
+          0.0,
+          0.0
+        ],
+        "raw_wsp_rep": 0.022727272727272724,
+        "raw_wsp_prompt_scores": [
+          0.045454545454545456,
+          0.0,
+          0.09090909090909091,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_wsp_reduction_pct": 85.0,
+        "strict_sp_sv_rep": 0.1590909090909091,
+        "strict_sp_sv_prompt_scores": [
+          0.045454545454545456,
+          0.0,
+          0.09090909090909091,
+          0.8181818181818182,
+          0.0,
+          0.0
+        ],
+        "strict_sp_sv_reduction_pct": -4.999999999999996,
+        "pareto_sp_sv_rep": 0.022727272727272724,
+        "pareto_sp_sv_prompt_scores": [
+          0.045454545454545456,
+          0.0,
+          0.09090909090909091,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pareto_sp_sv_reduction_pct": 85.0,
+        "diff_sp_sv_rep": 0.1590909090909091,
+        "diff_sp_sv_prompt_scores": [
+          0.045454545454545456,
+          0.0,
+          0.09090909090909091,
+          0.8181818181818182,
+          0.0,
+          0.0
+        ],
+        "diff_sp_sv_reduction_pct": -4.999999999999996
+      },
+      {
+        "seed": 80,
+        "baseline_rep": 0.05303030303030303,
+        "baseline_prompt_scores": [
+          0.045454545454545456,
+          0.045454545454545456,
+          0.22727272727272727,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_wsp_rep": 0.06060606060606061,
+        "raw_wsp_prompt_scores": [
+          0.0,
+          0.09090909090909091,
+          0.22727272727272727,
+          0.0,
+          0.0,
+          0.045454545454545456
+        ],
+        "raw_wsp_reduction_pct": -14.285714285714285,
+        "strict_sp_sv_rep": 0.06060606060606061,
+        "strict_sp_sv_prompt_scores": [
+          0.0,
+          0.09090909090909091,
+          0.22727272727272727,
+          0.0,
+          0.0,
+          0.045454545454545456
+        ],
+        "strict_sp_sv_reduction_pct": -14.285714285714285,
+        "pareto_sp_sv_rep": 0.05303030303030303,
+        "pareto_sp_sv_prompt_scores": [
+          0.0,
+          0.09090909090909091,
+          0.22727272727272727,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pareto_sp_sv_reduction_pct": 0.0,
+        "diff_sp_sv_rep": 0.06060606060606061,
+        "diff_sp_sv_prompt_scores": [
+          0.0,
+          0.09090909090909091,
+          0.22727272727272727,
+          0.0,
+          0.0,
+          0.045454545454545456
+        ],
+        "diff_sp_sv_reduction_pct": -14.285714285714285
+      },
+      {
+        "seed": 90,
+        "baseline_rep": 0.015151515151515152,
+        "baseline_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.09090909090909091,
+          0.0,
+          0.0
+        ],
+        "raw_wsp_rep": 0.0,
+        "raw_wsp_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_wsp_reduction_pct": 100.0,
+        "strict_sp_sv_rep": 0.015151515151515152,
+        "strict_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.09090909090909091,
+          0.0,
+          0.0
+        ],
+        "strict_sp_sv_reduction_pct": 0.0,
+        "pareto_sp_sv_rep": 0.0,
+        "pareto_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pareto_sp_sv_reduction_pct": 100.0,
+        "diff_sp_sv_rep": 0.015151515151515152,
+        "diff_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.09090909090909091,
+          0.0,
+          0.0
+        ],
+        "diff_sp_sv_reduction_pct": 0.0
+      },
+      {
+        "seed": 100,
+        "baseline_rep": 0.04545454545454545,
+        "baseline_prompt_scores": [
+          0.0,
+          0.0,
+          0.18181818181818182,
+          0.0,
+          0.0,
+          0.09090909090909091
+        ],
+        "raw_wsp_rep": 0.04545454545454545,
+        "raw_wsp_prompt_scores": [
+          0.0,
+          0.0,
+          0.18181818181818182,
+          0.0,
+          0.0,
+          0.09090909090909091
+        ],
+        "raw_wsp_reduction_pct": 0.0,
+        "strict_sp_sv_rep": 0.04545454545454545,
+        "strict_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.18181818181818182,
+          0.0,
+          0.0,
+          0.09090909090909091
+        ],
+        "strict_sp_sv_reduction_pct": 0.0,
+        "pareto_sp_sv_rep": 0.04545454545454545,
+        "pareto_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.18181818181818182,
+          0.0,
+          0.0,
+          0.09090909090909091
+        ],
+        "pareto_sp_sv_reduction_pct": 0.0,
+        "diff_sp_sv_rep": 0.04545454545454545,
+        "diff_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.18181818181818182,
+          0.0,
+          0.0,
+          0.09090909090909091
+        ],
+        "diff_sp_sv_reduction_pct": 0.0
+      },
+      {
+        "seed": 110,
+        "baseline_rep": 0.10606060606060606,
+        "baseline_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.6363636363636364,
+          0.0,
+          0.0
+        ],
+        "raw_wsp_rep": 0.015151515151515152,
+        "raw_wsp_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.09090909090909091,
+          0.0,
+          0.0
+        ],
+        "raw_wsp_reduction_pct": 85.71428571428571,
+        "strict_sp_sv_rep": 0.10606060606060606,
+        "strict_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.6363636363636364,
+          0.0,
+          0.0
+        ],
+        "strict_sp_sv_reduction_pct": 0.0,
+        "pareto_sp_sv_rep": 0.015151515151515152,
+        "pareto_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.09090909090909091,
+          0.0,
+          0.0
+        ],
+        "pareto_sp_sv_reduction_pct": 85.71428571428571,
+        "diff_sp_sv_rep": 0.10606060606060606,
+        "diff_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.6363636363636364,
+          0.0,
+          0.0
+        ],
+        "diff_sp_sv_reduction_pct": 0.0
+      },
+      {
+        "seed": 120,
+        "baseline_rep": 0.0909090909090909,
+        "baseline_prompt_scores": [
+          0.0,
+          0.0,
+          0.18181818181818182,
+          0.0,
+          0.3181818181818182,
+          0.045454545454545456
+        ],
+        "raw_wsp_rep": 0.0909090909090909,
+        "raw_wsp_prompt_scores": [
+          0.0,
+          0.0,
+          0.18181818181818182,
+          0.0,
+          0.3181818181818182,
+          0.045454545454545456
+        ],
+        "raw_wsp_reduction_pct": 0.0,
+        "strict_sp_sv_rep": 0.0909090909090909,
+        "strict_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.18181818181818182,
+          0.0,
+          0.3181818181818182,
+          0.045454545454545456
+        ],
+        "strict_sp_sv_reduction_pct": 0.0,
+        "pareto_sp_sv_rep": 0.0909090909090909,
+        "pareto_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.18181818181818182,
+          0.0,
+          0.3181818181818182,
+          0.045454545454545456
+        ],
+        "pareto_sp_sv_reduction_pct": 0.0,
+        "diff_sp_sv_rep": 0.0909090909090909,
+        "diff_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.18181818181818182,
+          0.0,
+          0.3181818181818182,
+          0.045454545454545456
+        ],
+        "diff_sp_sv_reduction_pct": 0.0
+      },
+      {
+        "seed": 130,
+        "baseline_rep": 0.17424242424242423,
+        "baseline_prompt_scores": [
+          0.0,
+          0.0,
+          0.7727272727272727,
+          0.0,
+          0.2727272727272727,
+          0.0
+        ],
+        "raw_wsp_rep": 0.17424242424242423,
+        "raw_wsp_prompt_scores": [
+          0.0,
+          0.0,
+          0.7727272727272727,
+          0.0,
+          0.2727272727272727,
+          0.0
+        ],
+        "raw_wsp_reduction_pct": 0.0,
+        "strict_sp_sv_rep": 0.17424242424242423,
+        "strict_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.7727272727272727,
+          0.0,
+          0.2727272727272727,
+          0.0
+        ],
+        "strict_sp_sv_reduction_pct": 0.0,
+        "pareto_sp_sv_rep": 0.17424242424242423,
+        "pareto_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.7727272727272727,
+          0.0,
+          0.2727272727272727,
+          0.0
+        ],
+        "pareto_sp_sv_reduction_pct": 0.0,
+        "diff_sp_sv_rep": 0.17424242424242423,
+        "diff_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.7727272727272727,
+          0.0,
+          0.2727272727272727,
+          0.0
+        ],
+        "diff_sp_sv_reduction_pct": 0.0
+      },
+      {
+        "seed": 140,
+        "baseline_rep": 0.007575757575757576,
+        "baseline_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.045454545454545456,
+          0.0,
+          0.0
+        ],
+        "raw_wsp_rep": 0.007575757575757576,
+        "raw_wsp_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.045454545454545456,
+          0.0,
+          0.0
+        ],
+        "raw_wsp_reduction_pct": 0.0,
+        "strict_sp_sv_rep": 0.007575757575757576,
+        "strict_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.045454545454545456,
+          0.0,
+          0.0
+        ],
+        "strict_sp_sv_reduction_pct": 0.0,
+        "pareto_sp_sv_rep": 0.007575757575757576,
+        "pareto_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.045454545454545456,
+          0.0,
+          0.0
+        ],
+        "pareto_sp_sv_reduction_pct": 0.0,
+        "diff_sp_sv_rep": 0.007575757575757576,
+        "diff_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.045454545454545456,
+          0.0,
+          0.0
+        ],
+        "diff_sp_sv_reduction_pct": 0.0
+      },
+      {
+        "seed": 150,
+        "baseline_rep": 0.196969696969697,
+        "baseline_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.18181818181818182,
+          0.18181818181818182,
+          0.8181818181818182
+        ],
+        "raw_wsp_rep": 0.196969696969697,
+        "raw_wsp_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.18181818181818182,
+          0.18181818181818182,
+          0.8181818181818182
+        ],
+        "raw_wsp_reduction_pct": 0.0,
+        "strict_sp_sv_rep": 0.196969696969697,
+        "strict_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.18181818181818182,
+          0.18181818181818182,
+          0.8181818181818182
+        ],
+        "strict_sp_sv_reduction_pct": 0.0,
+        "pareto_sp_sv_rep": 0.196969696969697,
+        "pareto_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.18181818181818182,
+          0.18181818181818182,
+          0.8181818181818182
+        ],
+        "pareto_sp_sv_reduction_pct": 0.0,
+        "diff_sp_sv_rep": 0.196969696969697,
+        "diff_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.18181818181818182,
+          0.18181818181818182,
+          0.8181818181818182
+        ],
+        "diff_sp_sv_reduction_pct": 0.0
+      },
+      {
+        "seed": 160,
+        "baseline_rep": 0.30303030303030304,
+        "baseline_prompt_scores": [
+          0.22727272727272727,
+          0.0,
+          0.0,
+          0.7727272727272727,
+          0.0,
+          0.8181818181818182
+        ],
+        "raw_wsp_rep": 0.1590909090909091,
+        "raw_wsp_prompt_scores": [
+          0.13636363636363635,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.8181818181818182
+        ],
+        "raw_wsp_reduction_pct": 47.5,
+        "strict_sp_sv_rep": 0.17424242424242423,
+        "strict_sp_sv_prompt_scores": [
+          0.22727272727272727,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.8181818181818182
+        ],
+        "strict_sp_sv_reduction_pct": 42.50000000000001,
+        "pareto_sp_sv_rep": 0.17424242424242423,
+        "pareto_sp_sv_prompt_scores": [
+          0.22727272727272727,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.8181818181818182
+        ],
+        "pareto_sp_sv_reduction_pct": 42.50000000000001,
+        "diff_sp_sv_rep": 0.17424242424242423,
+        "diff_sp_sv_prompt_scores": [
+          0.22727272727272727,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.8181818181818182
+        ],
+        "diff_sp_sv_reduction_pct": 42.50000000000001
+      },
+      {
+        "seed": 170,
+        "baseline_rep": 0.0909090909090909,
+        "baseline_prompt_scores": [
+          0.0,
+          0.13636363636363635,
+          0.0,
+          0.13636363636363635,
+          0.0,
+          0.2727272727272727
+        ],
+        "raw_wsp_rep": 0.05303030303030303,
+        "raw_wsp_prompt_scores": [
+          0.0,
+          0.13636363636363635,
+          0.0,
+          0.13636363636363635,
+          0.045454545454545456,
+          0.0
+        ],
+        "raw_wsp_reduction_pct": 41.66666666666666,
+        "strict_sp_sv_rep": 0.0909090909090909,
+        "strict_sp_sv_prompt_scores": [
+          0.0,
+          0.13636363636363635,
+          0.0,
+          0.13636363636363635,
+          0.0,
+          0.2727272727272727
+        ],
+        "strict_sp_sv_reduction_pct": 0.0,
+        "pareto_sp_sv_rep": 0.04545454545454545,
+        "pareto_sp_sv_prompt_scores": [
+          0.0,
+          0.13636363636363635,
+          0.0,
+          0.13636363636363635,
+          0.0,
+          0.0
+        ],
+        "pareto_sp_sv_reduction_pct": 50.0,
+        "diff_sp_sv_rep": 0.0909090909090909,
+        "diff_sp_sv_prompt_scores": [
+          0.0,
+          0.13636363636363635,
+          0.0,
+          0.13636363636363635,
+          0.0,
+          0.2727272727272727
+        ],
+        "diff_sp_sv_reduction_pct": 0.0
+      },
+      {
+        "seed": 180,
+        "baseline_rep": 0.015151515151515152,
+        "baseline_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.09090909090909091
+        ],
+        "raw_wsp_rep": 0.007575757575757576,
+        "raw_wsp_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.045454545454545456
+        ],
+        "raw_wsp_reduction_pct": 50.0,
+        "strict_sp_sv_rep": 0.015151515151515152,
+        "strict_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.09090909090909091
+        ],
+        "strict_sp_sv_reduction_pct": 0.0,
+        "pareto_sp_sv_rep": 0.015151515151515152,
+        "pareto_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.09090909090909091
+        ],
+        "pareto_sp_sv_reduction_pct": 0.0,
+        "diff_sp_sv_rep": 0.015151515151515152,
+        "diff_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.09090909090909091
+        ],
+        "diff_sp_sv_reduction_pct": 0.0
+      },
+      {
+        "seed": 190,
+        "baseline_rep": 0.12878787878787878,
+        "baseline_prompt_scores": [
+          0.0,
+          0.7727272727272727,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_wsp_rep": 0.12878787878787878,
+        "raw_wsp_prompt_scores": [
+          0.0,
+          0.7727272727272727,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_wsp_reduction_pct": 0.0,
+        "strict_sp_sv_rep": 0.12878787878787878,
+        "strict_sp_sv_prompt_scores": [
+          0.0,
+          0.7727272727272727,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "strict_sp_sv_reduction_pct": 0.0,
+        "pareto_sp_sv_rep": 0.12878787878787878,
+        "pareto_sp_sv_prompt_scores": [
+          0.0,
+          0.7727272727272727,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pareto_sp_sv_reduction_pct": 0.0,
+        "diff_sp_sv_rep": 0.12878787878787878,
+        "diff_sp_sv_prompt_scores": [
+          0.0,
+          0.7727272727272727,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "diff_sp_sv_reduction_pct": 0.0
+      },
+      {
+        "seed": 200,
+        "baseline_rep": 0.05303030303030303,
+        "baseline_prompt_scores": [
+          0.0,
+          0.09090909090909091,
+          0.0,
+          0.22727272727272727,
+          0.0,
+          0.0
+        ],
+        "raw_wsp_rep": 0.007575757575757576,
+        "raw_wsp_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.045454545454545456,
+          0.0,
+          0.0
+        ],
+        "raw_wsp_reduction_pct": 85.71428571428571,
+        "strict_sp_sv_rep": 0.03787878787878788,
+        "strict_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.22727272727272727,
+          0.0,
+          0.0
+        ],
+        "strict_sp_sv_reduction_pct": 28.57142857142857,
+        "pareto_sp_sv_rep": 0.007575757575757576,
+        "pareto_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.045454545454545456,
+          0.0,
+          0.0
+        ],
+        "pareto_sp_sv_reduction_pct": 85.71428571428571,
+        "diff_sp_sv_rep": 0.007575757575757576,
+        "diff_sp_sv_prompt_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.045454545454545456,
+          0.0,
+          0.0
+        ],
+        "diff_sp_sv_reduction_pct": 85.71428571428571
+      }
+    ]
+  }
+}

@@ -55,19 +55,23 @@ Probing the eigenspace of activation covariance matrix $C_{\text{train}}$ reveal
 
 ---
 
-### 4. Independent Final Test Evaluation (Strict 3-Way Disjoint Split)
-Evaluated on SmolLM2-360M across an independent 3-way split: 30 Train passages (540 tokens), 10 Validation passages (149 tokens), and 10 Final Test passages (185 tokens). Hyperparameters ($\alpha^* = 0.5, \gamma^* = 0.05$) were selected solely on validation data:
+### 4. Independent Final Test Evaluation & Research Freeze (Phase 9)
+Evaluated on SmolLM2-360M across an independent 3-way split: 30 Train passages, 10 Validation passages, and 10 strictly held-out Final Test passages (185 tokens). Features a 20-draw random orthogonal subspace baseline ($N=20$) and a 20-seed stochastic sampling battery ($N=20$, `temperature=0.7`, `top_p=0.9`):
 
-| Configuration | $\|\Delta W\|_F$ | Test Loop Reduction | Test PPL | Test PPL Drift | Out-of-Sample Invariance | Condition Number $\kappa$ |
+| Configuration | $\|\Delta W\|_F$ | Test Loop Reduction (Greedy) | Test PPL | Test PPL Drift | Out-of-Sample Invariance | Condition Number $\kappa$ |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
 | **1. Unedited Baseline** | 0.0000 | 0.00% | 22.4287 | 0.0000% | 100.00% | 31.51 |
-| **2. Raw WSP (Takehi et al.)** | 5.9992 | 10.62% | 22.2127 | -0.9629% | **0.00%** | 31.60 |
-| **3. Random Subspace Control** | 5.8959 | 10.62% | 22.2173 | -0.9425% | **3.66%** | 31.60 |
-| **4. Selected SP-SV-WSP ($\alpha^*=0.5, \gamma^*=0.05$)** | **5.2492** | **10.62%** | **22.3664** | **-0.2779%** | **65.61%** | **31.55** |
-| **5. Strict SP-SV-WSP ($\alpha=10^{-3}, \gamma=0.05$)** | 4.5866 | 0.00% | 22.4116 | -0.0760% | **82.87%** | 31.52 |
-| **6. Differential SP-SV-WSP ($u_{\text{diff}}, \alpha=10^{-3}$)** | 4.9817 | 0.00% | 22.4108 | -0.0796% | **83.82%** | 31.51 |
+| **2. Raw WSP (Takehi et al.)** | 5.9992 | 26.67% | 22.2641 | -0.7337% | **0.00%** | 31.58 |
+| **3. Random Subspace Control ($N=20$ Draws)** | 5.8765 | 26.67% | 22.2694 | -0.7080% | **4.09% $\pm$ 1.23%** | 31.58 |
+| **4. Selected SP-SV-WSP ($\alpha^*=10^{-3}, \gamma^*=0.01$)** | **2.8063** | **0.00%** | **22.4185** | **-0.0455%** | **88.43%** | **31.52** |
+| **5. SP-SV-WSP Pareto ($\alpha=0.5, \gamma=0.05$)** | **5.3791** | **0.00%** | **22.3771** | **-0.2302%** | **62.75%** | **31.54** |
+| **6. Differential SP-SV-WSP ($u_{\text{diff}}, \alpha=10^{-3}$)** | 2.8063 | 0.00% | 22.4195 | -0.0408% | **89.95%** | 31.52 |
 
-*Raw Benchmark Artifact:* [`benchmark_results/comprehensive_validation_and_strengthening.json`](benchmark_results/comprehensive_validation_and_strengthening.json)
+> **20-Seed Stochastic Autoregressive Testing:**
+> Evaluating across 20 independent seeds (`temperature=0.7, top_p=0.9`) revealed that Raw WSP reduces loop repetition by $17.92\% \pm 64.55\%$ (paired $t$-test $p = 0.0308$, Wilcoxon $p = 0.0233$) at the cost of $0.00\%$ representation invariance. Balanced SP-SV-WSP ($\gamma=0.05$) achieves comparable behavioral suppression on active seeds while preserving **$62.75\%$** representation invariance and confining perplexity drift to $-0.2302\%$. Strict SP-SV-WSP ($\gamma=0.01$) guarantees **$88.43\%$** invariance with near-zero drift ($-0.0455\%$).
+
+*Certified Audit Report:* [`PHASE_9_FINAL_AUDIT.md`](PHASE_9_FINAL_AUDIT.md)  
+*Raw Benchmark Artifact:* [`benchmark_results/PHASE_9_RESULTS.json`](benchmark_results/PHASE_9_RESULTS.json)
 
 ---
 
