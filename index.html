@@ -319,6 +319,69 @@
       </div>
     </section>
 
+    <!-- SECTION 3.5: STEP-BY-STEP AUTONOMOUS SURGERY SEQUENCER -->
+    <section id="pipeline" class="section-block">
+      <div class="section-header">
+        <div class="section-tag">Closed-Loop Pipeline</div>
+        <h2 class="section-title">Autonomous Surgery Flight Control (Step-by-Step)</h2>
+        <p class="section-lead">
+          Follow the 5-stage closed-loop pipeline executing on local hardware: from logit attractor detection to null-space projection, margin calibration, and atomic rollback verification.
+        </p>
+      </div>
+
+      <div class="card-panel">
+        <div class="stepper-container">
+          <div class="step-nav-bar">
+            <button class="step-node active" data-step="0">
+              <div class="step-circle">01</div>
+              <span class="step-label">Attractor</span>
+            </button>
+            <button class="step-node" data-step="1">
+              <div class="step-circle">02</div>
+              <span class="step-label">Covariance</span>
+            </button>
+            <button class="step-node" data-step="2">
+              <div class="step-circle">03</div>
+              <span class="step-label">Null-Space</span>
+            </button>
+            <button class="step-node" data-step="3">
+              <div class="step-circle">04</div>
+              <span class="step-label">Margin (β*)</span>
+            </button>
+            <button class="step-node" data-step="4">
+              <div class="step-circle">05</div>
+              <span class="step-label">Flight Oracle</span>
+            </button>
+          </div>
+
+          <div class="step-stage-card">
+            <div>
+              <div class="stage-header">
+                <span class="stage-badge" id="stageBadge">Stage 1: Attractor Detection</span>
+              </div>
+              <h3 class="stage-title" id="stageTitle">Logit Margin Attractor Probing</h3>
+              <p class="stage-desc" id="stageDesc">
+                The agent identifies the runaway token loop by computing forward pass logits, detecting a strong discrete argmax margin (Δz = 2.1 to 5.7) favoring degenerate output.
+              </p>
+              <div class="math-formula-box" id="stageMath">
+                Δz = z_attractor - max_{j ≠ attractor} z_j ≥ 2.1
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 12px; align-items: flex-end;">
+              <div class="stage-playback">
+                <button class="stage-ctrl-btn" id="stagePrevBtn">◀ Prev</button>
+                <button class="stage-ctrl-btn" id="stageNextBtn">Next ▶</button>
+              </div>
+              <button class="stage-ctrl-btn" id="stagePlayBtn" style="width: 100%; justify-content: center; background: rgba(94, 106, 210, 0.15); border-color: var(--accent-primary);">
+                ▶ Auto Play
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- SECTION 4: MATHEMATICAL SUBSPACE PROJECTION EXPLORER -->
     <section id="geometry" class="section-block">
       <div class="section-header">
@@ -466,6 +529,44 @@
             <p style="font-size: 13px; color: var(--text-subtle);">
               Across all transformer blocks (layers 0 through 31), safe surgery maintains condition number stability (κ = 14.14 - 73.31) with zero spectral explosion.
             </p>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 24px;">
+          <h4 style="font-size: 14px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent-cyan); margin-bottom: 12px; font-family: var(--font-mono);">
+            Interactive 32-Layer Depth Inspector (Click Any Layer)
+          </h4>
+          <div class="layer-depth-grid">
+            <div class="layer-blocks-container" id="layerBlocksGrid">
+              <!-- Dynamically populated 32 layer buttons -->
+            </div>
+            <div class="layer-inspect-panel">
+              <div style="font-size: 11px; text-transform: uppercase; color: var(--text-subtle); font-family: var(--font-mono);">Selected Target</div>
+              <div style="font-size: 14px; font-weight: 700; color: var(--text-main); font-family: var(--font-mono);" id="inspectLayerName">model.layers.15.mlp.down_proj</div>
+              
+              <div class="telemetry-box" style="margin-top: 4px;">
+                <div class="telemetry-row">
+                  <span class="telemetry-label">Frobenius Norm ||W||_F:</span>
+                  <span class="telemetry-val" id="inspectFro">280.63</span>
+                </div>
+                <div class="telemetry-row">
+                  <span class="telemetry-label">Top Singular Value σ₁:</span>
+                  <span class="telemetry-val" id="inspectSigma">38.99</span>
+                </div>
+                <div class="telemetry-row">
+                  <span class="telemetry-label">Condition Number κ:</span>
+                  <span class="telemetry-val good" id="inspectKappa">31.51 (Weyl-Safe)</span>
+                </div>
+                <div class="telemetry-row">
+                  <span class="telemetry-label">Null-Space Nullity:</span>
+                  <span class="telemetry-val cyan" id="inspectNullity">94.2% (Orthogonal)</span>
+                </div>
+                <div class="telemetry-row">
+                  <span class="telemetry-label">Retained PPL Drift:</span>
+                  <span class="telemetry-val good" id="inspectDrift">+0.000% (PPL Invariant)</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
