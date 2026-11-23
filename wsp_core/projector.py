@@ -187,3 +187,63 @@ class NullSpaceProjector:
             retained_invariance_score=invariance_score,
         )
 
+    def project_adaptive_margin(
+        self,
+        u_target: torch.Tensor,
+        v_target: torch.Tensor,
+        covariance: torch.Tensor,
+        beta: float = 3.0,
+        alpha: Optional[float] = None,
+        base_w: Optional[torch.Tensor] = None,
+        test_activations: Optional[torch.Tensor] = None,
+    ) -> ProjectionResult:
+        """
+        Adaptive Margin-Aware (AMA) Subspace Projection:
+        Computes the normalized null-space projected rank-1 update:
+            u_null = P_null * u_target
+            Delta W_AMA = - beta * (v_target * u_null^T) / (||u_null||_2^2 + 1e-12)
+
+        Ensures the effective steering strength along the pathology vector
+        is calibrated to cross discrete token logit margins, while
+        projection onto the retained covariance C remains strictly attenuated.
+        """
+        P_null = self.compute_projector(covariance, alpha=alpha)
+        u_null = torch.matmul(P_null, u_target.to(torch.float32))
+        norm_sq = float(torch.dot(u_null, u_null).item()) + 1e-12
+        
+        v_t = v_target.to(torch.float32)
+        delta_safe = - beta * torch.outer(v_t, u_null) / norm_sq
+        
+        # Raw unprojected comparison (normalized with identical scale for fair residual evaluation)
+        u_t = u_target.to(torch.float32)
+        delta_raw = - beta * torch.outer(v_t, u_t) / norm_sq
+
+        raw_norm = float(torch.norm(delta_raw, p='fro').item())
+        safe_norm = float(torch.norm(delta_safe, p='fro').item())
+
+        residual_error = 0.0
+        invariance_score = 1.0
+
+        if test_activations is not None and test_activations.shape[0] > 0:
+            X = test_activations.to(torch.float32)
+            pert_safe = torch.matmul(delta_safe, X.T)
+            pert_raw = torch.matmul(delta_raw, X.T)
+            norm_safe_pert = float(torch.norm(pert_safe, p='fro').item())
+            norm_raw_pert = float(torch.norm(pert_raw, p='fro').item())
+            residual_error = norm_safe_pert / (norm_raw_pert + 1e-12)
+            invariance_score = max(0.0, 1.0 - residual_error)
+        else:
+            prod = torch.matmul(P_null, covariance)
+            residual_error = float(torch.norm(prod, p='fro').item() / (torch.norm(covariance, p='fro').item() + 1e-12))
+            invariance_score = max(0.0, 1.0 - residual_error)
+
+        return ProjectionResult(
+            delta_w_safe=delta_safe,
+            raw_frobenius_norm=raw_norm,
+            safe_frobenius_norm=safe_norm,
+            budget_rescaled=False,
+            frobenius_budget_ratio=1.0,
+            projection_residual_error=residual_error,
+            retained_invariance_score=invariance_score,
+        )
+

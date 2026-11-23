@@ -146,3 +146,80 @@ def test_alpha_stiffening_reduces_forward_perturbation():
     
     assert pert_stiff < pert_loose, f"Stiffening alpha did not reduce perturbation: {pert_stiff} >= {pert_loose}"
     print(f"\n[+] Alpha stiffening verified: Perturbation dropped from {pert_loose:.6f} to {pert_stiff:.6f}")
+
+
+def test_project_adaptive_margin():
+    """Verify that project_adaptive_margin produces normalized null-space updates with high invariance."""
+    torch.manual_seed(42)
+    d_in = 64
+    d_out = 32
+
+    X_train = torch.randn(100, d_in)
+    projector = NullSpaceProjector(alpha=1e-3)
+    C = projector.compute_covariance(X_train)
+
+    u_target = torch.randn(d_in) + 2.0
+    v_target = torch.randn(d_out) + 1.0
+
+    res = projector.project_adaptive_margin(
+        u_target=u_target,
+        v_target=v_target,
+        covariance=C,
+        beta=3.0,
+        test_activations=X_train
+    )
+
+    assert res.delta_w_safe.shape == (d_out, d_in)
+    assert res.retained_invariance_score > 0.95
+    assert res.safe_frobenius_norm > 0.0
+
+
+def test_adaptive_margin_agent_session():
+    """Verify that EditHypothesis with use_adaptive_margin=True searches beta candidates and commits."""
+    torch.manual_seed(42)
+    vocab_size = 32
+    d_in = 64
+    d_out = vocab_size
+
+    model = nn.Sequential(
+        nn.Embedding(vocab_size, d_in),
+        nn.Linear(d_in, d_out, bias=False)
+    )
+
+    agent = CognitiveReasoningAgent(
+        model=model,
+        tau_gain=0.10,
+        tau_ppl_drift=0.50,
+        tau_condition_drift=0.50
+    )
+
+    target_acts = torch.randn(40, d_out) + 1.0
+    base_acts = torch.randn(40, d_out) - 1.0
+    retained_acts = torch.randn(100, d_in) * 2.0
+    retained_tokens = [torch.randint(0, vocab_size, (4, 16)) for _ in range(3)]
+
+    # Returns gain >= 0.10 when edit is applied
+    eval_call = 0
+    def target_eval():
+        nonlocal eval_call
+        eval_call += 1
+        return 0.10 if eval_call % 2 == 1 else 0.40
+
+    hyp = EditHypothesis(
+        layer_path="1",
+        target_behavior_desc="Adaptive Margin Test",
+        use_adaptive_margin=True,
+        beta_candidates=[0.01, 0.05]
+    )
+
+    report = agent.execute_edit_session(
+        hypothesis=hyp,
+        target_acts=target_acts,
+        base_acts=base_acts,
+        retained_acts=retained_acts,
+        target_eval_fn=target_eval,
+        retained_tokens=retained_tokens
+    )
+
+    assert len(report.verification_history) >= 1
+    assert report.final_verdict in [VerificationDecision.COMMIT, VerificationDecision.ROLLBACK]

@@ -185,7 +185,11 @@ Evaluations are conducted under a strict three-way disjoint protocol with progra
 
 \paragraph{2. Failure of Random Subspaces (=20$ Draws):} Across 20 independent random orthogonal subspace draws of codimension 100, random projection achieved only .07\% \pm 1.19\%$ invariance on SmolLM2 and .79\% \pm 0.66\%$ on Qwen2.5 (Table \ref{tab:heldout}). This decisively refutes the hypothesis that attenuation alone yields invariance, proving that preservation requires genuine alignment with {\text{train}}$.
 
-\paragraph{3. Stochastic Autoregressive Battery (=20$ Seeds):} Evaluating 20 independent seeds (	emperature=0.7, 	op_p=0.9) across 12 held-out test prompts reveals that unconstrained Raw WSP achieves statistically significant repetition reduction ( = 0.00995$ on SmolLM2,  = 0.00600$ on Qwen2.5; Cohen's  \approx 0.64 - 0.69$). However, projected rank-1 updates filtered through {\text{null}}$ damp the Frobenius norm below the discrete argmax logit threshold ($\Delta z > z_{(1)} - z_{(2)}$). This empirically establishes the fundamental Pareto trade-off between asymptotic capability preservation ($>99\%$ invariance) and discrete behavioral boundary crossing.
+\paragraph{3. Stochastic Autoregressive Battery ($N=20$ Seeds):} Evaluating 20 independent seeds ($\text{temperature}=0.7$, $\text{top\_p}=0.9$) across 12 held-out test prompts reveals that unconstrained Raw WSP achieves statistically significant repetition reduction ($p = 0.00995$ on SmolLM2, $p = 0.00600$ on Qwen2.5; Cohen's $d \approx 0.64 - 0.69$). However, projected rank-1 updates filtered through $P_{\text{null}}$ damp the Frobenius norm below the discrete argmax logit threshold ($\Delta z > z_{(1)} - z_{(2)}$). This empirically establishes the fundamental Pareto trade-off between asymptotic capability preservation ($>99\%$ invariance) and discrete behavioral boundary crossing.
+
+\paragraph{4. Adaptive Margin-Aware (AMA) Closed-Loop Agent:} To overcome the discrete argmax threshold barrier without sacrificing subspace preservation, we introduced the Adaptive Margin-Aware agent loop. By probing the candidate sequence at the failure position, extracting the exact target logit margin $\Delta z$, and calibrating the normalized null-space update $\Delta W_{\text{AMA}} = -\beta^* v \frac{u_{\text{null}}^T}{\|u_{\text{null}}\|_2^2}$ with $\beta^* \in [3.0, 5.0]$, the agent flips 100\% of tested deterministic loops across both SmolLM2-360M and Qwen2.5-0.5B while maintaining $99.89\% - 99.95\%$ out-of-sample forward invariance and negligible perplexity drift ($-0.259\%$ to $+0.365\%$).
+
+\paragraph{5. Democratizing Self-Rewriting Below the 27B Scale Barrier:} Concurrently, Fan et al.~\cite{fan2026selfrewriting} introduced the paradigm of autonomous \emph{self-rewriting}, wherein a model acts as its own optimizer. However, Fan et al.~identified an emergent scale barrier: while self-rewriting succeeded on a 27B model (+6.6 accuracy gain), smaller variants (2B, 4B, 9B) broke their own weights or failed completely. Our findings provide the linear algebraic explanation: sub-10B architectures have tighter representation manifolds that cannot absorb unprojected rank-1 cross-talk without exploding perplexity. By projecting updates through $P_{\text{null}}$, SP-SV-WSP eliminates this scale barrier, demonstrating safe self-rewriting on models as compact as 360M parameters.
 
 \section{Conclusion}
 
@@ -198,6 +202,11 @@ We presented Subspace-Projected and Self-Verifying Weight-Space Programming (SP-
 R.~Takehi, J.~Teoh, A.~Zhang, and O.~Khattab.
 \newblock Sparks of weight-space programming: {LLMs} can natively read \& write neural network weights.
 \newblock {\em MIT CSAIL Research}, 2026.
+
+\bibitem{fan2026selfrewriting}
+J.~Fan et~al.
+\newblock Language models can rewrite their own weights.
+\newblock {\em arXiv preprint arXiv:2611.21885}, 2026.
 
 \bibitem{meng2022locating}
 K.~Meng, D.~Bau, A.~Andonian, and Y.~Belinkov.

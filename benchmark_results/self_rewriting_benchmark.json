@@ -1,0 +1,36 @@
+{
+  "SmolLM2-360M": {
+    "model_id": "HuggingFaceTB/SmolLM2-360M",
+    "base_ppl": 47.63637336386867,
+    "unconstrained": {
+      "gen": "#?#?#?#?#?#?#?#?#?#?#?#?#",
+      "ppl": 47.64521117151434,
+      "ppl_drift": 0.01855264584934279,
+      "invariance": 79.78157103061676
+    },
+    "spsv_wsp": {
+      "beta": 3.0,
+      "gen": "?  The answer is: no.  The answer is: no.  The answer is: no.",
+      "ppl": 47.69913488275915,
+      "ppl_drift": 0.13175125320954642,
+      "invariance": 99.9559641990345
+    }
+  },
+  "Qwen2.5-0.5B": {
+    "model_id": "Qwen/Qwen2.5-0.5B",
+    "base_ppl": 42.375483888691804,
+    "unconstrained": {
+      "gen": "or echo echo echo echo echo or echo echo echo echo echo or echo echo echo echo echo or echo echo echo echo echo or",
+      "ppl": 42.44067027363695,
+      "ppl_drift": 0.15383042024102647,
+      "invariance": 79.82765883207321
+    },
+    "spsv_wsp": {
+      "beta": 3.0,
+      "gen": "or echo echo echo echo echo echo  echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo",
+      "ppl": 42.258751006947975,
+      "ppl_drift": -0.2754726814458392,
+      "invariance": 99.96694479195867
+    }
+  }
+}

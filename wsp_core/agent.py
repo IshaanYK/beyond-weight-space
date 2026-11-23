@@ -22,6 +22,8 @@ class EditHypothesis:
     scale_factor: float = 1.0
     alpha: float = 1e-3
     gamma: float = 0.02
+    use_adaptive_margin: bool = False
+    beta_candidates: List[float] = field(default_factory=lambda: [2.0, 3.0, 4.0, 5.0, 6.0, 8.0])
 
 
 @dataclass
@@ -119,45 +121,72 @@ class CognitiveReasoningAgent:
         final_decision = VerificationDecision.ROLLBACK
         proj_result: Optional[ProjectionResult] = None
         
-        for round_idx in range(self.max_adaptation_rounds):
-            # Compute safe subspace projection
-            proj_result = projector.project(
-                delta_w_raw=delta_raw,
-                covariance=C_retain,
-                base_w=base_w,
-                alpha=current_alpha,
-                gamma=current_gamma,
-                test_activations=retained_acts[:100] if len(retained_acts) > 0 else None,
-            )
-            
-            # Verify in-memory via oracle
-            v_res = self.verifier.verify_and_decide(
-                layer_path=layer_path,
-                delta_w=proj_result.delta_w_safe,
-                target_eval_fn=target_eval_fn,
-                retained_tokens=retained_tokens,
-            )
-            history.append(v_res)
-            
-            if v_res.decision == VerificationDecision.COMMIT:
-                final_decision = VerificationDecision.COMMIT
-                status = f"Successfully verified and committed in Round {round_idx + 1}."
-                break
-            elif v_res.decision == VerificationDecision.ADAPT:
-                # Perplexity drifted or condition degraded: stiffen null-space projection & reduce budget
-                # Note: In P_null = V diag(alpha / (lambda_i + alpha)) V^T, reducing alpha stiffens the null space
-                # by reducing pass-through along active retained feature directions (lambda_i >> alpha).
-                current_alpha = current_alpha * 0.5
-                current_gamma = current_gamma * 0.7
-                # Restore pristine layer before re-projecting in next round
-                self.verifier.restore_layer(layer_path)
-            else:  # ROLLBACK
-                final_decision = VerificationDecision.ROLLBACK
-                status = f"Hypothesis rejected in Round {round_idx + 1}: {v_res.rationale}"
-                break
+        if hypothesis.use_adaptive_margin:
+            # Closed-loop Adaptive Margin-Aware (AMA) search
+            for beta in hypothesis.beta_candidates:
+                proj_result = projector.project_adaptive_margin(
+                    u_target=u_dir,
+                    v_target=v_dir,
+                    covariance=C_retain,
+                    beta=beta,
+                    alpha=current_alpha,
+                    test_activations=retained_acts[:100] if len(retained_acts) > 0 else None,
+                )
+                v_res = self.verifier.verify_and_decide(
+                    layer_path=layer_path,
+                    delta_w=proj_result.delta_w_safe,
+                    target_eval_fn=target_eval_fn,
+                    retained_tokens=retained_tokens,
+                )
+                history.append(v_res)
+                if v_res.decision == VerificationDecision.COMMIT:
+                    final_decision = VerificationDecision.COMMIT
+                    status = f"Adaptive Margin Agent successfully verified and committed at beta* = {beta:.1f}."
+                    break
+                elif v_res.decision == VerificationDecision.ADAPT:
+                    if layer_path in self.verifier._backups:
+                        self.verifier.restore_layer(layer_path)
+            else:
+                status = f"Adaptive Margin search exhausted all beta candidates up to {hypothesis.beta_candidates[-1]:.1f}. Layer restored."
+                if layer_path in self.verifier._backups:
+                    self.verifier.restore_layer(layer_path)
         else:
-            status = f"Exceeded maximum adaptation rounds ({self.max_adaptation_rounds}). Layer restored to baseline."
-            self.verifier.restore_layer(layer_path)
+            for round_idx in range(self.max_adaptation_rounds):
+                # Compute safe subspace projection
+                proj_result = projector.project(
+                    delta_w_raw=delta_raw,
+                    covariance=C_retain,
+                    base_w=base_w,
+                    alpha=current_alpha,
+                    gamma=current_gamma,
+                    test_activations=retained_acts[:100] if len(retained_acts) > 0 else None,
+                )
+                
+                # Verify in-memory via oracle
+                v_res = self.verifier.verify_and_decide(
+                    layer_path=layer_path,
+                    delta_w=proj_result.delta_w_safe,
+                    target_eval_fn=target_eval_fn,
+                    retained_tokens=retained_tokens,
+                )
+                history.append(v_res)
+                
+                if v_res.decision == VerificationDecision.COMMIT:
+                    final_decision = VerificationDecision.COMMIT
+                    status = f"Successfully verified and committed in Round {round_idx + 1}."
+                    break
+                elif v_res.decision == VerificationDecision.ADAPT:
+                    # Perplexity drifted or condition degraded: stiffen null-space projection & reduce budget
+                    current_alpha = current_alpha * 0.5
+                    current_gamma = current_gamma * 0.7
+                    self.verifier.restore_layer(layer_path)
+                else:  # ROLLBACK
+                    final_decision = VerificationDecision.ROLLBACK
+                    status = f"Hypothesis rejected in Round {round_idx + 1}: {v_res.rationale}"
+                    break
+            else:
+                status = f"Exceeded maximum adaptation rounds ({self.max_adaptation_rounds}). Layer restored to baseline."
+                self.verifier.restore_layer(layer_path)
 
         profile_after = self.inspector.profile_layer(layer_path) if final_decision == VerificationDecision.COMMIT else None
 
