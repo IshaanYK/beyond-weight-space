@@ -4,6 +4,8 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+  initThemeToggle();
+  initScrollSpy();
   initProgressBar();
   initParadigmCanvas();
   initMatrixSurgeryHeatmap();
@@ -14,6 +16,52 @@ document.addEventListener('DOMContentLoaded', () => {
   initSurgeryStageStepper();
   initLayerDepthMap();
 });
+
+/* ==========================================================================
+   0. Theme Toggle (Light / Dark Mode matching Jiajun Fan)
+   ========================================================================== */
+function initThemeToggle() {
+  const toggleBtn = document.getElementById('themeToggleBtn');
+  if (!toggleBtn) return;
+
+  const savedTheme = localStorage.getItem('darkMode');
+  if (savedTheme === 'true') {
+    document.body.classList.add('dark-mode');
+  }
+
+  toggleBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    const isDark = document.body.classList.contains('dark-mode');
+    localStorage.setItem('darkMode', isDark ? 'true' : 'false');
+  });
+}
+
+/* ==========================================================================
+   0.1. Scrollspy for Sticky Chapters Bar
+   ========================================================================== */
+function initScrollSpy() {
+  const links = document.querySelectorAll('.chapters a[href^="#"]');
+  if (!links.length) return;
+
+  const sections = [];
+  links.forEach(l => {
+    const id = l.getAttribute('href').slice(1);
+    const sec = document.getElementById(id);
+    if (sec) sections.push({ link: l, section: sec });
+  });
+
+  window.addEventListener('scroll', () => {
+    const scrollPos = window.scrollY + 120;
+    for (let i = sections.length - 1; i >= 0; i--) {
+      const item = sections[i];
+      if (item.section.offsetTop <= scrollPos) {
+        links.forEach(l => l.classList.remove('active'));
+        item.link.classList.add('active');
+        break;
+      }
+    }
+  }, { passive: true });
+}
 
 /* ==========================================================================
    1. Reading Progress Bar
@@ -315,27 +363,32 @@ function initMatrixSurgeryHeatmap() {
   }
 
   function getColor(val, mode) {
+    const isDark = document.body.classList.contains('dark-mode');
     if (mode === 'pristine') {
-      // Linear obsidian-blue spectrum
       const norm = (val + 1) / 2;
-      const b = Math.floor(40 + norm * 180);
-      return `rgb(10, ${Math.floor(b * 0.35)}, ${b})`;
+      if (isDark) {
+        const b = Math.floor(40 + norm * 160);
+        return `rgb(16, ${Math.floor(b * 0.45)}, ${b})`;
+      } else {
+        const b = Math.floor(180 + norm * 60);
+        return `rgb(${Math.floor(b * 0.7)}, ${Math.floor(b * 0.85)}, ${b})`;
+      }
     } else if (mode === 'attractor') {
-      // Gold / Yellow attractor highlight
+      // Fan peach/gold attractor
       const intensity = Math.min(1, Math.max(0, val));
-      return `rgba(255, 230, 0, ${0.1 + intensity * 0.9})`;
+      return isDark ? `rgba(229, 180, 161, ${0.2 + intensity * 0.8})` : `rgba(194, 118, 90, ${0.2 + intensity * 0.8})`;
     } else if (mode === 'unconstrained') {
-      // Crimson red cross-talk leakage
-      if (Math.abs(val) > 0.4) {
-        return `rgba(244, 63, 94, ${Math.min(1, Math.abs(val))})`;
+      // Fan crimson cross-talk leakage
+      if (Math.abs(val) > 0.35) {
+        return `rgba(217, 48, 37, ${Math.min(1, Math.abs(val) * 1.2)})`;
       }
-      return `rgba(30, 15, 25, 0.8)`;
+      return isDark ? 'rgba(40, 20, 25, 0.8)' : 'rgba(250, 235, 235, 0.8)';
     } else {
-      // SP-SV-WSP: Electric Cyan isolated delta
+      // SP-SV-WSP: Fan Mint isolated delta
       if (Math.abs(val) > 0.2) {
-        return `rgba(0, 240, 255, ${Math.min(1, Math.abs(val) * 1.5)})`;
+        return `rgba(94, 154, 139, ${Math.min(1, Math.abs(val) * 1.6)})`;
       }
-      return `rgb(10, 18, 30)`;
+      return isDark ? 'rgb(14, 25, 24)' : 'rgb(240, 247, 245)';
     }
   }
 
