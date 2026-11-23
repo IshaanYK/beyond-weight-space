@@ -29,7 +29,7 @@
       <a href="#results" class="active">Results</a>
       <a href="#paradigm">Three Paradigms</a>
       <a href="#scale-barrier">Scale Barrier</a>
-      <a href="#repair-demo">Matrix Simulator</a>
+      <a href="#repair-demo">Repair Matrix</a>
       <a href="#pipeline">Flight Control</a>
       <a href="#geometry">Geometry</a>
       <a href="#comparator">Benchmarks</a>
@@ -83,7 +83,7 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <polygon points="5 3 19 12 5 21 5 3"></polygon>
           </svg>
-          Interactive Matrix Demo
+          Interactive Repair Demo
         </a>
         <a href="https://github.com/IshaanYK/beyond-weight-space" target="_blank" class="pill-action-btn secondary">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
@@ -95,7 +95,7 @@
       </div>
     </header>
 
-    <!-- SECTION 1: THE PAPER IN FOUR RESULTS (Exact Fan Bento Grid) -->
+    <!-- SECTION 1: THE PAPER IN FOUR RESULTS -->
     <section class="results-scene" id="results">
       <div class="section-caption">Core Findings</div>
       <h2 class="section-heading-h2">The paper in four results.</h2>
@@ -160,8 +160,8 @@
 
   </main>
 
-  <!-- SECTION 2: THE THREE PARADIGMS (Band section) -->
-  <section class="band-section" id="paradigm">
+  <!-- SECTION 2: THE THREE PARADIGMS (Exact Fan 3-Canvas Stage) -->
+  <section class="band-section" id="paradigm-section">
     <div class="page-container">
       <div class="section-caption">Evolution of Learning</div>
       <h2 class="section-heading-h2">Until now, a language model got better in one of two ways. This is the third.</h2>
@@ -169,50 +169,63 @@
         Training is expensive; prompt scaling slows down inference. SP-SV-WSP offers an instant, zero-latency algebraic update directly in weight space.
       </p>
 
-      <div class="paradigm-stage-card">
-        <div class="pdm-tabs">
-          <button class="pdm-tab-btn" data-paradigm="train">
-            <span class="badge-num">01</span>
-            <span>Train It Again</span>
-          </button>
-          <button class="pdm-tab-btn" data-paradigm="inference">
-            <span class="badge-num">02</span>
-            <span>Spend More at Inference</span>
-          </button>
-          <button class="pdm-tab-btn active" data-paradigm="spsv">
-            <span class="badge-num">03</span>
-            <span>Let It Rewrite Itself (SP-SV-WSP)</span>
-          </button>
-        </div>
+      <figure class="pdm" id="paradigm">
+        <div class="pdm-stage">
+          <!-- Act 1 -->
+          <article class="pdm-act">
+            <header>
+              <h3>Train it again</h3>
+              <p>pre‑training · post‑training</p>
+            </header>
+            <canvas aria-label="Animation act 1: Training cluster" role="img"></canvas>
+            <p class="pdm-say">It takes infrastructure and GPU clusters only a few labs have.</p>
+            <ul class="pdm-yn">
+              <li class="n"><i></i>No training pipeline</li>
+              <li class="y"><i></i>No added cost per answer</li>
+              <li class="y"><i></i>The weights themselves improve</li>
+            </ul>
+          </article>
 
-        <div class="pdm-grid">
-          <div class="pdm-canvas-frame">
-            <canvas id="paradigmCanvas"></canvas>
+          <!-- Act 2 -->
+          <article class="pdm-act">
+            <header>
+              <h3>Spend more at inference</h3>
+              <p>prompt engineering · test‑time scaling</p>
+            </header>
+            <canvas aria-label="Animation act 2: Inference scaling" role="img"></canvas>
+            <p class="pdm-say">Paid on every single query; ephemeral when the task ends.</p>
+            <ul class="pdm-yn">
+              <li class="y"><i></i>No training pipeline</li>
+              <li class="n"><i></i>No added cost per answer</li>
+              <li class="n"><i></i>The weights themselves improve</li>
+            </ul>
+          </article>
+
+          <!-- Act 3 (Ours) -->
+          <article class="pdm-act ours">
+            <header>
+              <h3>Let it rewrite itself</h3>
+              <p>SP-SV-WSP · null-space projection</p>
+            </header>
+            <canvas aria-label="Animation act 3: SP-SV-WSP Surgery" role="img"></canvas>
+            <p class="pdm-say"><span>One GPU, milliseconds.</span> <span>Every answer costs what it cost before.</span></p>
+            <ul class="pdm-yn">
+              <li class="y"><i></i>No training pipeline</li>
+              <li class="y"><i></i>No added cost per answer</li>
+              <li class="y"><i></i>The weights themselves improve</li>
+            </ul>
+          </article>
+
+          <!-- Bottom Summary Bar -->
+          <div class="pdm-no">
+            <b>What SP-SV-WSP needs:</b>
+            <span>No training pipeline</span>
+            <span>No compute cluster</span>
+            <span>No added cost per answer</span>
+            <span>No representation collapse</span>
           </div>
-
-          <div class="pdm-info">
-            <h3 id="paradigmTitle">Paradigm 3: SP-SV-WSP (Closed-Form Null-Space Surgery)</h3>
-            <p id="paradigmDesc">
-              An autonomous agent projects a targeted rank-1 update into the mathematical null space of generic activations. The fix is instant, permanent, and incurs zero runtime cost.
-            </p>
-
-            <div class="pdm-metric-row">
-              <div class="pdm-metric-item">
-                <span class="lbl">Inference Latency</span>
-                <span class="val" id="metricLatency">0.0 ms Added</span>
-              </div>
-              <div class="pdm-metric-item">
-                <span class="lbl">Compute Cost</span>
-                <span class="val" id="metricCost">Zero API / Cluster</span>
-              </div>
-              <div class="pdm-metric-item">
-                <span class="lbl">Permanence</span>
-                <span class="val" id="metricPermanence">Permanent & Safe</span>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
+      </figure>
     </div>
   </section>
 
@@ -235,7 +248,7 @@
           </p>
           <ul class="feature-check-list">
             <li><span>❌</span> <strong>20.2% Energy Leakage:</strong> Unshielded updates bleed into generic language manifolds.</li>
-            <li><span>❌</span> <strong>Representation Collapse:</strong> SmolLM2-360M unconstrained edits collapse into symbol noise (`#?#?#?#`).</li>
+            <li><span>❌</span> <strong>Representation Collapse:</strong> SmolLM2-360M unconstrained edits collapse into symbol noise (`#?#?#`).</li>
             <li><span>❌</span> <strong>Perplexity Surge:</strong> Qwen2.5-0.5B suffers +16.71% perplexity surge.</li>
           </ul>
         </div>
@@ -255,79 +268,16 @@
       </div>
     </section>
 
-    <!-- SECTION 4: INTERACTIVE MATRIX SURGERY HEATMAP (Fan #repair-demo) -->
-    <section class="results-scene" id="repair-demo">
-      <div class="section-caption">Interactive Simulator</div>
-      <h2 class="section-heading-h2">Neural Weight Matrix Damage & Repair Simulator</h2>
+    <!-- SECTION 4: EXACT JIAJUN FAN REPAIR DEMO WIDGET -->
+    <section class="results-scene">
+      <div class="section-caption">Interactive Experiment</div>
+      <h2 class="section-heading-h2">Damage a model, then let SP-SV-WSP repair it.</h2>
       <p class="section-lead-p">
-        Inspect a 36×72 down-projection matrix in real time. Switch between baseline, failure attractor, unconstrained damage, and surgical null-space projection.
+        Simulate an unconstrained failure update (Fan et al.) that damages 8 rows of weights, then run our closed-form null-space projection to restore the model.
       </p>
 
-      <div class="repair-demo-container">
-        <div class="repair-canvas-box">
-          <div class="canvas-toolbar">
-            <div class="toolbar-left">
-              <span class="toolbar-dot"></span>
-              <span>Layer: model.layers.15.mlp.down_proj</span>
-              <span id="hudCoords" style="color: var(--ink); font-weight: 700;">[R:18, C:36]</span>
-            </div>
-            <div>
-              <span>Weight: <strong id="hudWeight">0.3421</strong> | ΔW: <strong id="hudDelta">+0.0000</strong></span>
-            </div>
-          </div>
-
-          <canvas id="matrixCanvas"></canvas>
-
-          <div class="repair-legend">
-            <span>Negative (-0.8)</span>
-            <div class="legend-gradient"></div>
-            <span>Positive (+0.8)</span>
-          </div>
-        </div>
-
-        <div class="repair-controls-card">
-          <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); font-family: var(--mono);">
-            Surgical Mode Selector
-          </div>
-
-          <div class="mode-selector-list">
-            <button class="mode-option-btn active" data-mode="pristine">
-              <span>1. Pristine Baseline Matrix (W₀)</span>
-              <span style="font-size: 11px; opacity: 0.7;">Base</span>
-            </button>
-            <button class="mode-option-btn" data-mode="attractor">
-              <span>2. Attractor Outer Product (v uᵀ)</span>
-              <span style="font-size: 11px; color: var(--peach-t);">Loop</span>
-            </button>
-            <button class="mode-option-btn" data-mode="unconstrained">
-              <span>3. Unconstrained Edit (Fan et al.)</span>
-              <span style="font-size: 11px; color: var(--crimson);">Damage</span>
-            </button>
-            <button class="mode-option-btn" data-mode="spsv">
-              <span>4. SP-SV-WSP Projection (Ours)</span>
-              <span style="font-size: 11px; color: var(--mint-t);">Surgical</span>
-            </button>
-          </div>
-
-          <div class="telemetry-metrics-box">
-            <div class="telem-metric-line">
-              <span class="telem-label">Activation Invariance:</span>
-              <span class="telem-val pass" id="telemInvar">100.00%</span>
-            </div>
-            <div class="telem-metric-line">
-              <span class="telem-label">Held-Out Perplexity:</span>
-              <span class="telem-val" id="telemPpl">42.38 (Baseline)</span>
-            </div>
-            <div class="telem-metric-line">
-              <span class="telem-label">Frobenius Norm ||W||_F:</span>
-              <span class="telem-val" id="telemFro">280.63</span>
-            </div>
-            <div class="telem-metric-line">
-              <span class="telem-label">Surgery Status:</span>
-              <span class="telem-val" id="telemStatus">BASELINE (REPETITION LOOP)</span>
-            </div>
-          </div>
-        </div>
+      <div id="repair-demo">
+        <!-- Dynamically mounted by app.js with exact Fan .rd structure -->
       </div>
     </section>
 
@@ -655,8 +605,8 @@
     <div class="footer-nav-links">
       <a href="https://github.com/IshaanYK/beyond-weight-space" target="_blank">GitHub Repository</a>
       <a href="#results">Results</a>
-      <a href="#paradigm">Three Paradigms</a>
-      <a href="#repair-demo">Matrix Simulator</a>
+      <a href="#paradigm-section">Three Paradigms</a>
+      <a href="#repair-demo">Repair Matrix</a>
       <a href="https://www.linkedin.com/in/ishaanyk/" target="_blank">LinkedIn</a>
     </div>
     <p>© 2026 Ishaan Sen. Inspired by Jiajun Fan's Self-Rewriting design and mathematical rigor.</p>
